@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tendencia — Presentation Deck</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    body { margin: 0; background: #525659; }
+    .deck { display: flex; flex-direction: column; align-items: center; gap: 48px; padding: 48px 0; }
+    /* Wrapper around each mounted slide: shadow on screen, page-break for print */
+    .slide-mount { box-shadow: 0 0 24px rgba(0,0,0,0.45); line-height: 0; }
+    .slide-mount:empty { width: 1920px; height: 1080px; background: #e5e5e5; }
+
+    @media print {
+      @page { size: 1920px 1080px; margin: 0; }
+      body { background: #fff; }
+      .deck { gap: 0; padding: 0; }
+      .slide-mount { box-shadow: none; break-after: page; page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+  <!-- The deck: order of these mounts = order of slides. -->
+ <!-- Slide component: Accommodation options ("HÉBERGEMENT OPTIONS") — hotel list with star ratings -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+<style>
+  .arrow-marker { width: 0; height: 0; border-top: 20px solid transparent; border-bottom: 20px solid transparent; border-left: 30px solid currentColor; }
+
+  /* Zigzag chevron ribbons (right side). Each ribbon = a thick miter-joined
+     zigzag polyline; the sharp miter joins produce the chevron points. */
+  .chevrons polyline { fill: none; stroke-width: 160px; stroke-linejoin: miter; }
+
+  /* Accommodation list row */
+  .hotel-row { display: flex; align-items: center; gap: 26px; padding-bottom: 26px;
+               border-bottom: 2px solid var(--color-border); }
+  .hotel-num  { font-family: var(--font-heading); font-weight: 700; font-size: 48px; color: var(--brand-accent); }
+  .hotel-name { font-family: var(--font-heading); font-weight: 700; font-size: 48px;
+                letter-spacing: 0.02em; color: var(--color-text-primary); }
+  .hotel-stars { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 46px; }
+  .star-on  { color: var(--brand-accent); }
+  .star-off { color: var(--color-text-secondary); }
+</style>
+
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- Zigzag chevron pattern, right side (charcoal / gold / light-gray) -->
+  <svg class="chevrons absolute inset-0 z-0" width="1920" height="1080" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+    <!-- light gray (back) -->
+    <polyline stroke="var(--color-border)"
+      points="1710,-240 1810,-120 1710,0 1810,120 1710,240 1810,360 1710,480 1810,600 1710,720 1810,840 1710,960 1810,1080 1710,1200 1810,1320" />
+    <!-- gold (middle) -->
+    <polyline stroke="var(--brand-accent)"
+      points="1480,-240 1580,-120 1480,0 1580,120 1480,240 1580,360 1480,480 1580,600 1480,720 1580,840 1480,960 1580,1080 1480,1200 1580,1320" />
+    <!-- charcoal (front) -->
+    <polyline stroke="var(--color-text-primary)"
+      points="1250,-240 1350,-120 1250,0 1350,120 1250,240 1350,360 1250,480 1350,600 1250,720 1350,840 1250,960 1350,1080 1250,1200 1350,1320" />
+  </svg>
+
+  <!-- Title -->
+  <div class="absolute left-[78px] top-[50px] w-[560px] h-[3px] bg-[var(--color-text-primary)] z-10"></div>
+  <div class="absolute left-[52px] top-[152px] w-40 h-16 bg-[var(--brand-accent)] z-0"></div>
+  <h1 class="absolute left-[78px] top-[68px] z-10 text-6xl font-bold leading-[1.05]" style="font-family: var(--font-heading);">
+    <span class="text-[var(--brand-accent)]">HÉBERGEMENT</span>
+    <span class="text-[var(--color-text-primary)]">OPTIONS</span>
+  </h1>
+
+  <!-- Accommodation list (engine injects rows here) -->
+  <div class="absolute left-[120px] top-[360px] w-[920px] z-10" data-field="accommodation-list">
+
+    <!-- Hotel entry -->
+    <div class="hotel-row">
+      <span class="hotel-num">1.</span>
+      <span class="hotel-name" data-field="hotel-name">WEST POINT</span>
+      <div class="hotel-stars" data-field="hotel-rating">
+        <i class="ti ti-star-filled star-on"></i>
+        <i class="ti ti-star-filled star-on"></i>
+        <i class="ti ti-star-filled star-on"></i>
+        <i class="ti ti-star-filled star-on"></i>
+        <i class="ti ti-star star-off"></i>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tendencia logo, bottom-left -->
+  <div class="absolute bottom-10 left-10 z-10">
+    <img src="assets/logo.png" alt="Tendencia Events & Travel" class="h-24">
+  </div>
+
+  <!-- Decorative arrow markers, bottom-right -->
+  <div class="absolute bottom-16 right-20 z-10 flex items-center gap-5">
+    <div class="flex">
+      <div class="arrow-marker text-[var(--color-text-primary)]"></div>
+      <div class="arrow-marker text-[var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="arrow-marker text-[var(--brand-secondary)]"></div>
+    <div class="arrow-marker text-[var(--brand-primary)]"></div>
+  </div>
+
+</div>
+
+</body>
+</html>

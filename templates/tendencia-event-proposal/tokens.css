@@ -1,0 +1,41 @@
+/* Design tokens for Tendencia Events & Travel presentation template */
+
+:root {
+  /* Brand colors extracted from logo and design system */
+  --brand-primary: #0099cc;      /* Teal/cyan blue */
+  --brand-secondary: #2db84d;    /* Green */
+  --brand-accent: #ffc400;       /* Gold/yellow */
+  --brand-accent-dark: #ff9500;  /* Orange */
+  --brand-blue: #2d5cb3;         /* Royal/cobalt blue (concept boxes & display headings) */
+
+  /* Palette for geometric patterns and depth */
+  --color-blue-dark: #003d7a;
+  --color-blue-medium: #0066b3;
+  --color-blue-light: #99d4f7;
+  --color-teal: #00b3b3;
+  --color-green-dark: #1a7a34;
+  --color-green-light: #66d966;
+  --color-yellow: #ffff00;
+  --color-orange: #ff6600;
+
+  /* Neutral colors */
+  --color-text-primary: #1a1a1a;   /* Nearly black */
+  --color-text-secondary: #666666; /* Medium gray */
+  --color-background: #ffffff;     /* White */
+  --color-surface: #f0f0f0;        /* Muted light-gray canvas (some slides) */
+  --color-border: #e0e0e0;         /* Light gray */
+  --color-highlight: #e23b2e;      /* Red — value-add callouts ("Offert par Tendencia", "Les ++") */
+  --color-frame: #3d4a2b;          /* Dark olive — collage / photo-frame gridlines */
+
+  /* Typography */
+  --font-heading: 'Arial', 'Helvetica', sans-serif;
+  --font-body: 'Segoe UI', 'Tahoma', sans-serif;
+
+  /* Spacing scale (in pixels) */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 32px;
+  --spacing-xl: 48px;
+  --spacing-2xl: 64px;
+}

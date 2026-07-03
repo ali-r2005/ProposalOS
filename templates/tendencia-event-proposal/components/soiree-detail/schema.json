@@ -1,0 +1,11 @@
+{
+  "id": "soiree-detail",
+  "name": "Soiree Detail Slide",
+  "description": "Slide displaying details about a soiree event with images and description",
+  "requiredProps": {
+    "soiree-image": { "type": "string", "format": "url" },
+    "soiree-name": { "type": "string" },
+    "soiree-subtitle": { "type": "string" },
+    "soiree-description": { "type": "string" }
+  }
+}

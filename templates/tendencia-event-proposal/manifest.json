@@ -1,0 +1,12 @@
+{
+  "id": "tendencia-event-proposal",
+  "name": "Tendencia Event Proposal",
+  "version": "1.0.0",
+  "author": "Tendencia Events",
+  "description": "Professional corporate event proposal template with customizable hotels, activities, and multi-day programmes",
+  "canvas": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "16:9"
+  }
+}

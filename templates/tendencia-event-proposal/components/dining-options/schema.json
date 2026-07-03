@@ -1,0 +1,9 @@
+{
+  "id": "dining-options",
+  "name": "Dining Options Slide",
+  "description": "Slide displaying multiple dining options",
+  "requiredProps": {
+    "option-1": { "type": "string" },
+    "option-2": { "type": "string" }
+  }
+}

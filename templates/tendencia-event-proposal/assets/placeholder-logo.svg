@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="220" viewBox="0 0 500 220">
+  <rect width="500" height="220" fill="#f0f0f0"/>
+  <rect x="1" y="1" width="498" height="218" fill="none" stroke="#c0c0c0" stroke-width="2" stroke-dasharray="8 6"/>
+  <circle cx="250" cy="80" r="34" fill="none" stroke="#9a9a9a" stroke-width="4"/>
+  <text x="250" y="150" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#7a7a7a" text-anchor="middle">CLIENT LOGO</text>
+  <text x="250" y="185" font-family="Arial, sans-serif" font-size="20" fill="#9a9a9a" text-anchor="middle">placeholder</text>
+</svg>

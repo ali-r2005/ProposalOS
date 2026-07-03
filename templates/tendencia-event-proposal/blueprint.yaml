@@ -1,0 +1,98 @@
+sections:
+  # Static section — always the same layout, no data needed
+  - id: welcome
+    component: welcome
+    source: static
+    expansion: single
+
+  - id: program-cover
+    component: program-cover
+    source: manual
+    expansion: single
+
+  - id: concept-statement
+    component: concept-statement
+    source: static
+    expansion: single
+
+  - id: destination-mosaic
+    component: destination-mosaic
+    source: static
+    expansion: single
+
+  - id: practical-info
+    component: practical-info
+    source: manual
+    expansion: single
+
+  # AI-generated section — one prompt, one slide
+  - id: destination-intro
+    component: destination-intro
+    source: ai
+    prompt: destination
+    expansion: single
+
+  - id: accommodation-options
+    component: accommodation-options
+    source: database
+    provider: accommodation
+    expansion:
+      strategy: single
+      collection: accommodation
+    dependsOn:
+      - accommodation
+
+  - id: accommodation-selection
+    component: accommodation-selection
+    source: manual
+    expansion: single
+
+  - id: accommodation-showcase
+    component: accommodation-showcase
+    source: manual
+    expansion: single
+
+  - id: activity-options
+    component: activity-options
+    source: manual
+    expansion: single
+
+  - id: activity-detail
+    component: activity-detail
+    source: database
+    provider: activities
+    expansion:
+      strategy: single
+      collection: activities
+    dependsOn:
+      - activities
+
+  - id: dining-options
+    component: dining-options
+    source: manual
+    expansion: single
+
+  - id: soiree-detail
+    component: soiree-detail
+    source: database
+    provider: soirees
+    expansion:
+      strategy: single
+      collection: soirees
+    dependsOn:
+      - soirees
+
+  - id: invitation-model
+    component: invitation-model
+    source: manual
+    expansion: single
+
+  - id: idea-box
+    component: idea-box
+    source: manual
+    expansion: single
+
+  - id: closing-thanks
+    component: closing-thanks
+    source: manual
+    expansion: single

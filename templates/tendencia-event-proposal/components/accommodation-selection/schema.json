@@ -1,0 +1,20 @@
+{
+  "id": "accommodation-selection",
+  "name": "Accommodation Selection Table",
+  "description": "Slide displaying a table of accommodation options with details",
+  "requiredProps": {
+    "hotel-list": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hotel-name": { "type": "string" },
+          "city": { "type": "string" },
+          "location": { "type": "string" },
+          "category": { "type": "string" }
+        },
+        "required": ["hotel-name", "city"]
+      }
+    }
+  }
+}

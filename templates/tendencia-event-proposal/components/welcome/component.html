@@ -1,0 +1,36 @@
+<!-- Slide component: M'Rahba welcome / hero -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- Low-poly geometric mosaic (top-right corner, cascading down the right edge) -->
+  <img src="assets/mosaic-corner.svg" alt="" class="absolute inset-0 w-full h-full pointer-events-none select-none">
+
+  <!-- Main content: left-aligned, vertically centered -->
+  <div class="absolute inset-y-0 left-[480px] z-10 flex flex-col justify-center">
+    <div class="w-[580px] h-[3px] bg-[var(--color-text-primary)] mb-10"></div>
+    <h1 class="text-[140px] leading-none font-bold text-[var(--color-text-primary)]" style="font-family: var(--font-heading); letter-spacing: 0.03em;">
+      M'RAHBA
+    </h1>
+    <div class="w-40 h-20 bg-[var(--brand-accent)] mt-10"></div>
+  </div>
+
+  <!-- Subtext: centered over the left area, near bottom -->
+  <p class="absolute bottom-[70px] left-[480px] w-[840px] text-center text-3xl text-[var(--color-text-primary)] z-10" style="font-family: var(--font-body);">
+    Merci d'avoir fait confiance à Tendencia
+  </p>
+
+  <!-- Decorative arrow markers, bottom-right -->
+  <div class="absolute bottom-12 right-16 z-10 flex items-center gap-5">
+    <div class="flex">
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-primary)]"></div>
+  </div>
+
+  <!-- Tendencia logo, bottom-left -->
+  <div class="absolute bottom-8 left-8 z-20">
+    <img src="assets/logo.png" alt="Tendencia Events & Travel" class="h-24">
+  </div>
+
+</div>

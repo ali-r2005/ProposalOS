@@ -1,0 +1,10 @@
+{
+  "id": "destination-intro",
+  "name": "Destination Intro Slide",
+  "description": "Slide introducing the destination",
+  "requiredProps": {
+    "destination": { "type": "string" },
+    "destination-image": { "type": "string" },
+    "destination-paragraphs": { "type": "array" }
+  }
+}

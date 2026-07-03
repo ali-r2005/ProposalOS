@@ -1,0 +1,67 @@
+<!-- Slide component: Accommodation showcase ("OPTION 1 — Hébergement") — photo-collage detail slide -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-frame)]" style="font-family: var(--font-body);">
+  <div class="grid w-[1920px] h-[1080px] bg-[var(--color-frame)] gap-[6px]"
+       style="grid-template-columns: 560px 440px 470px 432px; grid-template-rows: 384px 288px 396px; grid-template-areas: 'left lobby laptop right' 'left lobby bed right' 'left stars bed text';">
+
+    <!-- LEFT identity panel -->
+    <div class="relative bg-[var(--color-background)] overflow-hidden" style="grid-area: left;">
+      <!-- arrow markers, top-left -->
+      <div class="absolute left-[52px] top-[56px] flex items-center gap-5">
+        <div class="flex">
+          <div class="w-0 h-0 border-y-[18px] border-y-transparent border-l-[28px] border-l-[color:var(--color-text-primary)]"></div>
+          <div class="w-0 h-0 border-y-[18px] border-y-transparent border-l-[28px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+        </div>
+        <div class="w-0 h-0 border-y-[18px] border-y-transparent border-l-[28px] border-l-[color:var(--brand-secondary)]"></div>
+        <div class="w-0 h-0 border-y-[18px] border-y-transparent border-l-[28px] border-l-[color:var(--brand-primary)]"></div>
+      </div>
+
+      <!-- title block -->
+      <div class="absolute left-[52px] top-[210px]">
+        <div class="w-64 h-[2px] bg-[var(--color-text-primary)] mb-8"></div>
+        <h1 class="text-[52px] leading-none font-bold text-[var(--brand-accent)] tracking-[0.22em]" style="font-family: var(--font-heading);">OPTION 1</h1>
+        <h2 class="text-[46px] leading-none mt-4 font-bold text-[var(--brand-accent)] tracking-[0.22em] underline underline-offset-8" style="font-family: var(--font-heading);" data-field="option-label">Hébergement</h2>
+        <div class="w-40 h-16 bg-[var(--brand-accent)] mt-10"></div>
+      </div>
+
+      <!-- Tendencia logo -->
+      <img src="assets/logo.png" alt="Tendencia Events & Travel" class="absolute left-[52px] bottom-[70px] h-40 w-auto">
+    </div>
+
+    <!-- LOBBY image (placeholder) -->
+    <div class="bg-[var(--color-background)] overflow-hidden" style="grid-area: lobby;">
+      <img class="w-full h-full object-cover block" src="assets/placeholder-image.svg" alt="" data-field="photo-lobby">
+    </div>
+
+    <!-- Website link cell -->
+    <div class="bg-[var(--color-background)] overflow-hidden flex flex-col items-center justify-center text-center px-8 gap-6" style="grid-area: laptop;">
+      <i class="ti ti-device-laptop text-[110px] text-[var(--color-text-primary)]"></i>
+      <a class="text-[var(--brand-blue)] underline text-[19px] leading-snug break-all" data-field="hotel-url">https://www.hilton.com/en/hotels/tngahhi-hilton-tangier-al-houara-resort-and-spa/</a>
+    </div>
+
+    <!-- RIGHT image (placeholder) -->
+    <div class="bg-[var(--color-background)] overflow-hidden" style="grid-area: right;">
+      <img class="w-full h-full object-cover block" src="assets/placeholder-image.svg" alt="" data-field="photo-ballroom">
+    </div>
+
+    <!-- BEDROOM image (placeholder) -->
+    <div class="bg-[var(--color-background)] overflow-hidden" style="grid-area: bed;">
+      <img class="w-full h-full object-cover block" src="assets/placeholder-image.svg" alt="" data-field="photo-room">
+    </div>
+
+    <!-- Stars + hotel name -->
+    <div class="bg-[var(--color-background)] overflow-hidden flex flex-col items-center justify-center gap-6" style="grid-area: stars;">
+      <div class="flex gap-2 text-[46px] text-[var(--brand-accent)]" data-field="category">
+        <i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i>
+      </div>
+      <p class="text-[26px] tracking-wide text-[var(--color-text-primary)]" style="font-family: var(--font-heading);" data-field="hotel-name">HÔTEL HILTON AL HOUARA</p>
+    </div>
+
+    <!-- Description -->
+    <div class="bg-[var(--color-background)] overflow-hidden flex items-center px-9 py-6" style="grid-area: text;">
+      <p class="text-[19px] leading-relaxed text-[var(--color-text-primary)]" data-field="hotel-description">
+        Le <strong>Hilton Al Houara Resort &amp; Spa</strong> est un hôtel <strong>5 étoiles</strong> situé à Tanger, offrant un cadre magnifique entre l'Atlantique et les montagnes du Rif. Il propose des chambres élégantes, un spa, une piscine extérieure, une plage privée, ainsi qu'un golf à proximité. Parfait pour les séjours de luxe ou les événements professionnels, cet hôtel combine confort, détente et services haut de gamme.
+      </p>
+    </div>
+
+  </div>
+</div>

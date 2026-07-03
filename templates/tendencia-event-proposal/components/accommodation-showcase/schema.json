@@ -1,0 +1,12 @@
+{
+  "id": "accommodation-showcase",
+  "name": "Accommodation Showcase",
+  "description": "Slide showcasing accommodation options with photos and details",
+  "requiredProps": {
+    "option-label": { "type": "string" },
+    "photo-lobby": { "type": "string", "format": "url" },
+    "photo-ballroom": { "type": "string", "format": "url" },
+    "photo-room": { "type": "string", "format": "url" },
+    "hotel-url": { "type": "string", "format": "url" }
+  }
+}

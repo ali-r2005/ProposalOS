@@ -1,0 +1,12 @@
+{
+  "id": "destination-mosaic",
+  "name": "Destination Mosaic Slide",
+  "description": "Slide displaying a photographic mosaic of the destination",
+  "requiredProps": {
+    "destination": { "type": "string" },
+    "gallery-1": { "type": "string", "format": "url" },
+    "gallery-2": { "type": "string", "format": "url" },
+    "gallery-4": { "type": "string", "format": "url" },
+    "gallery-6": { "type": "string", "format": "url" }
+  }
+}

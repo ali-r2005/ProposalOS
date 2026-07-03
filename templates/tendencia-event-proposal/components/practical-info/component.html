@@ -1,0 +1,119 @@
+<!-- Slide component: Practical info ("CARNET D'INFORMATIONS PRATIQUES") — card grid variant -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- Title -->
+  <div class="absolute left-[78px] top-[50px] w-[560px] h-[3px] bg-[var(--color-text-primary)] z-10"></div>
+  <div class="absolute left-[52px] top-[152px] w-40 h-16 bg-[var(--brand-accent)] z-0"></div>
+  <h1 class="absolute left-[78px] top-[68px] z-10 text-6xl font-bold leading-[1.05]" style="font-family: var(--font-heading);">
+    <span class="text-[var(--brand-accent)]">CARNET D'INFORMATIONS</span><br>
+    <span class="text-[var(--color-text-primary)]">PRATIQUES</span>
+  </h1>
+
+  <!-- Destination pill, top-right -->
+  <div class="absolute right-[80px] top-[64px] z-10 flex items-center gap-5 bg-[var(--brand-accent)] rounded-2xl px-9 py-5">
+    <i class="ti ti-map-pin text-[var(--color-text-primary)] text-6xl"></i>
+    <div>
+      <p class="text-[var(--color-text-primary)]/70 text-base font-bold tracking-[0.25em]">DESTINATION</p>
+      <p class="text-[var(--color-text-primary)] text-4xl font-bold leading-tight" data-field="destination">{{destination}}</p>
+    </div>
+  </div>
+
+  <!-- Info card grid -->
+  <div class="absolute left-[110px] top-[292px] z-10 grid grid-cols-[repeat(3,540px)] grid-rows-[repeat(2,295px)] gap-[40px]">
+
+    <!-- LANGUE -->
+    <div class="relative" style="--accent: var(--brand-accent);">
+      <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
+        <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
+        <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-language"></i></div>
+        <div class="flex-1 min-w-0 z-[1]">
+          <p class="font-bold text-[24px] uppercase tracking-[0.03em]" style="font-family: var(--font-heading); color: var(--accent);">Langue</p>
+          <p class="mt-2 text-[26px] font-medium leading-[1.25] text-[var(--color-text-primary)]" data-field="langue">{{langue}}</p>
+        </div>
+        <div class="absolute right-[28px] bottom-[20px] text-[32px] tracking-[3px] leading-none" style="color: color-mix(in srgb, var(--accent) 50%, var(--color-background));">•••</div>
+      </div>
+    </div>
+
+    <!-- DURÉE DU TRAJET -->
+    <div class="relative" style="--accent: var(--brand-blue);">
+      <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
+        <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
+        <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-plane"></i></div>
+        <div class="flex-1 min-w-0 z-[1]">
+          <p class="font-bold text-[24px] uppercase tracking-[0.03em]" style="font-family: var(--font-heading); color: var(--accent);">Durée du trajet</p>
+          <p class="mt-2 text-[26px] font-medium leading-[1.25] text-[var(--color-text-primary)]" data-field="travel-duration">{{travel-duration}}</p>
+        </div>
+        <div class="absolute right-[28px] bottom-[20px] text-[32px] tracking-[3px] leading-none" style="color: color-mix(in srgb, var(--accent) 50%, var(--color-background));">•••</div>
+      </div>
+    </div>
+
+    <!-- DURÉE SÉJOUR -->
+    <div class="relative" style="--accent: var(--color-text-secondary);">
+      <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
+        <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
+        <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-moon"></i></div>
+        <div class="flex-1 min-w-0 z-[1]">
+          <p class="font-bold text-[24px] uppercase tracking-[0.03em]" style="font-family: var(--font-heading); color: var(--accent);">Durée séjour</p>
+          <p class="mt-2 text-[26px] font-medium leading-[1.25] text-[var(--color-text-primary)]" data-field="stay-duration">{{stay-duration}}</p>
+        </div>
+        <div class="absolute right-[28px] bottom-[20px] text-[32px] tracking-[3px] leading-none" style="color: color-mix(in srgb, var(--accent) 50%, var(--color-background));">•••</div>
+      </div>
+    </div>
+
+    <!-- FORMALITÉS -->
+    <div class="relative" style="--accent: var(--brand-secondary);">
+      <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
+        <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
+        <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-id"></i></div>
+        <div class="flex-1 min-w-0 z-[1]">
+          <p class="font-bold text-[24px] uppercase tracking-[0.03em]" style="font-family: var(--font-heading); color: var(--accent);">Formalités</p>
+          <p class="mt-2 text-[26px] font-medium leading-[1.25] text-[var(--color-text-primary)]" data-field="formalities">{{formalities}}</p>
+        </div>
+        <div class="absolute right-[28px] bottom-[20px] text-[32px] tracking-[3px] leading-none" style="color: color-mix(in srgb, var(--accent) 50%, var(--color-background));">•••</div>
+      </div>
+    </div>
+
+    <!-- VILLES DE SÉJOUR -->
+    <div class="relative" style="--accent: var(--brand-accent-dark);">
+      <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
+        <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
+        <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-building-skyscraper"></i></div>
+        <div class="flex-1 min-w-0 z-[1]">
+          <p class="font-bold text-[24px] uppercase tracking-[0.03em]" style="font-family: var(--font-heading); color: var(--accent);">Villes de séjour</p>
+          <p class="mt-2 text-[26px] font-medium leading-[1.25] text-[var(--color-text-primary)]" data-field="cities">{{destination}}</p>
+        </div>
+        <div class="absolute right-[28px] bottom-[20px] text-[32px] tracking-[3px] leading-none" style="color: color-mix(in srgb, var(--accent) 50%, var(--color-background));">•••</div>
+      </div>
+    </div>
+
+    <!-- CLIMAT -->
+    <div class="relative" style="--accent: var(--brand-primary);">
+      <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
+        <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
+        <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-temperature"></i></div>
+        <div class="flex-1 min-w-0 z-[1]">
+          <p class="font-bold text-[24px] uppercase tracking-[0.03em]" style="font-family: var(--font-heading); color: var(--accent);">Climat</p>
+          <p class="mt-2 text-[26px] font-medium leading-[1.25] text-[var(--color-text-primary)]" data-field="climate">{{climate}}</p>
+        </div>
+        <div class="absolute right-[28px] bottom-[20px] text-[32px] tracking-[3px] leading-none" style="color: color-mix(in srgb, var(--accent) 50%, var(--color-background));">•••</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tendencia logo, bottom-left -->
+  <div class="absolute bottom-10 left-10 z-10">
+    <img src="assets/logo.png" alt="Tendencia Events & Travel" class="h-24">
+  </div>
+
+  <!-- Decorative arrow markers, bottom-right -->
+  <div class="absolute bottom-16 right-20 z-10 flex items-center gap-5">
+    <div class="flex">
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-primary)]"></div>
+  </div>
+
+</div>

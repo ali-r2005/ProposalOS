@@ -1,0 +1,53 @@
+<!-- Slide component: Destination image mosaic ("MOROCCO, LAND OF CONTRASTS...") -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-surface)]" style="font-family: var(--font-body);">
+
+  <!-- Subtle inset frame -->
+  <div class="absolute inset-[14px] border border-[var(--color-border)] pointer-events-none z-0"></div>
+
+  <!-- Title block -->
+  <div class="absolute left-[78px] top-[52px] z-10">
+    <div class="w-[580px] h-[3px] bg-[var(--color-text-primary)] mb-6"></div>
+    <h1 class="text-6xl font-bold" style="font-family: var(--font-heading);">
+      <span class="text-[var(--color-text-primary)]" data-field="destination">MOROCCO</span><span class="text-[var(--brand-accent)]">, LAND OF CONTRASTS...</span>
+    </h1>
+  </div>
+
+  <!-- Small yellow accent block below title -->
+  <div class="absolute left-[78px] top-[150px] w-40 h-20 bg-[var(--brand-accent)] z-10"></div>
+
+  <!-- 7 x 2 photo / color-block mosaic -->
+  <div class="absolute left-[78px] top-[285px] z-10 grid grid-cols-[repeat(7,252px)] auto-rows-[243px]">
+    <!-- Row 1 -->
+    <div class="w-full h-full bg-[var(--brand-blue)]"></div>
+    <img src="assets/p2.png" alt="ONCF high-speed train" data-field="gallery-2" class="w-full h-full object-cover block">
+    <div class="w-full h-full bg-[var(--brand-accent)]"></div>
+    <img src="assets/p4.png" alt="City skyline" data-field="gallery-4" class="w-full h-full object-cover block">
+    <div class="w-full h-full bg-[var(--brand-secondary)]"></div>
+    <img src="assets/p6.png" alt="Desert sunset" data-field="gallery-6" class="w-full h-full object-cover block">
+    <div class="w-full h-full bg-[var(--color-text-primary)]"></div>
+    <!-- Row 2 -->
+    <img src="assets/p1.png" alt="Majorelle blue wall" data-field="gallery-1" class="w-full h-full object-cover block">
+    <div class="w-full h-full bg-[var(--brand-secondary)]"></div>
+    <img src="assets/p3.png" alt="Skiing" data-field="gallery-3" class="w-full h-full object-cover block">
+    <div class="w-full h-full bg-[var(--brand-blue)]"></div>
+    <img src="assets/p5.png" alt="Koutoubia mosque" data-field="gallery-5" class="w-full h-full object-cover block">
+    <div class="w-full h-full bg-[var(--brand-accent)]"></div>
+    <img src="assets/p7.png" alt="Moroccan carpets" data-field="gallery-7" class="w-full h-full object-cover block">
+  </div>
+
+  <!-- Tendencia logo, bottom-left -->
+  <div class="absolute bottom-10 left-10 z-10">
+    <img src="assets/logo.png" alt="Tendencia Events & Travel" class="h-24">
+  </div>
+
+  <!-- Decorative arrow markers, bottom-right -->
+  <div class="absolute bottom-16 right-20 z-10 flex items-center gap-5">
+    <div class="flex">
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-primary)]"></div>
+  </div>
+
+</div>

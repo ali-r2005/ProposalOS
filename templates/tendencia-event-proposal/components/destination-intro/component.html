@@ -1,0 +1,40 @@
+<!-- Slide component: Destination intro ("TANGER") — text left, rounded feature image right -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- Rounded feature image (right), with brand-yellow ring -->
+  <div class="absolute w-[1230px] h-[1230px] rounded-full right-[-615px] top-1/2 -translate-y-1/2 bg-[var(--brand-accent)] z-0"></div>
+  <div class="absolute w-[1150px] h-[1150px] rounded-full right-[-575px] top-1/2 -translate-y-1/2 overflow-hidden z-[1]">
+    <img src="{{destination-image}}" alt="Destination" data-field="destination-image" class="w-full h-full object-cover block">
+  </div>
+
+  <!-- Decorative arrow markers, top-left -->
+  <div class="absolute top-14 left-16 z-10 flex items-center gap-5">
+    <div class="flex">
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-primary)]"></div>
+  </div>
+
+  <!-- Left content: heading + description -->
+  <div class="absolute left-[100px] top-[175px] w-[1160px] z-10">
+    <p class="text-xl font-bold uppercase tracking-[0.35em] text-[var(--brand-accent)] mb-3">Destination</p>
+    <h1 class="text-[120px] leading-[0.9] font-bold text-[var(--color-text-primary)]" style="font-family: var(--font-heading);" data-field="destination">{{destination}}</h1>
+    <div class="w-40 h-5 bg-[var(--brand-accent)] mt-5 mb-10"></div>
+
+    <div class="space-y-6 text-[var(--color-text-primary)] text-[26px] leading-relaxed" data-field="destination-paragraphs">
+      {{#each destination-paragraphs}}
+      <p>
+        {{this}}
+      </p>
+      {{/each}}
+    </div>
+  </div>
+
+  <!-- Tendencia logo, bottom-left -->
+  <div class="absolute bottom-10 left-10 z-10">
+    <img src="assets/logo.png" alt="Tendencia Events & Travel" class="h-24">
+  </div>
+
+</div>

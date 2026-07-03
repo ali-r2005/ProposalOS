@@ -1,0 +1,51 @@
+<!-- Slide component: Invitation model ("INVITATION MODEL") — two photos displayed as tilted gold-framed cards -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- Title -->
+  <div class="absolute left-[52px] top-[128px] w-40 h-16 bg-[var(--brand-accent)] z-0"></div>
+  <h1 class="absolute left-[78px] top-[52px] z-10 text-7xl font-bold leading-none" style="font-family: var(--font-heading);">
+    <span class="text-[var(--color-text-primary)]">INVI</span><span class="text-[var(--brand-accent)]">TATION</span>
+  </h1>
+  <!-- Open-envelope accent icon -->
+  <i class="ti ti-mail-opened absolute left-[590px] top-[44px] z-10 text-[110px] text-[var(--color-border)]"></i>
+
+  <!-- Section label, top-right -->
+  <h2 class="absolute left-[830px] top-[46px] z-10 text-4xl font-normal leading-tight text-[var(--color-text-primary)]" style="font-family: var(--font-heading);">
+    INVITATION<br>MODEL
+  </h2>
+
+  <!-- LEFT photo (invitation1) — larger, tilted left -->
+  <div class="absolute z-10" style="left: 55px; top: 250px; width: 770px; height: 545px;">
+    <div class="absolute inset-0 bg-[var(--brand-accent)] rounded-[20px]" style="transform: rotate(-4deg) translate(-14px, 16px);"></div>
+    <img src="assets/invitation1.png" alt="Invitation prints" data-field="invitation-image-1"
+         class="absolute inset-0 w-full h-full object-cover rounded-[20px] border-[6px] border-white" style="transform: rotate(-2deg);">
+  </div>
+
+  <!-- RIGHT photo (invitation2) — the gala card, tilted right -->
+  <div class="absolute z-10" style="left: 1085px; top: 245px; width: 470px; height: 500px;">
+    <div class="absolute inset-0 bg-[var(--brand-accent)] rounded-[20px]" style="transform: rotate(5deg) translate(18px, 16px);"></div>
+    <img src="assets/invitation2.png" alt="Gala invitation card" data-field="invitation-image-2"
+         class="absolute inset-0 w-full h-full object-cover rounded-[20px] border-[6px] border-white" style="transform: rotate(3deg);">
+  </div>
+
+  <!-- Caption under the right photo -->
+  <p class="absolute left-[858px] top-[810px] w-[940px] z-10 text-[26px] leading-relaxed text-[var(--color-text-primary)]" data-field="invitation-description">
+    Chic invitations that are digitally printed on coated paper with either a matte or glossy finish, and come with personalized name envelopes (with handwritten names).
+  </p>
+
+  <!-- Tendencia logo, bottom-left -->
+  <div class="absolute bottom-10 left-10 z-10">
+    <img src="assets/logo.png" alt="Tendencia Events & Travel" class="h-24">
+  </div>
+
+  <!-- Decorative arrow markers, bottom-right -->
+  <div class="absolute bottom-16 right-20 z-10 flex items-center gap-5">
+    <div class="flex">
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-primary)]"></div>
+  </div>
+
+</div>

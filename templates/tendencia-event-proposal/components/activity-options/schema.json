@@ -1,0 +1,9 @@
+{
+  "id": "activity-options",
+  "name": "Activity Options Slide",
+  "description": "Slide displaying multiple activity options with indoor and outdoor choices",
+  "requiredProps": {
+    "option-indoor": { "type": "string" },
+    "option-outdoor": { "type": "string" }
+  }
+}

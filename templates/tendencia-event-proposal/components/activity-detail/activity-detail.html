@@ -1,0 +1,57 @@
+<!-- Slide component: Team-building activity detail ("ANIMATE") — green header, text left, photo collage right -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- Green header band -->
+  <div class="absolute left-0 top-0 w-full h-[200px] bg-[var(--brand-secondary)] z-0"></div>
+  <h1 class="absolute left-[90px] top-[58px] z-10 text-white text-7xl font-bold tracking-wide" style="font-family: var(--font-heading);" data-field="activity-name">ANIMATE</h1>
+  <!-- ANIMATE wordmark, header right -->
+  <img src="assets/animate.png" alt="Animate" class="absolute right-[70px] top-[45px] h-[110px] z-10">
+  <!-- arrow markers flowing from header toward the photos -->
+  <div class="absolute left-[830px] top-[212px] z-10 flex items-center gap-5">
+    <div class="flex">
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-primary)]"></div>
+  </div>
+
+  <!-- Left: activity description -->
+  <div class="absolute left-[80px] top-[250px] w-[930px] z-10">
+    <div data-field="activity-description" class="text-[22px] leading-[1.6] text-[var(--color-text-primary)]">
+      <p>
+        Dans ce défi créatif, les équipes réalisent des vidéos d'animation qui, une fois assemblées, forment un clip cohérent. Chaque équipe contribue à une partie de l'histoire, nécessitant collaboration et coordination. L'activité développe des compétences en communication et gestion de projet tout en stimulant la créativité.
+      </p>
+      <p class="mt-7">
+        Cette activité d'animation repose sur la <em>communication</em>, la <em>planification</em> et la <em>coordination</em>. Adaptée à vos besoins, elle permet de transmettre des messages tels que la promotion de produits, la mise en avant des objectifs commerciaux ou les valeurs d'entreprise. Les équipes doivent collaborer efficacement pour créer une vidéo cohérente et percutante. Ce défi renforce à la fois <em>l'esprit d'équipe</em> et <em>les compétences en gestion de projet</em>.
+      </p>
+    </div>
+
+    <p class="text-[22px] font-bold text-[var(--color-text-primary)] mt-10 italic">
+      Lien Video: <a class="underline" data-field="activity-video">https://www.catalyst.ma/activites-teambuilding/team-building/animate</a>
+    </p>
+    <p class="text-[22px] font-bold text-[var(--color-text-primary)] mt-4 italic">
+      <span class="underline">Détails de l'activité</span> : <span data-field="activity-meta">INDOOR - 10 TO 100 - COLLABORATIF - COMPÉTITIF</span>
+    </p>
+  </div>
+
+  <!-- Right: creative overlapping photo collage (3 placeholders) -->
+  <div class="absolute z-10 bg-white p-[10px] border border-[var(--color-border)]" style="left: 1070px; top: 250px; width: 470px; height: 360px; transform: rotate(-3deg);">
+    <img src="assets/placeholder-image.svg" alt="" data-field="photo-1" class="w-full h-full object-cover block">
+  </div>
+  <div class="absolute z-30 bg-white p-[10px] border border-[var(--color-border)]" style="left: 1130px; top: 610px; width: 450px; height: 400px; transform: rotate(3deg);">
+    <img src="assets/placeholder-image.svg" alt="" data-field="photo-2" class="w-full h-full object-cover block">
+  </div>
+  <div class="absolute z-20 bg-white p-[10px] border border-[var(--color-border)]" style="left: 1480px; top: 340px; width: 400px; height: 460px; transform: rotate(4deg);">
+    <img src="assets/placeholder-image.svg" alt="" data-field="photo-3" class="w-full h-full object-cover block">
+  </div>
+
+  <!-- Tendencia logo, bottom-left -->
+  <div class="absolute bottom-10 left-10 z-40">
+    <img src="assets/logo.png" alt="Tendencia Events & Travel" class="h-24">
+  </div>
+
+  <!-- Catalyst partner logo, bottom-right -->
+  <img src="assets/catalyst.png" alt="Catalyst Global — exclusive licensed partner" class="absolute bottom-8 right-12 h-[150px] z-40">
+
+</div>

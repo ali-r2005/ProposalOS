@@ -1,0 +1,10 @@
+{
+  "id": "concept-statement",
+  "name": "Concept Statement Slide",
+  "description": "Slide presenting the event concept with headline, team description, and market insight",
+  "requiredProps": {
+    "concept-headline": { "type": "string" },
+    "team-description": { "type": "string" },
+    "market-insight": { "type": "string" }
+  }
+}

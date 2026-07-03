@@ -1,0 +1,47 @@
+<!-- Slide component: Closing / thank-you ("CHOUKRAN") — giant arrow-motif shapes + multilingual thanks -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- === Geometric arrow motif (background layer) === -->
+  <!-- Far-left full-height yellow band -->
+  <div class="absolute left-0 top-0 w-[360px] h-full bg-[var(--brand-accent)] z-0"></div>
+  <!-- Charcoal arrowhead nested in the yellow band -->
+  <div class="absolute left-[40px] top-[300px] w-[320px] h-[440px] bg-[var(--color-text-primary)] z-[1]" style="clip-path: polygon(0 0, 0 100%, 100% 50%);"></div>
+  <!-- Large green arrowhead -->
+  <div class="absolute left-[360px] top-[205px] w-[430px] h-[680px] bg-[var(--brand-secondary)] z-[1]" style="clip-path: polygon(0 0, 0 100%, 100% 50%);"></div>
+  <!-- Royal-blue vertical stripe on the right -->
+  <div class="absolute left-[1210px] top-0 w-[185px] h-full bg-[var(--brand-blue)] z-0"></div>
+
+  <!-- === Foreground content === -->
+
+  <!-- Designer name, top-center -->
+  <p class="absolute left-[720px] top-[120px] z-10 text-3xl font-semibold tracking-wide text-[var(--color-text-primary)]"
+     style="font-family: var(--font-heading);" data-field="designer-name">NABIH</p>
+
+  <!-- Role label, on the blue stripe -->
+  <p class="absolute left-[1235px] top-[118px] w-[560px] z-10 text-3xl font-semibold leading-tight text-white"
+     style="font-family: var(--font-heading);" data-field="designer-role">TRAVELS &amp;<br>EVENTS DESIGNER</p>
+
+  <!-- Giant CHOUKRAN -->
+  <h1 class="absolute left-0 right-0 top-[400px] z-10 text-center text-[210px] leading-none font-light text-[var(--color-text-primary)]"
+      style="font-family: var(--font-heading); letter-spacing: 0.02em;" data-field="thanks-word">CHOUKRAN</h1>
+
+  <!-- Multilingual thank-you strip -->
+  <p class="absolute left-0 right-0 top-[690px] z-10 text-center text-[58px] leading-[1.25] text-[var(--color-text-primary)]" style="font-family: var(--font-heading);">
+    <u class="underline-offset-[6px] decoration-2">Merci</u>, <b class="font-bold">Thank&nbsp;you</b>, <u class="underline-offset-[6px] decoration-2">Gracias</u>, <b class="font-bold"><u class="underline-offset-[6px] decoration-2">Grazie</u></b>, 谢谢, <b class="font-bold">Danke</b>,<br>
+    <u class="underline-offset-[6px] decoration-2">Takk</u>, <span dir="rtl">شكراً</span>
+  </p>
+
+  <!-- Presentation date, bottom-left (on the yellow band) -->
+  <p class="absolute left-[64px] bottom-[40px] z-10 text-3xl font-medium text-[var(--color-text-primary)]"
+     style="font-family: var(--font-heading);" data-field="date">05/05/2026</p>
+
+  <!-- Sign-off, bottom-center -->
+  <p class="absolute left-0 right-0 bottom-[44px] z-10 text-center text-3xl font-semibold tracking-wide text-[var(--color-text-primary)]"
+     style="font-family: var(--font-heading);" data-field="signoff">A VOTRE SERVICE</p>
+
+  <!-- Tendencia logo, bottom-right -->
+  <div class="absolute bottom-8 right-10 z-20">
+    <img src="assets/logo.png" alt="Tendencia Events &amp; Travel" class="h-24">
+  </div>
+
+</div>

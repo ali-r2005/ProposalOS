@@ -1,0 +1,91 @@
+{
+  "id": "destination",
+  "title": "Destination Information",
+  "description": "Details about the event destination and logistics",
+  "fields": [
+    {
+      "key": "event-name",
+      "label": "Event Name",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Annual Leadership Summit 2025"
+    },
+    {
+      "key": "event-type",
+      "label": "Event Type",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Corporate Retreat, Incentive Trip, Conference"
+    },
+    {
+      "key": "event-year",
+      "label": "Event Year",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., 2025"
+    },
+    {
+      "key": "event-dates",
+      "label": "Event Dates",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., June 15-18, 2025"
+    },
+    {
+      "key": "destination",
+      "label": "Destination",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Marrakech, Morocco"
+    },
+    {
+      "key": "client-logo",
+      "label": "Client Logo URL",
+      "type": "url",
+      "required": true,
+      "placeholder": "https://example.com/logo.png"
+    },
+    {
+      "key": "participant-count",
+      "label": "Participant Count",
+      "type": "number",
+      "required": true,
+      "placeholder": "e.g., 50"
+    },
+    {
+      "key": "langue",
+      "label": "Language",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., French, Arabic, English"
+    },
+    {
+      "key": "travel-duration",
+      "label": "Travel Duration",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., 3h 30m from Paris"
+    },
+    {
+      "key": "stay-duration",
+      "label": "Stay Duration",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., 4 days / 3 nights"
+    },
+    {
+      "key": "formalities",
+      "label": "Formalities",
+      "type": "textarea",
+      "required": true,
+      "placeholder": "e.g., Visa requirements, passport valkeyity, vaccination info"
+    },
+    {
+      "key": "climate",
+      "label": "Climate",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Sunny, 25-30°C in June"
+    }
+  ]
+}
