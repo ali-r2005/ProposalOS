@@ -5,6 +5,7 @@
   "requiredProps": {
     "event-type": { "type": "string" },
     "event-year": { "type": "string" },
+    "destination-image": { "type": "string", "format": "url" },
     "event-name": { "type": "string" },
     "destination": { "type": "string" },
     "client-logo": { "type": "string", "format": "url" },

@@ -39,6 +39,13 @@
       "placeholder": "e.g., Marrakech, Morocco"
     },
     {
+      "key": "destination-image",
+      "label": "Destination Image URL ",
+      "type": "url",
+      "required": true,
+      "placeholder": "https://example.com/destination.jpg"
+    },
+    {
       "key": "client-logo",
       "label": "Client Logo URL",
       "type": "url",

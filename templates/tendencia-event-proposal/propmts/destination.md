@@ -6,7 +6,7 @@ Generate a JSON object with a `destination-paragraphs` property containing an ar
 - **Destination**: {{destination}}
 
 ## Instructions
-1. Generate exactly 2 paragraphs (each 80-120 words)
+1. Generate exactly 2 paragraphs (each 50-80 words)
 3. Base content on the {{destination}} property
 4. the language that you will write the paragraphes with will be {{[langue]}}
 

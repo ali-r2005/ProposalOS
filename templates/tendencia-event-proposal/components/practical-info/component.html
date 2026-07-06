@@ -22,6 +22,7 @@
   <div class="absolute left-[110px] top-[292px] z-10 grid grid-cols-[repeat(3,540px)] grid-rows-[repeat(2,295px)] gap-[40px]">
 
     <!-- LANGUE -->
+    {{#if langue}}
     <div class="relative" style="--accent: var(--brand-accent);">
       <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
@@ -33,8 +34,10 @@
         <div class="absolute right-[28px] bottom-[20px] text-[32px] tracking-[3px] leading-none" style="color: color-mix(in srgb, var(--accent) 50%, var(--color-background));">•••</div>
       </div>
     </div>
+    {{/if}}
 
     <!-- DURÉE DU TRAJET -->
+    {{#if travel-duration}}
     <div class="relative" style="--accent: var(--brand-blue);">
       <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
@@ -46,8 +49,10 @@
         <div class="absolute right-[28px] bottom-[20px] text-[32px] tracking-[3px] leading-none" style="color: color-mix(in srgb, var(--accent) 50%, var(--color-background));">•••</div>
       </div>
     </div>
+    {{/if}}
 
     <!-- DURÉE SÉJOUR -->
+    {{#if stay-duration}}
     <div class="relative" style="--accent: var(--color-text-secondary);">
       <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
@@ -59,8 +64,10 @@
         <div class="absolute right-[28px] bottom-[20px] text-[32px] tracking-[3px] leading-none" style="color: color-mix(in srgb, var(--accent) 50%, var(--color-background));">•••</div>
       </div>
     </div>
+    {{/if}}
 
     <!-- FORMALITÉS -->
+    {{#if formalities}}
     <div class="relative" style="--accent: var(--brand-secondary);">
       <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
@@ -72,21 +79,25 @@
         <div class="absolute right-[28px] bottom-[20px] text-[32px] tracking-[3px] leading-none" style="color: color-mix(in srgb, var(--accent) 50%, var(--color-background));">•••</div>
       </div>
     </div>
+    {{/if}}
 
     <!-- VILLES DE SÉJOUR -->
+    {{#if destination}}
     <div class="relative" style="--accent: var(--brand-accent-dark);">
       <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
         <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-building-skyscraper"></i></div>
         <div class="flex-1 min-w-0 z-[1]">
           <p class="font-bold text-[24px] uppercase tracking-[0.03em]" style="font-family: var(--font-heading); color: var(--accent);">Villes de séjour</p>
-          <p class="mt-2 text-[26px] font-medium leading-[1.25] text-[var(--color-text-primary)]" data-field="cities">{{destination}}</p>
+          <p class="mt-2 text-[26px] font-medium leading-[1.25] text-[var(--color-text-primary)]" data-field="destination">{{destination}}</p>
         </div>
         <div class="absolute right-[28px] bottom-[20px] text-[32px] tracking-[3px] leading-none" style="color: color-mix(in srgb, var(--accent) 50%, var(--color-background));">•••</div>
       </div>
     </div>
+    {{/if}}
 
     <!-- CLIMAT -->
+    {{#if climate}}
     <div class="relative" style="--accent: var(--brand-primary);">
       <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
@@ -98,6 +109,7 @@
         <div class="absolute right-[28px] bottom-[20px] text-[32px] tracking-[3px] leading-none" style="color: color-mix(in srgb, var(--accent) 50%, var(--color-background));">•••</div>
       </div>
     </div>
+    {{/if}}
 
   </div>
 
