@@ -44,13 +44,17 @@ sections:
 
   - id: accommodation-selection
     component: accommodation-selection
-    source: manual
+    source: database
     expansion: single
 
   - id: accommodation-showcase
     component: accommodation-showcase
-    source: manual
-    expansion: single
+    source: database
+    expansion:
+      strategy: repeat
+      collection: hotels
+    dependsOn:
+      - accommodation
 
   - id: activity-options
     component: activity-options

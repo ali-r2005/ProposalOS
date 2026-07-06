@@ -28,8 +28,11 @@ export async function POST(request: Request) {
     const forms = await loadForms(template).catch(() => []);
     const validation = validateFormInput(forms, formInput);
     if (!validation.valid) {
+      const error = validation.invalid.length
+        ? "Some fields have too many selections"
+        : "Missing required fields";
       return NextResponse.json(
-        { success: false, error: "Missing required fields", missing: validation.missing },
+        { success: false, error, missing: validation.missing, invalid: validation.invalid },
         { status: 400 }
       );
     }

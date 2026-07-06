@@ -1,7 +1,19 @@
 import path from "path";
 import { promises as fs } from "fs";
-import type { FormField, FormGroup, LoadedTemplate } from "@/lib/engine/types";
+import type { FieldOptionsSource, FormField, FormGroup, LoadedTemplate } from "@/lib/engine/types";
 import { EngineError, devWarn } from "@/lib/utils/error-handler";
+
+function normaliseOptionsSource(raw: unknown): FieldOptionsSource | undefined {
+  if (!raw || typeof raw !== "object") return undefined;
+  const o = raw as Record<string, unknown>;
+  if (typeof o.provider !== "string" || typeof o.collection !== "string") return undefined;
+  return {
+    provider: o.provider,
+    collection: o.collection,
+    valueKey: typeof o.valueKey === "string" ? o.valueKey : undefined,
+    labelKey: typeof o.labelKey === "string" ? o.labelKey : undefined,
+  };
+}
 
 function normaliseField(raw: unknown): FormField | null {
   if (!raw || typeof raw !== "object") return null;
@@ -18,6 +30,9 @@ function normaliseField(raw: unknown): FormField | null {
     options: Array.isArray(f.options)
       ? (f.options as FormField["options"])
       : undefined,
+    min: typeof f.min === "number" ? f.min : undefined,
+    max: typeof f.max === "number" ? f.max : undefined,
+    optionsFrom: normaliseOptionsSource(f.optionsFrom),
   };
 }
 

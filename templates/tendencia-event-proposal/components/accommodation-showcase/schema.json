@@ -1,12 +1,22 @@
 {
   "id": "accommodation-showcase",
   "name": "Accommodation Showcase",
-  "description": "Slide showcasing accommodation options with photos and details",
+  "description": "Photo-collage detail slide, repeated once per selected hotel (repeat over `hotels`).",
   "requiredProps": {
-    "option-label": { "type": "string" },
-    "photo-lobby": { "type": "string", "format": "url" },
-    "photo-ballroom": { "type": "string", "format": "url" },
-    "photo-room": { "type": "string", "format": "url" },
-    "hotel-url": { "type": "string", "format": "url" }
+    "option": { "type": "number" },
+    "description": { "type": "string" },
+    "hotel-url": { "type": "string", "format": "url" },
+    "images": {
+      "type": "array",
+      "items": { "type": "string", "format": "url" }
+    },
+    "hotel": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "stars": { "type": "array" }
+      },
+      "required": ["name", "stars"]
+    }
   }
 }

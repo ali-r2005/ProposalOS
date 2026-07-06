@@ -1,20 +1,30 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { http, toErrorMessage } from "@/lib/utils/http";
 import type { FormField, FormGroup } from "@/lib/engine/types";
 
 type FormValue = string | number | string[];
+type Option = { label: string; value: string };
+type OptionsMeta = { total: number; loading: boolean; error?: string };
+
+const PAGE_SIZE = 20;
 
 function FieldInput({
   field,
   value,
   onChange,
+  options,
+  meta,
+  onLoadMore,
 }: {
   field: FormField;
   value: FormValue | undefined;
   onChange: (value: FormValue) => void;
+  options: Option[];
+  meta?: OptionsMeta;
+  onLoadMore?: () => void;
 }) {
   const base =
     "w-full rounded-lg border border-[var(--app-border)] bg-[#0f172a] px-3 py-2 text-sm outline-none focus:border-[var(--app-accent)]";
@@ -39,7 +49,7 @@ function FieldInput({
         onChange={(e) => onChange(e.target.value)}
       >
         <option value="">— select —</option>
-        {(field.options ?? []).map((opt) => (
+        {options.map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}
           </option>
@@ -50,28 +60,58 @@ function FieldInput({
 
   if (field.type === "multi-select") {
     const selected = Array.isArray(value) ? value : [];
-    const toggle = (v: string) =>
-      onChange(selected.includes(v) ? selected.filter((s) => s !== v) : [...selected, v]);
+    const atMax = typeof field.max === "number" && selected.length >= field.max;
+    const toggle = (v: string) => {
+      if (selected.includes(v)) onChange(selected.filter((s) => s !== v));
+      else if (!atMax) onChange([...selected, v]);
+    };
+    const hasMore = meta ? meta.total > options.length : false;
+
     return (
       <div className="space-y-2">
-        {(field.options ?? []).map((opt) => (
-          <label key={opt.value} className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={selected.includes(opt.value)}
-              onChange={() => toggle(opt.value)}
-            />
-            {opt.label}
-          </label>
-        ))}
-        {(field.options ?? []).length === 0 && (
-          <p className="text-xs text-[var(--app-muted)]">No options provided.</p>
+        {typeof field.max === "number" && (
+          <p className="text-xs text-[var(--app-muted)]">
+            Selected {selected.length}/{field.max}
+          </p>
+        )}
+        {options.map((opt) => {
+          const checked = selected.includes(opt.value);
+          const disabled = !checked && atMax;
+          return (
+            <label
+              key={opt.value}
+              className={`flex items-center gap-2 text-sm ${disabled ? "opacity-40" : ""}`}
+            >
+              <input
+                type="checkbox"
+                checked={checked}
+                disabled={disabled}
+                onChange={() => toggle(opt.value)}
+              />
+              {opt.label}
+            </label>
+          );
+        })}
+        {meta?.loading && <p className="text-xs text-[var(--app-muted)]">Loading options…</p>}
+        {meta?.error && <p className="text-xs text-red-400">{meta.error}</p>}
+        {!meta?.loading && !meta?.error && options.length === 0 && (
+          <p className="text-xs text-[var(--app-muted)]">No options available.</p>
+        )}
+        {hasMore && !meta?.loading && (
+          <button
+            type="button"
+            onClick={onLoadMore}
+            className="text-xs font-medium text-[var(--app-accent)]"
+          >
+            Load more
+          </button>
         )}
       </div>
     );
   }
 
-  const inputType = field.type === "email" ? "email" : field.type === "url" ? "url" : field.type === "number" ? "number" : "text";
+  const inputType =
+    field.type === "email" ? "email" : field.type === "url" ? "url" : field.type === "number" ? "number" : "text";
 
   return (
     <input
@@ -96,6 +136,12 @@ export default function ProposalForm() {
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Options fetched from providers for fields that declare `optionsFrom`.
+  const [dynamicOptions, setDynamicOptions] = useState<Record<string, Option[]>>({});
+  const [optionsMeta, setOptionsMeta] = useState<Record<string, OptionsMeta>>({});
+
+  const destination = String(values["destination"] ?? "");
+
   useEffect(() => {
     if (!templateId) {
       setError("No templateId provided.");
@@ -117,19 +163,76 @@ export default function ProposalForm() {
   const current = groups[step];
   const isLast = step === groups.length - 1;
 
-  const missingInStep = useMemo(() => {
-    if (!current) return [];
-    return current.fields
-      .filter((f) => f.required)
-      .filter((f) => {
-        const v = values[f.key];
-        return v === undefined || v === "" || (Array.isArray(v) && v.length === 0);
-      })
-      .map((f) => f.key);
-  }, [current, values]);
+  // Fetch a page of options for a provider-backed field.
+  const loadOptions = useCallback(
+    async (field: FormField, offset: number, append: boolean) => {
+      const src = field.optionsFrom;
+      if (!src) return;
+      setOptionsMeta((m) => ({
+        ...m,
+        [field.key]: { total: m[field.key]?.total ?? 0, loading: true },
+      }));
+      try {
+        const { data } = await http.get<Record<string, unknown>>(
+          `/api/templates/${encodeURIComponent(templateId)}/options`,
+          { params: { provider: src.provider, destination, limit: PAGE_SIZE, offset } }
+        );
+        const rows = Array.isArray(data[src.collection]) ? (data[src.collection] as Record<string, unknown>[]) : [];
+        const valueKey = src.valueKey ?? "id";
+        const labelKey = src.labelKey ?? "name";
+        const opts: Option[] = rows.map((r) => ({
+          value: String(r[valueKey]),
+          label: String(r[labelKey] ?? r[valueKey]),
+        }));
+        setDynamicOptions((prev) => ({
+          ...prev,
+          [field.key]: append ? [...(prev[field.key] ?? []), ...opts] : opts,
+        }));
+        setOptionsMeta((m) => ({
+          ...m,
+          [field.key]: { total: Number(data.total ?? rows.length), loading: false },
+        }));
+      } catch (err) {
+        setOptionsMeta((m) => ({
+          ...m,
+          [field.key]: { total: 0, loading: false, error: toErrorMessage(err, "Failed to load options") },
+        }));
+      }
+    },
+    [templateId, destination]
+  );
+
+  // When the active step (or the destination) changes, (re)load options for any
+  // provider-backed field in that step, starting from the first page.
+  useEffect(() => {
+    if (!current) return;
+    for (const field of current.fields) {
+      if (field.optionsFrom) loadOptions(field, 0, false);
+    }
+  }, [step, destination, current, loadOptions]);
 
   const setValue = (key: string, value: FormValue) =>
     setValues((prev) => ({ ...prev, [key]: value }));
+
+  // Fields in the current step that block navigation (required/min/max).
+  const stepIssues = useMemo(() => {
+    if (!current) return [] as string[];
+    const keys: string[] = [];
+    for (const f of current.fields) {
+      const v = values[f.key];
+      const empty = v === undefined || v === "" || (Array.isArray(v) && v.length === 0);
+      const count = Array.isArray(v) ? v.length : 0;
+      if (f.required && empty) keys.push(f.key);
+      else if (typeof f.min === "number" && !empty && count < f.min) keys.push(f.key);
+      if (typeof f.max === "number" && count > f.max) keys.push(f.key);
+    }
+    return keys;
+  }, [current, values]);
+
+  const stepBlocked = stepIssues.length > 0;
+
+  const optionsFor = (field: FormField): Option[] =>
+    field.optionsFrom ? dynamicOptions[field.key] ?? [] : field.options ?? [];
 
   async function handleGenerate() {
     setGenerating(true);
@@ -141,15 +244,15 @@ export default function ProposalForm() {
         proposalId?: string;
         error?: string;
         missing?: string[];
+        invalid?: string[];
       }>(
         "/api/generate",
         { templateId, formInput: values },
         { validateStatus: () => true }
       );
       if (!data.success) {
-        setError(
-          data.error ?? "Generation failed" + (data.missing ? `: ${data.missing.join(", ")}` : "")
-        );
+        const details = [...(data.missing ?? []), ...(data.invalid ?? [])];
+        setError((data.error ?? "Generation failed") + (details.length ? `: ${details.join(", ")}` : ""));
         return;
       }
       router.push(`/proposal/${data.proposalId}`);
@@ -198,7 +301,18 @@ export default function ProposalForm() {
               {field.label}
               {field.required && <span className="ml-1 text-red-400">*</span>}
             </label>
-            <FieldInput field={field} value={values[field.key]} onChange={(v) => setValue(field.key, v)} />
+            <FieldInput
+              field={field}
+              value={values[field.key]}
+              onChange={(v) => setValue(field.key, v)}
+              options={optionsFor(field)}
+              meta={field.optionsFrom ? optionsMeta[field.key] : undefined}
+              onLoadMore={
+                field.optionsFrom
+                  ? () => loadOptions(field, (dynamicOptions[field.key] ?? []).length, true)
+                  : undefined
+              }
+            />
           </div>
         ))}
       </div>
@@ -218,7 +332,7 @@ export default function ProposalForm() {
         {isLast ? (
           <button
             type="button"
-            disabled={generating || missingInStep.length > 0}
+            disabled={generating || stepBlocked}
             onClick={handleGenerate}
             className="rounded-lg bg-[var(--app-accent)] px-5 py-2 text-sm font-semibold text-white disabled:opacity-40"
           >
@@ -227,7 +341,7 @@ export default function ProposalForm() {
         ) : (
           <button
             type="button"
-            disabled={missingInStep.length > 0}
+            disabled={stepBlocked}
             onClick={() => setStep((s) => s + 1)}
             className="rounded-lg bg-[var(--app-accent)] px-5 py-2 text-sm font-semibold text-white disabled:opacity-40"
           >
