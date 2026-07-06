@@ -253,6 +253,7 @@ Use ONLY:
 - @anthropic-ai/sdk (locked)
 - yaml (locked)
 - zod (optional, for validation)
+- axios (locked — HTTP client)
 - tailwindcss, autoprefixer (styling)
 
 NOT allowed:
@@ -262,6 +263,32 @@ NOT allowed:
 - PDF libraries (Phase 2)
 - Decorators or experimental features
 - Bloated packages
+
+---
+
+## HTTP Rules (Strict)
+
+Use **axios** for ALL HTTP requests. Never use `fetch`.
+
+- ❌ No `fetch(...)` anywhere (client or server)
+- ✅ Import the shared instance: `import { http, toErrorMessage } from "@/lib/utils/http";`
+- ✅ `http.get<T>(url)`, `http.post<T>(url, body)` — the instance already sets JSON headers + timeout
+- ✅ Read the response body from `res.data` (not `await res.json()`)
+- ✅ Normalize failures with `toErrorMessage(err, "fallback message")`
+- ✅ Need the raw error body on a non-2xx? Pass `{ validateStatus: () => true }`
+
+```typescript
+import { http, toErrorMessage } from "@/lib/utils/http";
+
+try {
+  const { data } = await http.get<TemplateSummary[]>("/api/templates");
+  // use data
+} catch (err) {
+  setError(toErrorMessage(err, "Failed to load templates"));
+}
+```
+
+Keep transport config in `/lib/utils/http.ts` only. No domain logic there — the engine stays agnostic.
 
 ---
 

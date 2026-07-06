@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { http, toErrorMessage } from "@/lib/utils/http";
 import type { FormField, FormGroup } from "@/lib/engine/types";
 
 type FormValue = string | number | string[];
@@ -102,13 +103,15 @@ export default function ProposalForm() {
       setLoading(false);
       return;
     }
-    fetch(`/api/templates/${encodeURIComponent(templateId)}/forms`)
-      .then((res) => res.json())
-      .then((data) => {
+    http
+      .get<{ forms?: FormGroup[]; error?: string }>(
+        `/api/templates/${encodeURIComponent(templateId)}/forms`
+      )
+      .then(({ data }) => {
         if (Array.isArray(data.forms)) setGroups(data.forms);
         else setError(data.error ?? "Failed to load forms");
       })
-      .catch((err) => setError(String(err)))
+      .catch((err) => setError(toErrorMessage(err, "Failed to load forms")))
       .finally(() => setLoading(false));
   }, [templateId]);
 
@@ -133,19 +136,26 @@ export default function ProposalForm() {
     setGenerating(true);
     setError(null);
     try {
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ templateId, formInput: values }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        setError(data.error ?? "Generation failed" + (data.missing ? `: ${data.missing.join(", ")}` : ""));
+      // Accept any status so we can read the server's error body on 4xx/5xx.
+      const { data } = await http.post<{
+        success?: boolean;
+        proposalId?: string;
+        error?: string;
+        missing?: string[];
+      }>(
+        "/api/generate",
+        { templateId, formInput: values },
+        { validateStatus: () => true }
+      );
+      if (!data.success) {
+        setError(
+          data.error ?? "Generation failed" + (data.missing ? `: ${data.missing.join(", ")}` : "")
+        );
         return;
       }
       router.push(`/proposal/${data.proposalId}`);
     } catch (err) {
-      setError(String(err));
+      setError(toErrorMessage(err, "Generation failed"));
     } finally {
       setGenerating(false);
     }

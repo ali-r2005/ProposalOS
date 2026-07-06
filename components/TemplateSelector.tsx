@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { http, toErrorMessage } from "@/lib/utils/http";
 import type { TemplateSummary } from "@/lib/engine/types";
 
 export default function TemplateSelector() {
@@ -10,13 +11,13 @@ export default function TemplateSelector() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/templates")
-      .then((res) => res.json())
-      .then((data) => {
+    http
+      .get<TemplateSummary[] | { error?: string }>("/api/templates")
+      .then(({ data }) => {
         if (Array.isArray(data)) setTemplates(data);
         else setError(data.error ?? "Failed to load templates");
       })
-      .catch((err) => setError(String(err)))
+      .catch((err) => setError(toErrorMessage(err, "Failed to load templates")))
       .finally(() => setLoading(false));
   }, []);
 
