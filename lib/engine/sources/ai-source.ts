@@ -1,6 +1,6 @@
 import type { BlueprintSection, BusinessContext, LoadedTemplate } from "@/lib/engine/types";
 import { loadPrompt } from "@/lib/engine/ai/prompt-loader";
-import { callClaudeForJson } from "@/lib/engine/ai/claude";
+import { callAiForJson } from "@/lib/engine/ai/ai";
 import { devWarn } from "@/lib/utils/error-handler";
 
 /**
@@ -20,7 +20,7 @@ export async function resolveAi(
 
   try {
     const prompt = await loadPrompt(template, section.prompt, context);
-    const result = await callClaudeForJson(prompt);
+    const result = await callAiForJson(prompt);
     return result ?? {};
   } catch (error) {
     devWarn(`AI source for section "${section.id}" failed:`, error);
