@@ -3,16 +3,12 @@
 Generate a JSON object with a `destination-paragraphs` property containing an array of exactly 2 paragraphs introducing the destination for a corporate event proposal.
 
 ## Context
-- **Destination**: {{event.destination}}
-- **Event type**: {{event.eventType}}
-- **Participants**: {{event.participants}} people
-- **Duration**: {{event.days}} days
+- **Destination**: {{destination}}
 
 ## Instructions
 1. Generate exactly 2 paragraphs (each 80-120 words)
-2. Paragraph 1: Attention-grabbing opening about why this destination is ideal for {{event.eventType}}, highlighting 2-3 unique selling points (culture, activities, climate, connectivity)
-2. Paragraph 2: How the destination facilitates {{event.eventType}} objectives and a forward-looking statement about the experience ahead
-3. Base content on the {{event.destination}} property
+3. Base content on the {{destination}} property
+4. the language that you will write the paragraphes with will be {{[langue]}}
 
 ## Tone
 Professional, enthusiastic, persuasive. Write for a corporate decision-maker.

@@ -24,6 +24,7 @@ export async function generatePresentation(
 ): Promise<GenerateResult> {
   const template = await loadTemplate(templateId);
   const context = await buildContext(template, formInput);
+  console.log("Context built:", context);
 
   const slides: RenderedSlide[] = [];
   for (const section of template.blueprint.sections) {

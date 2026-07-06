@@ -20,7 +20,9 @@ export async function resolveAi(
 
   try {
     const prompt = await loadPrompt(template, section.prompt, context);
+    console.log(`AI source for section "${section.id}" prompt:`, prompt);
     const result = await callAiForJson(prompt);
+    console.log(`AI source for section "${section.id}" returned:`, result);
     return result ?? {};
   } catch (error) {
     devWarn(`AI source for section "${section.id}" failed:`, error);
