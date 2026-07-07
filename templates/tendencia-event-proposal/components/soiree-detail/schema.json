@@ -1,11 +1,14 @@
 {
   "id": "soiree-detail",
   "name": "Soiree Detail Slide",
-  "description": "Slide displaying details about a soiree event with images and description",
+  "description": "Detail slide, repeated once per selected soirée (repeat over `soirees`).",
   "requiredProps": {
-    "soiree-image": { "type": "string", "format": "url" },
-    "soiree-name": { "type": "string" },
-    "soiree-subtitle": { "type": "string" },
-    "soiree-description": { "type": "string" }
+    "image": { "type": "string", "format": "url" },
+    "name": { "type": "string" },
+    "subtitle": { "type": "string" },
+    "description": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
   }
 }

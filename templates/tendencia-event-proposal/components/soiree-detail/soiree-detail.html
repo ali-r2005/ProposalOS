@@ -1,32 +1,23 @@
 <!-- Slide component: Soirée / gala detail ("ATLAS CAPITAL GALA — TANGER SPIRIT") — text left, single image right -->
 <div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
 
-  <!-- Right: single full-bleed image (placeholder) -->
-  <img src="assets/placeholder-image.svg" alt="" data-field="soiree-image"
+  <!-- Right: single full-bleed image -->
+  <img src="{{#if image}}{{image}}{{else}}assets/placeholder-image.svg{{/if}}" alt="{{name}}" data-field="soiree-image"
        class="absolute top-0 right-0 h-[1080px] w-[960px] object-cover z-0">
 
   <!-- Title -->
   <div class="absolute left-[78px] top-[40px] w-[580px] h-[3px] bg-[var(--color-text-primary)] z-10"></div>
   <div class="absolute left-[70px] top-[186px] w-52 h-14 bg-[var(--brand-blue)] z-0"></div>
   <h1 class="absolute left-[78px] top-[56px] z-10 text-5xl font-bold leading-[1.12]" style="font-family: var(--font-heading);">
-    <span class="text-[var(--brand-blue)]" data-field="soiree-name">ATLAS CAPITAL GALA</span><br>
-    <span class="text-[var(--color-text-primary)]" data-field="soiree-subtitle">TANGER SPIRIT : CÉLÉBRER &amp;<br>RÉUSSIR</span>
+    <span class="text-[var(--brand-blue)]" data-field="soiree-name">{{name}}</span><br>
+    <span class="text-[var(--color-text-primary)]" data-field="soiree-subtitle">{{subtitle}}</span>
   </h1>
 
-  <!-- Left: description -->
+  <!-- Left: description (one paragraph per entry) -->
   <div class="absolute left-[78px] top-[300px] w-[820px] z-10 space-y-5 text-[18px] leading-[1.5] text-[var(--color-text-primary)]" data-field="soiree-description">
-    <div class="space-y-1">
-      <p>Offrez à vos invités une soirée d'exception, pensée comme un voyage sensoriel entre Tanger et l'Espagne.</p>
-      <p>Dans une atmosphère intime et chaleureuse, l'expérience mêle saveurs ibériques réinventées, touches méditerranéennes et une ambiance festive propice à la convivialité et au partage.</p>
-    </div>
-    <div class="space-y-1">
-      <p>Nichée au cœur d'une élégante demeure arabo-andalouse, dotée d'une terrasse à ciel ouvert offrant une vue panoramique sur la médina et la baie de Tanger, cette soirée prend place dans un décor authentique et harmonieux, juste en face de la Kasbah.</p>
-      <p>La proposition culinaire revisite les classiques marocains en les fusionnant avec l'esprit des tapas espagnols : petites portions raffinées, assiettes à partager, notes parfumées et généreuses.</p>
-    </div>
-    <div class="space-y-1">
-      <p>Chaque bouchée devient une rencontre entre deux rives, un dialogue entre tradition marocaine et influence ibérique.</p>
-      <p>Pour sublimer l'instant, une animation rythmée par des sonorités chaudes et entraînantes vient donner vie à la soirée. Mélodies andalouses, accents folkloriques marocains et rythmes envoûtants créent un véritable pont culturel, invitant les convives à célébrer, vibrer et réussir ensemble.</p>
-    </div>
+    {{#each description}}
+    <p>{{this}}</p>
+    {{/each}}
   </div>
 
   <!-- Tendencia logo, bottom (near text/image boundary) -->

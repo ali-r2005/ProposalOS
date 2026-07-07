@@ -76,11 +76,6 @@ sections:
 
   - id: dining-options
     component: dining-options
-    source: manual
-    expansion: single
-
-  - id: soiree-detail
-    component: soiree-detail
     source: database
     provider: soirees
     expansion:
@@ -89,17 +84,27 @@ sections:
     dependsOn:
       - soirees
 
+  - id: soiree-detail
+    component: soiree-detail
+    source: database
+    provider: soirees
+    expansion:
+      strategy: repeat
+      collection: soirees
+    dependsOn:
+      - soirees
+
   - id: invitation-model
     component: invitation-model
-    source: manual
+    source: static
     expansion: single
 
   - id: idea-box
     component: idea-box
-    source: manual
+    source: static
     expansion: single
 
   - id: closing-thanks
     component: closing-thanks
-    source: manual
+    source: static
     expansion: single

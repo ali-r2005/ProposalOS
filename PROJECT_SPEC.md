@@ -472,7 +472,6 @@ NEXT_PUBLIC_API_URL=http://localhost:3000
 ## 13. What's NOT Phase 1
 
 - ❌ PDF export (Phase 2)
-- ❌ PPTX export (not needed)
 - ❌ Authentication
 - ❌ Database persistence
 - ❌ Template visual editor

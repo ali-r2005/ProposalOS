@@ -21,10 +21,11 @@
   <!-- Dining accent icon beside the title -->
   <i class="ti ti-tools-kitchen-2 absolute left-[900px] top-[58px] z-10 text-[var(--brand-blue)] text-8xl"></i>
 
-  <!-- Options list -->
-  <div class="absolute left-[120px] top-[440px] w-[920px] z-10 space-y-6">
-    <p class="flex gap-3 text-[42px] font-bold leading-[1.25] uppercase text-[var(--color-text-primary)]" style="font-family: var(--font-heading);" data-field="option-1"><span class="flex-shrink-0 text-[var(--brand-blue)]">1.</span><span>ATLAS CAPITAL GALA</span></p>
-    <p class="flex gap-3 text-[42px] font-bold leading-[1.25] uppercase text-[var(--color-text-primary)]" style="font-family: var(--font-heading);" data-field="option-2"><span class="flex-shrink-0 text-[var(--brand-blue)]">2.</span><span>TANGER SPIRIT : CÉLÉBRER &amp; RÉUSSIR</span></p>
+  <!-- Options list (engine injects one row per selected soirée) -->
+  <div class="absolute left-[120px] top-[440px] w-[920px] z-10 space-y-6" data-field="soiree-list">
+    {{#each soirees}}
+    <p class="flex gap-3 text-[42px] font-bold leading-[1.25] uppercase text-[var(--color-text-primary)]" style="font-family: var(--font-heading);"><span class="flex-shrink-0 text-[var(--brand-blue)]">{{this.option}}.</span><span>{{this.name}}</span></p>
+    {{/each}}
   </div>
 
   <!-- Tendencia logo, bottom-left -->
