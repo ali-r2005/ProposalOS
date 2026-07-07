@@ -10,7 +10,6 @@
 interface SoireeRecord {
   id: string;
   name: string;
-  city: string;
   subtitle: string;
   description: string;
 }
@@ -19,7 +18,6 @@ const DATA: SoireeRecord[] = [
   {
     id: "s1",
     name: "ATLAS CAPITAL GALA",
-    city: "Tanger",
     subtitle: "TANGER SPIRIT : CÉLÉBRER & RÉUSSIR",
     description:
       "Une soirée d'exception pensée comme un voyage sensoriel entre Tanger et l'Espagne, mêlant saveurs ibériques réinventées et ambiance festive face à la Kasbah.",
@@ -27,25 +25,17 @@ const DATA: SoireeRecord[] = [
   {
     id: "s2",
     name: "NUIT DES MILLE ET UNE LUMIÈRES",
-    city: "Marrakech",
     subtitle: "MARRAKECH : L'ÉLÉGANCE ORIENTALE",
     description:
       "Dîner de gala dans un palais aux jardins illuminés : gastronomie marocaine raffinée, animations andalouses et scénographie féerique sous les étoiles.",
   },
 ];
 
-// DB-style row filter: keep rows whose `city` appears in the destination text.
-// Equivalent to `WHERE lower($destination) LIKE '%' || lower(city) || '%'`.
-function forDestination(context: Record<string, any>): SoireeRecord[] {
-  const destination = String(context.destination ?? "").toLowerCase();
-  return DATA.filter((row) => destination.includes(row.city.toLowerCase()));
-}
-
 export const provider = {
   name: "soirees",
   description: "Soirée (gala) options for the destination — catalog + selection (mock data).",
   async execute(context: Record<string, any>): Promise<Record<string, any>> {
-    const all = forDestination(context);
+    const all = DATA;
 
     // Selection mode: return only the chosen soirées, preserving the user's order.
     const selected = context["selected-soirees"];

@@ -7,7 +7,6 @@
 interface ActivityRecord {
   id: string;
   name: string;
-  city: string;
   type: string; // "indoor" | "outdoor"
   category: string; // e.g. "collaboratif" | "compétitif"
   description: string[]; // one entry per paragraph
@@ -20,7 +19,6 @@ const DATA: ActivityRecord[] = [
   {
     id: "a1",
     name: "ATLAS ANIMATE",
-    city: "Tanger",
     type: "indoor",
     category: "collaboratif",
     description: [
@@ -34,7 +32,6 @@ const DATA: ActivityRecord[] = [
   {
     id: "a2",
     name: "TANGER ENIGMA",
-    city: "Tanger",
     type: "outdoor",
     category: "compétitif",
     description: [
@@ -48,7 +45,6 @@ const DATA: ActivityRecord[] = [
   {
     id: "a3",
     name: "ATLAS SPY MISSION",
-    city: "Marrakech",
     type: "outdoor",
     category: "compétitif",
     description: [
@@ -62,7 +58,6 @@ const DATA: ActivityRecord[] = [
   {
     id: "a4",
     name: "BLOOM AS ONE",
-    city: "Marrakech",
     type: "indoor",
     category: "collaboratif",
     description: [
@@ -75,18 +70,12 @@ const DATA: ActivityRecord[] = [
   },
 ];
 
-// DB-style row filter: keep rows whose `city` appears in the destination text.
-// Equivalent to `WHERE lower($destination) LIKE '%' || lower(city) || '%'`.
-function forDestination(context: Record<string, any>): ActivityRecord[] {
-  const destination = String(context.destination ?? "").toLowerCase();
-  return DATA.filter((row) => destination.includes(row.city.toLowerCase()));
-}
 
 export const provider = {
   name: "activities",
   description: "Activity options for the destination — catalog + selection (mock data).",
   async execute(context: Record<string, any>): Promise<Record<string, any>> {
-    const all = forDestination(context);
+    const all = DATA;
 
     // Selection mode: return only the chosen activities, in the user's order.
     // Also expose `indoor`/`outdoor` groups for the options-summary slide.
