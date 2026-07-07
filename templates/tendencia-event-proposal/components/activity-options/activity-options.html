@@ -26,12 +26,12 @@
 
     <div data-field="option-indoor">
       <p class="text-[32px] font-bold leading-[1.3] text-[var(--color-text-primary)]" style="font-family: var(--font-heading);"><span class="text-[var(--brand-secondary)]">•</span> Team Building Indoor/<span class="underline">collaboratif</span> :</p>
-      <p class="text-[32px] font-bold uppercase leading-[1.35] mt-2 text-[var(--color-text-primary)]" style="font-family: var(--font-heading);">ATLAS ANIMATE, BLOOM AS ONE &gt;&gt; CRÉER &amp; DYNAMISER</p>
+      <p class="text-[32px] font-bold uppercase leading-[1.35] mt-2 text-[var(--color-text-primary)]" style="font-family: var(--font-heading);">{{#each indoor}}{{this.name}}{{#unless @last}}, {{/unless}}{{/each}} &gt;&gt; CRÉER &amp; DYNAMISER</p>
     </div>
 
     <div data-field="option-outdoor">
       <p class="text-[32px] font-bold leading-[1.3] text-[var(--color-text-primary)]" style="font-family: var(--font-heading);"><span class="text-[var(--brand-secondary)]">•</span> Team Building Outdoor/<span class="underline">compétitif</span> :</p>
-      <p class="text-[32px] font-bold uppercase leading-[1.35] mt-2 text-[var(--color-text-primary)]" style="font-family: var(--font-heading);">TANGER ENIGMA, ATLAS SPY MISSION &gt;&gt; EXPLORER &amp; CHALLENGER.</p>
+      <p class="text-[32px] font-bold uppercase leading-[1.35] mt-2 text-[var(--color-text-primary)]" style="font-family: var(--font-heading);">{{#each outdoor}}{{this.name}}{{#unless @last}}, {{/unless}}{{/each}} &gt;&gt; EXPLORER &amp; CHALLENGER.</p>
     </div>
 
   </div>

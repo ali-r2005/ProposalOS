@@ -1,12 +1,18 @@
 {
   "id": "activity-detail",
   "name": "Activity Detail Slide",
-  "description": "Slide displaying details about a specific activity with images and description",
+  "description": "Detail slide, repeated once per selected activity (repeat over `activities`).",
   "requiredProps": {
-    "activity-name": { "type": "string" },
-    "activity-description": { "type": "string" },
-    "activity-video": { "type": "string", "format": "url" },
-    "activity-meta": { "type": "string" },
-    "photo-1": { "type": "string", "format": "url" }
+    "name": { "type": "string" },
+    "description": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "video": { "type": "string", "format": "url" },
+    "meta": { "type": "string" },
+    "images": {
+      "type": "array",
+      "items": { "type": "string", "format": "url" }
+    }
   }
 }

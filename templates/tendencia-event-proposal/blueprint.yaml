@@ -58,15 +58,18 @@ sections:
 
   - id: activity-options
     component: activity-options
-    source: manual
+    source: database
+    provider: activities
     expansion: single
+    dependsOn:
+      - activities
 
   - id: activity-detail
     component: activity-detail
     source: database
     provider: activities
     expansion:
-      strategy: single
+      strategy: repeat
       collection: activities
     dependsOn:
       - activities

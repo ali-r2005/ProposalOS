@@ -1,9 +1,23 @@
 {
   "id": "activity-options",
   "name": "Activity Options Slide",
-  "description": "Slide displaying multiple activity options with indoor and outdoor choices",
+  "description": "Summary slide listing selected activities grouped into indoor and outdoor.",
   "requiredProps": {
-    "option-indoor": { "type": "string" },
-    "option-outdoor": { "type": "string" }
+    "indoor": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": { "name": { "type": "string" } },
+        "required": ["name"]
+      }
+    },
+    "outdoor": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": { "name": { "type": "string" } },
+        "required": ["name"]
+      }
+    }
   }
 }
