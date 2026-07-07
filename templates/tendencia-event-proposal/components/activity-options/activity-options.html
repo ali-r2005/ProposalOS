@@ -21,18 +21,15 @@
   <!-- People accent icon beside the title -->
   <i class="ti ti-users-group absolute left-[680px] top-[60px] z-10 text-[var(--brand-secondary)] text-8xl"></i>
 
-  <!-- Options list -->
-  <div class="absolute left-[90px] top-[340px] w-[960px] z-10 space-y-14">
+  <!-- Options list (engine injects one block per selected activity) -->
+  <div class="absolute left-[90px] top-[340px] w-[960px] z-10 space-y-14" data-field="activity-list">
 
-    <div data-field="option-indoor">
-      <p class="text-[32px] font-bold leading-[1.3] text-[var(--color-text-primary)]" style="font-family: var(--font-heading);"><span class="text-[var(--brand-secondary)]">•</span> Team Building Indoor/<span class="underline">collaboratif</span> :</p>
-      <p class="text-[32px] font-bold uppercase leading-[1.35] mt-2 text-[var(--color-text-primary)]" style="font-family: var(--font-heading);">{{#each indoor}}{{this.name}}{{#unless @last}}, {{/unless}}{{/each}} &gt;&gt; CRÉER &amp; DYNAMISER</p>
+    {{#each activities}}
+    <div>
+      <p class="text-[32px] font-bold leading-[1.3] text-[var(--color-text-primary)]" style="font-family: var(--font-heading);"><span class="text-[var(--brand-secondary)]">•</span> Team Building <span class="capitalize">{{this.type}}</span>/<span class="underline">{{this.category}}</span> :</p>
+      <p class="text-[32px] font-bold uppercase leading-[1.35] mt-2 text-[var(--color-text-primary)]" style="font-family: var(--font-heading);">{{this.name}}</p>
     </div>
-
-    <div data-field="option-outdoor">
-      <p class="text-[32px] font-bold leading-[1.3] text-[var(--color-text-primary)]" style="font-family: var(--font-heading);"><span class="text-[var(--brand-secondary)]">•</span> Team Building Outdoor/<span class="underline">compétitif</span> :</p>
-      <p class="text-[32px] font-bold uppercase leading-[1.35] mt-2 text-[var(--color-text-primary)]" style="font-family: var(--font-heading);">{{#each outdoor}}{{this.name}}{{#unless @last}}, {{/unless}}{{/each}} &gt;&gt; EXPLORER &amp; CHALLENGER.</p>
-    </div>
+    {{/each}}
 
   </div>
 

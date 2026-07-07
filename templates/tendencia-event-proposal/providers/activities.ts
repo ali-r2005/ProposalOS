@@ -78,16 +78,13 @@ export const provider = {
     const all = DATA;
 
     // Selection mode: return only the chosen activities, in the user's order.
-    // Also expose `indoor`/`outdoor` groups for the options-summary slide.
     const selected = context["selected-activities"];
     if (Array.isArray(selected)) {
       const byId = new Map(all.map((x) => [x.id, x]));
       const activities = selected
         .map((id) => byId.get(String(id)))
         .filter((x): x is ActivityRecord => Boolean(x));
-      const indoor = activities.filter((x) => x.type === "indoor");
-      const outdoor = activities.filter((x) => x.type === "outdoor");
-      return { activities, indoor, outdoor };
+      return { activities };
     }
 
     // Catalog mode: optional name search, then paginate.
