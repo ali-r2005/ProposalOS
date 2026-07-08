@@ -66,7 +66,7 @@ NOT `id` or any other property. The `key` is the context property name.
 
 - ❌ Hardcode business concepts (hotels, weddings, events, activities)
 - ❌ Add database or authentication
-- ❌ Build PDF export (Phase 2)
+- ✅ PDF export is ALLOWED via server-side headless Chrome (see "PDF Export Rules"). Do NOT add client-side PDF libraries.
 - ❌ Build PPTX export (not needed ever)
 - ❌ Modify `/templates/tendencia-event-proposal` structure
 - ❌ Leave inline `<style>` blocks in components
@@ -255,12 +255,13 @@ Use ONLY:
 - zod (optional, for validation)
 - axios (locked — HTTP client)
 - tailwindcss, autoprefixer (styling)
+- puppeteer (locked — server-side PDF export only; see "PDF Export Rules")
 
 NOT allowed:
 - Custom UI libraries
 - Database libraries (Prisma, Mongoose, etc.)
 - Auth libraries (NextAuth, etc.)
-- PDF libraries (Phase 2)
+- Client-side PDF libraries (jsPDF, html2pdf.js, html2canvas, etc.) — PDF is generated server-side with Puppeteer
 - Decorators or experimental features
 - Bloated packages
 
@@ -289,6 +290,20 @@ try {
 ```
 
 Keep transport config in `/lib/utils/http.ts` only. No domain logic there — the engine stays agnostic.
+
+---
+
+## PDF Export Rules (Strict)
+
+PDF export is generated **server-side with Puppeteer (headless Chrome)** — never a client-side PDF library.
+
+- ✅ Route: `GET /api/proposals/[id]/pdf` — `export const runtime = "nodejs"`.
+- ✅ Puppeteer **navigates to the app's own `/api/proposals/[id]` HTML page** (`page.goto(origin + url, { waitUntil: "networkidle0" })`) so `<base href>`, same-origin asset routes, the CDN Tailwind runtime, and the icon font resolve exactly as in the preview. Do NOT `setContent` raw HTML — relative asset URLs won't resolve.
+- ✅ Print with `page.pdf({ printBackground: true, preferCSSPageSize: true })` so the document's `@page { size: 1920px 1080px }` yields **one slide per page** at true 16:9 (1440×810 pt). Keep that `@page`/`@media print` CSS in the engine-owned document shell (`theme-loader.ts`), not in components.
+- ✅ Launch with `args: ["--no-sandbox", "--disable-setuid-sandbox"]`; always `await browser.close()` in `finally`.
+- ✅ Return `application/pdf` with `content-disposition: attachment`. The client downloads via the shared axios instance (`responseType: "blob"`) — never `fetch`.
+- ❌ No client-side PDF libs (jsPDF, html2pdf.js, html2canvas). Fidelity on the 1920×1080 slides is too poor.
+- ⚠️ Deploy note: the runtime host needs Chromium available. On serverless, switch to `@sparticuz/chromium` + `puppeteer-core`. This stays engine-agnostic — the PDF route knows nothing about business domains, only how to print a proposal's HTML.
 
 ---
 

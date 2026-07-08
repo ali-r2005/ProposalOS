@@ -34,6 +34,14 @@ ${template.tokensCss}
 body { margin: 0; background: #333; }
 .slide-wrapper { display: block; margin: 0 auto 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.35); }
 .slide-wrapper > .slide { margin: 0 auto; }
+
+/* Print / export-to-PDF: one slide per page, sized to the slide, no chrome. */
+@media print {
+  @page { size: 1920px 1080px; margin: 0; }
+  body { background: #fff; }
+  .slide-wrapper { margin: 0; box-shadow: none; break-after: page; page-break-after: always; }
+  .slide-wrapper:last-child { break-after: auto; page-break-after: auto; }
+}
 </style>
 </head>
 <body>
