@@ -32,6 +32,15 @@ sections:
     prompt: destination
     expansion: single
 
+  - id: programme-day
+    component: programme-day
+    source: manual
+    expansion:
+      strategy: repeat
+      collection: programme
+    dependsOn:
+      - programme
+
   - id: accommodation-options
     component: accommodation-options
     source: database

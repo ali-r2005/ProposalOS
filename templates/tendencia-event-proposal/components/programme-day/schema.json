@@ -1,0 +1,24 @@
+{
+  "id": "programme-day",
+  "name": "Programme Day Slide",
+  "description": "Horizontal-timeline day programme. One slide per day (repeat over `programme`). Each phase holds an array of ready-made HTML card snippets, injected raw.",
+  "requiredProps": {
+    "date": { "type": "string" },
+    "matinee": {
+      "type": "array",
+      "items": { "type": "string", "description": "HTML snippet for one timeline card" }
+    },
+    "midi": {
+      "type": "array",
+      "items": { "type": "string", "description": "HTML snippet for one timeline card" }
+    },
+    "apres_midi": {
+      "type": "array",
+      "items": { "type": "string", "description": "HTML snippet for one timeline card" }
+    },
+    "soir": {
+      "type": "array",
+      "items": { "type": "string", "description": "HTML snippet for one timeline card" }
+    }
+  }
+}

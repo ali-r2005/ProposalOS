@@ -1,0 +1,95 @@
+<!-- Slide component: Day programme ("NOTRE PROPOSITION — PROGRAMME"), horizontal timeline.
+     One slide per day — repeats over `programme`. Each phase array holds ready-made
+     HTML card snippets, injected raw via triple-stache. -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- Title -->
+  <div class="absolute left-[64px] top-[44px] w-[540px] h-[3px] bg-[var(--color-text-primary)] z-10"></div>
+  <div class="absolute left-[64px] top-[142px] w-44 h-14 bg-[var(--brand-accent)] z-0"></div>
+  <h1 class="absolute left-[64px] top-[58px] z-10 text-5xl font-bold leading-[1.05]" style="font-family: var(--font-heading);">
+    <span class="text-[var(--brand-accent)]">NOTRE PROPOSITION</span><br>
+    <span class="text-[var(--color-text-primary)]">PROGRAMME</span>
+  </h1>
+
+  <!-- Synopsis label + date pill, top-right -->
+  <div class="absolute right-[64px] top-[52px] z-10 flex flex-col items-end gap-2">
+    <span class="text-sm font-bold uppercase tracking-[0.3em] text-[var(--color-text-secondary)]">Synopsis</span>
+    <div class="flex items-center gap-3 bg-[var(--brand-accent)] rounded-xl px-6 py-3">
+      <i class="ti ti-calendar-event text-[var(--color-text-primary)] text-4xl"></i>
+      <div class="leading-tight">
+        <p class="text-xs font-bold tracking-[0.2em] text-[var(--color-text-primary)]">PROGRAMME</p>
+        <p class="text-2xl font-bold text-[var(--color-text-primary)]" data-field="date">{{date}}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horizontal timeline -->
+  <div class="absolute left-[64px] top-[250px] w-[1792px]" data-field="day-programme">
+
+    <!-- Timeline bar -->
+    <div class="absolute left-0 right-0 top-[60px] h-1 rounded bg-[var(--brand-accent)] z-0"></div>
+
+    <!-- Phase zones -->
+    <div class="grid grid-cols-4 gap-5 relative z-[1]">
+
+      <!-- MATINÉE -->
+      <div class="flex flex-col items-center">
+        <div class="flex items-end pb-1 h-11 text-[17px] font-bold uppercase tracking-[0.08em] text-[var(--brand-accent)]" style="font-family: var(--font-heading);">MATINÉE</div>
+        <div class="w-4 h-4 rounded-full bg-[var(--brand-accent)] mt-2.5 relative z-[2]"></div>
+        <div class="flex flex-col gap-2 w-full pt-3.5">
+          {{#each matinee}}
+          <div class="rounded-lg border border-[var(--color-border)] border-l-4 border-l-[var(--brand-accent)] bg-[var(--color-background)] px-3 py-2.5 text-[13px] leading-[1.45] text-[var(--color-text-primary)]">{{{this}}}</div>
+          {{/each}}
+        </div>
+      </div>
+
+      <!-- MIDI -->
+      <div class="flex flex-col items-center">
+        <div class="flex items-end pb-1 h-11 text-[17px] font-bold uppercase tracking-[0.08em] text-[var(--brand-accent)]" style="font-family: var(--font-heading);">MIDI</div>
+        <div class="w-4 h-4 rounded-full bg-[var(--brand-accent)] mt-2.5 relative z-[2]"></div>
+        <div class="flex flex-col gap-2 w-full pt-3.5">
+          {{#each midi}}
+          <div class="rounded-lg border border-[var(--color-border)] border-l-4 border-l-[var(--brand-accent)] bg-[var(--color-background)] px-3 py-2.5 text-[13px] leading-[1.45] text-[var(--color-text-primary)]">{{{this}}}</div>
+          {{/each}}
+        </div>
+      </div>
+
+      <!-- APRÈS-MIDI -->
+      <div class="flex flex-col items-center">
+        <div class="flex items-end pb-1 h-11 text-[17px] font-bold uppercase tracking-[0.08em] text-[var(--brand-accent)]" style="font-family: var(--font-heading);">APRÈS-MIDI</div>
+        <div class="w-4 h-4 rounded-full bg-[var(--brand-accent)] mt-2.5 relative z-[2]"></div>
+        <div class="flex flex-col gap-2 w-full pt-3.5">
+          {{#each apres_midi}}
+          <div class="rounded-lg border border-[var(--color-border)] border-l-4 border-l-[var(--brand-accent)] bg-[var(--color-background)] px-3 py-2.5 text-[13px] leading-[1.45] text-[var(--color-text-primary)]">{{{this}}}</div>
+          {{/each}}
+        </div>
+      </div>
+
+      <!-- SOIR -->
+      <div class="flex flex-col items-center">
+        <div class="flex items-end pb-1 h-11 text-[17px] font-bold uppercase tracking-[0.08em] text-[var(--brand-accent)]" style="font-family: var(--font-heading);">SOIR</div>
+        <div class="w-4 h-4 rounded-full bg-[var(--brand-accent)] mt-2.5 relative z-[2]"></div>
+        <div class="flex flex-col gap-2 w-full pt-3.5">
+          {{#each soir}}
+          <div class="rounded-lg border border-[var(--color-border)] border-l-4 border-l-[var(--brand-accent)] bg-[var(--color-background)] px-3 py-2.5 text-[13px] leading-[1.45] text-[var(--color-text-primary)]">{{{this}}}</div>
+          {{/each}}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer: logo bottom-left, arrow markers bottom-right -->
+  <div class="absolute bottom-6 left-10 z-10">
+    <img src="assets/logo.png" alt="Tendencia Events & Travel" class="h-16">
+  </div>
+  <div class="absolute bottom-8 right-16 z-10 flex items-center gap-4">
+    <div class="flex">
+      <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-primary)]"></div>
+  </div>
+
+</div>
