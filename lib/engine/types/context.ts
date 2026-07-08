@@ -21,6 +21,8 @@ export interface FormField {
   label: string;
   required: boolean;
   placeholder?: string;
+  /** For `type: "file"` — the accepted file types (e.g. ".json,application/json"). */
+  accept?: string;
   options?: Array<{ label: string; value: string }>;
   /** Minimum number of selections (multi-select). */
   min?: number;

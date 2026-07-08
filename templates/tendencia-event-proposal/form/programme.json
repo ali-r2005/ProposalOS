@@ -1,0 +1,14 @@
+{
+  "id": "programme",
+  "title": "Programme",
+  "description": "Upload the day-by-day programme as a JSON file. Its top-level keys are merged into the proposal context — the file's `programme` array becomes one timeline slide per day.",
+  "fields": [
+    {
+      "key": "programme-upload",
+      "label": "Programme file (JSON)",
+      "type": "file",
+      "accept": ".json,application/json",
+      "required": true
+    }
+  ]
+}

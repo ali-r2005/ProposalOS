@@ -27,6 +27,7 @@ function normaliseField(raw: unknown): FormField | null {
     label: typeof f.label === "string" ? f.label : f.key,
     required: f.required === true,
     placeholder: typeof f.placeholder === "string" ? f.placeholder : undefined,
+    accept: typeof f.accept === "string" ? f.accept : undefined,
     options: Array.isArray(f.options)
       ? (f.options as FormField["options"])
       : undefined,

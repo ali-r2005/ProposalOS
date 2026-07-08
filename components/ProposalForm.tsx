@@ -18,6 +18,8 @@ function FieldInput({
   options,
   meta,
   onLoadMore,
+  onFile,
+  fileError,
 }: {
   field: FormField;
   value: FormValue | undefined;
@@ -25,9 +27,29 @@ function FieldInput({
   options: Option[];
   meta?: OptionsMeta;
   onLoadMore?: () => void;
+  onFile?: (file: File | null) => void;
+  fileError?: string;
 }) {
   const base =
     "w-full rounded-lg border border-[var(--app-border)] bg-[#0f172a] px-3 py-2 text-sm outline-none focus:border-[var(--app-accent)]";
+
+  if (field.type === "file") {
+    const fileName = typeof value === "string" ? value : "";
+    return (
+      <div className="space-y-1">
+        <input
+          type="file"
+          accept={field.accept}
+          className={`${base} file:mr-3 file:rounded file:border-0 file:bg-[var(--app-accent)] file:px-3 file:py-1 file:text-white`}
+          onChange={(e) => onFile?.(e.target.files?.[0] ?? null)}
+        />
+        {fileName && !fileError && (
+          <p className="text-xs text-[var(--app-muted)]">Loaded: {fileName}</p>
+        )}
+        {fileError && <p className="text-xs text-red-400">{fileError}</p>}
+      </div>
+    );
+  }
 
   if (field.type === "textarea") {
     return (
@@ -140,6 +162,11 @@ export default function ProposalForm() {
   const [dynamicOptions, setDynamicOptions] = useState<Record<string, Option[]>>({});
   const [optionsMeta, setOptionsMeta] = useState<Record<string, OptionsMeta>>({});
 
+  // Parsed JSON from `type: "file"` fields, keyed by field key. Each parsed
+  // object is merged into the submitted context on generate.
+  const [fileData, setFileData] = useState<Record<string, Record<string, unknown>>>({});
+  const [fileErrors, setFileErrors] = useState<Record<string, string>>({});
+
   const destination = String(values["destination"] ?? "");
 
   useEffect(() => {
@@ -214,6 +241,37 @@ export default function ProposalForm() {
   const setValue = (key: string, value: FormValue) =>
     setValues((prev) => ({ ...prev, [key]: value }));
 
+  // Read + parse an uploaded JSON file. On success we keep the parsed object
+  // (merged into the context at submit) and store the filename as the field
+  // value so required-validation and the wizard gate see the field as filled.
+  const handleFile = useCallback(async (field: FormField, file: File | null) => {
+    const clear = () => {
+      setFileData((d) => {
+        const next = { ...d };
+        delete next[field.key];
+        return next;
+      });
+      setValue(field.key, "");
+    };
+    if (!file) {
+      clear();
+      setFileErrors((e) => ({ ...e, [field.key]: "" }));
+      return;
+    }
+    try {
+      const parsed = JSON.parse(await file.text());
+      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+        throw new Error("File must contain a JSON object of context values");
+      }
+      setFileData((d) => ({ ...d, [field.key]: parsed as Record<string, unknown> }));
+      setValue(field.key, file.name);
+      setFileErrors((e) => ({ ...e, [field.key]: "" }));
+    } catch (err) {
+      clear();
+      setFileErrors((e) => ({ ...e, [field.key]: toErrorMessage(err, "Invalid JSON file") }));
+    }
+  }, []);
+
   // Fields in the current step that block navigation (required/min/max).
   const stepIssues = useMemo(() => {
     if (!current) return [] as string[];
@@ -238,6 +296,11 @@ export default function ProposalForm() {
     setGenerating(true);
     setError(null);
     try {
+      // Scalar field values plus the parsed JSON from every file field, merged
+      // so the uploaded document's keys land directly in the context.
+      const formInput: Record<string, unknown> = { ...values };
+      for (const parsed of Object.values(fileData)) Object.assign(formInput, parsed);
+
       // Accept any status so we can read the server's error body on 4xx/5xx.
       const { data } = await http.post<{
         success?: boolean;
@@ -247,7 +310,7 @@ export default function ProposalForm() {
         invalid?: string[];
       }>(
         "/api/generate",
-        { templateId, formInput: values },
+        { templateId, formInput },
         { validateStatus: () => true }
       );
       if (!data.success) {
@@ -312,6 +375,8 @@ export default function ProposalForm() {
                   ? () => loadOptions(field, (dynamicOptions[field.key] ?? []).length, true)
                   : undefined
               }
+              onFile={field.type === "file" ? (file) => handleFile(field, file) : undefined}
+              fileError={fileErrors[field.key]}
             />
           </div>
         ))}
