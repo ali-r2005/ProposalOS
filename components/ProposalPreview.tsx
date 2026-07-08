@@ -11,6 +11,13 @@ export default function ProposalPreview({ proposalId }: { proposalId: string }) 
           <p className="text-xs text-[var(--app-muted)]">{proposalId}</p>
         </div>
         <div className="flex items-center gap-3">
+          {/* add an link to the editor */}
+          <Link
+            href={`/proposals/${proposalId}/edit`}
+            className="rounded-lg border border-[var(--app-border)] px-3 py-1.5 text-xs"
+          >
+            Edit proposal
+          </Link>
           <a
             href={`/api/proposals/${proposalId}`}
             target="_blank"
