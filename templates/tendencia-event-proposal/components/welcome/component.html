@@ -1,36 +1,57 @@
 <!-- Slide component: M'Rahba welcome / hero -->
 <div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
 
-  <!-- Low-poly geometric mosaic (top-right corner, cascading down the right edge) -->
-  <img src="assets/mosaic-corner.svg" alt="" class="absolute inset-0 w-full h-full pointer-events-none select-none">
+  <!-- Dotted grid accent, top-left -->
+  <div class="absolute left-16 top-16 w-44 h-44 opacity-40" style="background-image: radial-gradient(var(--brand-primary) 2.5px, transparent 2.5px); background-size: 20px 20px;"></div>
+
+  <!-- Right-side geometric collage — a cascading chain of rotated brand-colored
+       capsules, no photo (each capsule: fully-rounded ends + its own gradient) -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute top-[-210px] left-[1180px] w-[260px] h-[560px] rounded-full rotate-45" style="background: linear-gradient(160deg, var(--color-teal), var(--brand-secondary));"></div>
+    <div class="absolute top-[-70px] left-[1300px] w-[340px] h-[780px] rounded-full rotate-45" style="background: linear-gradient(160deg, var(--brand-primary), var(--brand-blue));"></div>
+    <div class="absolute top-[300px] left-[1120px] w-[380px] h-[1080px] rounded-full rotate-45" style="background: linear-gradient(160deg, var(--brand-accent) 0%, var(--brand-accent-dark) 55%, var(--color-orange) 100%);"></div>
+
+    <!-- Dot-grid accent on the orange corner -->
+    <div class="absolute bottom-10 right-10 w-40 h-40 opacity-30" style="background-image: radial-gradient(#fff 2.5px, transparent 2.5px); background-size: 20px 20px;"></div>
+  </div>
+
+  <!-- Soft gradient accent circles floating in the white space -->
+  <div class="absolute top-[80px] left-[860px] w-24 h-24 rounded-full opacity-80" style="background: radial-gradient(circle at 30% 30%, var(--brand-accent), transparent 75%);"></div>
+  <div class="absolute top-[760px] left-[900px] w-28 h-28 rounded-full opacity-60" style="background: radial-gradient(circle at 30% 30%, var(--color-teal), transparent 75%);"></div>
 
   <!-- Main content: left-aligned, vertically centered -->
-  <div class="absolute inset-y-0 left-[480px] z-10 flex flex-col justify-center">
-    <div class="w-[580px] h-[3px] bg-[var(--color-text-primary)] mb-10"></div>
+  <div class="absolute inset-y-0 left-[80px] z-10 flex flex-col justify-center w-[780px]">
+    <p class="text-xl font-bold tracking-[0.4em] text-[var(--color-text-secondary)] mb-6">BIENVENUE CHEZ TENDENCIA</p>
     <h1 class="text-[140px] leading-none font-bold text-[var(--color-text-primary)]" style="font-family: var(--font-heading); letter-spacing: 0.03em;">
       M'RAHBA
     </h1>
-    <div class="w-40 h-20 bg-[var(--brand-accent)] mt-10"></div>
+    <div class="w-[420px] h-[6px] rounded-full mt-8 mb-10" style="background: linear-gradient(to right, var(--brand-secondary), var(--brand-accent), var(--brand-accent-dark));"></div>
+    <p class="text-3xl leading-relaxed text-[var(--color-text-primary)]">
+      Nous sommes ravis de vous accueillir.<br>
+      <span class="font-semibold" style="color: var(--brand-secondary);">Événements</span> &amp;
+      <span class="font-semibold" style="color: var(--brand-accent-dark);">Voyages</span> d'exception.
+    </p>
   </div>
 
-  <!-- Subtext: centered over the left area, near bottom -->
-  <p class="absolute bottom-[70px] left-[480px] w-[840px] text-center text-3xl text-[var(--color-text-primary)] z-10" style="font-family: var(--font-body);">
-    Merci d'avoir fait confiance à Tendencia
-  </p>
+  <!-- Tendencia logo + trust line, bottom-left -->
+  <div class="absolute bottom-10 left-[80px] z-10 flex items-center gap-6">
+    <img src="assets/logo.png" alt="Tendencia Events & Travel" class="h-20">
+    <p class="text-xl text-[var(--color-text-secondary)]">
+      Merci d'avoir fait confiance à <span class="font-bold text-[var(--color-text-primary)]">Tendencia</span>
+    </p>
+  </div>
 
-  <!-- Decorative arrow markers, bottom-right -->
-  <div class="absolute bottom-12 right-16 z-10 flex items-center gap-5">
-    <div class="flex">
-      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--color-text-primary)]"></div>
-      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+  <!-- Icon badges, bottom-right -->
+  <div class="absolute bottom-14 right-20 z-10 flex items-center gap-5">
+    <div class="w-16 h-16 rounded-full flex items-center justify-center bg-[var(--color-background)] shadow-lg text-2xl" style="color: var(--brand-primary);">
+      <i class="ti ti-plane"></i>
     </div>
-    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-secondary)]"></div>
-    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-primary)]"></div>
-  </div>
-
-  <!-- Tendencia logo, bottom-left -->
-  <div class="absolute bottom-8 left-8 z-20">
-    <img src="assets/logo.png" alt="Tendencia Events & Travel" class="h-24">
+    <div class="w-16 h-16 rounded-full flex items-center justify-center bg-[var(--color-background)] shadow-lg text-2xl" style="color: var(--brand-secondary);">
+      <i class="ti ti-calendar"></i>
+    </div>
+    <div class="w-16 h-16 rounded-full flex items-center justify-center bg-[var(--color-background)] shadow-lg text-2xl" style="color: var(--brand-accent-dark);">
+      <i class="ti ti-map-pin"></i>
+    </div>
   </div>
 
 </div>
