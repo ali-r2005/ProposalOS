@@ -38,9 +38,12 @@ export async function POST(request: Request) {
     }
 
     const result = await generatePresentation(body.templateId, formInput);
-    saveProposal(result.proposalId, body.templateId, result.html);
+    saveProposal(result.proposalId, body.templateId, result.html, result.context);
 
-    return NextResponse.json(result);
+    // The merged context can be large and is only needed server-side by the
+    // editor (fetched separately) — don't ship it back in the generate response.
+    const { context: _context, ...publicResult } = result;
+    return NextResponse.json(publicResult);
   } catch (error) {
     const { message, status } = toErrorResponse(error);
     return NextResponse.json({ success: false, error: message }, { status });
