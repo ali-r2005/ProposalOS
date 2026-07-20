@@ -30,7 +30,7 @@ export default function TemplateSelector() {
       {templates.map((t) => (
         <Link
           key={t.id}
-          href={`/proposal/new?templateId=${encodeURIComponent(t.id)}`}
+          href={`/templates/${encodeURIComponent(t.id)}/new`}
           className="block rounded-xl border border-[var(--app-border)] bg-[var(--app-panel)] p-6 transition hover:border-[var(--app-accent)] hover:shadow-lg"
         >
           <div className="flex items-center justify-between">

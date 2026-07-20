@@ -65,7 +65,7 @@ NOT `id` or any other property. The `key` is the context property name.
 ## What You Must NOT Do
 
 - ❌ Hardcode business concepts (hotels, weddings, events, activities)
-- ❌ Add database or authentication
+- ✅ Database is ALLOWED via Drizzle ORM + Postgres (see "Database Rules"). Still ❌ no auth libraries (NextAuth, etc.) — that remains out of scope.
 - ✅ PDF export is ALLOWED via server-side headless Chrome (see "PDF Export Rules"). Do NOT add client-side PDF libraries.
 - ❌ Build PPTX export (not needed ever)
 - ❌ Modify `/templates/tendencia-event-proposal` structure
@@ -74,7 +74,7 @@ NOT `id` or any other property. The `key` is the context property name.
 - ❌ Hardcode hex colors (#abc, #123456) in components
 - ❌ Use decorators, experimental TypeScript, or bleeding-edge deps
 - ❌ Create ad-hoc folder structures
-- ❌ Use relative imports outside `lib/` (use absolute paths)
+- ❌ Use relative imports outside `lib/` (use absolute paths) — **exception:** template files (`providers/*.ts`, `db/*.ts`) are loaded via Node's native dynamic import, not webpack, so they structurally cannot use the `@/` alias; they use short relative imports with explicit `.ts` extensions instead (see "Database Rules")
 - ❌ Add unused dependencies
 - ❌ Create circular dependencies
 - ❌ Hardcode file paths (use variables)
@@ -256,10 +256,11 @@ Use ONLY:
 - axios (locked — HTTP client)
 - tailwindcss, autoprefixer (styling)
 - puppeteer (locked — server-side PDF export only; see "PDF Export Rules")
+- drizzle-orm, drizzle-kit, postgres, dotenv (locked — database only; see "Database Rules")
 
 NOT allowed:
 - Custom UI libraries
-- Database libraries (Prisma, Mongoose, etc.)
+- ORMs other than Drizzle (Prisma, TypeORM, Mongoose, etc.)
 - Auth libraries (NextAuth, etc.)
 - Client-side PDF libraries (jsPDF, html2pdf.js, html2canvas, etc.) — PDF is generated server-side with Puppeteer
 - Decorators or experimental features
@@ -304,6 +305,35 @@ PDF export is generated **server-side with Puppeteer (headless Chrome)** — nev
 - ✅ Return `application/pdf` with `content-disposition: attachment`. The client downloads via the shared axios instance (`responseType: "blob"`) — never `fetch`.
 - ❌ No client-side PDF libs (jsPDF, html2pdf.js, html2canvas). Fidelity on the 1920×1080 slides is too poor.
 - ⚠️ Deploy note: the runtime host needs Chromium available. On serverless, switch to `@sparticuz/chromium` + `puppeteer-core`. This stays engine-agnostic — the PDF route knows nothing about business domains, only how to print a proposal's HTML.
+
+---
+
+## Database Rules (Strict)
+
+One physical Postgres database, but **two schema tiers** — this is what keeps the database agnostic the same way everything else is:
+
+### Tier 1 — engine-owned (static, known ahead of time)
+- `lib/db/schema.ts` — the `proposals` table (id, template_id, html, context jsonb, timestamps). This replaced the old in-memory `proposal-store.ts` Map.
+- `lib/db/client.ts` — the pooled Drizzle client. Uses `drizzle-orm/postgres-js` (the `postgres` package), **not** `pg`/node-postgres, with `prepare: false` — Supabase's pooler runs PgBouncer in "Transaction" mode, which silently breaks prepared statements that `pg` relies on.
+- Client creation is **lazy** (a function, not a module-level constant) so a missing `DATABASE_URL` throws inside the caller's own try/catch, not at import time (which would crash before any error handling runs).
+- `DATABASE_URL` is a single connection string (not discrete host/port/user fields) — if the password contains any of `: / ? # [ ] @ ! $ & ' ( ) * + , ; = %` it MUST be percent-encoded or the URL parser silently misreads the host/port.
+- Migrations: `npm run db:generate` then `npm run db:migrate` (root `drizzle.config.ts`), same as any normal Drizzle project — this schema is static and known, so there's nothing agnostic about it.
+
+### Tier 2 — template-owned (dynamic, discovered at runtime)
+- A template that needs real data (not hardcoded arrays) puts Drizzle table definitions in `templates/[id]/db/schema.ts` — plain `pgTable()` calls, no build step required.
+- Every table MUST live under that template's own Postgres schema/namespace via `pgSchema("tmpl_<id>")` (exported, not just used locally — drizzle-kit only emits `CREATE SCHEMA` for a `pgSchema` it can see as a top-level export). This is what lets two templates each have a `hotels` table with different columns in the same database without colliding.
+- The engine discovers a template's tables at runtime via `lib/db/template-schema-loader.ts` (`loadTemplateSchema`/`loadTemplateTable`) — dynamic `import()` of `db/schema.ts`, same cache-busted mechanism as `provider-loader.ts`. It never parses a column name; it only knows *that* a table exists, via `is(value, PgTable)`.
+- Migrations for a template's own schema: `npx drizzle-kit generate|migrate --config=templates/<id>/db/drizzle.config.ts`, run from the repo root. That config's `schema`/`out` paths are resolved relative to the CLI's cwd (repo root), not relative to the config file itself.
+- Providers read from their template's own table instead of a hardcoded array, but keep the **exact same** `execute(context)` interface — the pipeline doesn't know or care where a provider's data comes from.
+
+### Cross-boundary imports (the one sharp edge)
+Template files (`providers/*.ts`, `db/*.ts`) are loaded via Node's **native** dynamic import (see `provider-loader.ts`'s `nativeImport`) — not webpack. That loader does not understand the `@/` tsconfig alias, and Node's native TS support requires **explicit `.ts` extensions** on relative imports (`allowImportingTsExtensions` is enabled in `tsconfig.json` for this). Practical upshot:
+- A template's own `db/client.ts` is a one-line shim: `export { getDb } from "../../../lib/db/client.ts";` (relative, `.ts` extension, exact depth to the repo root) — providers then do `import { getDb } from "../db/client.ts";`, a short sibling import, instead of every provider needing to know the engine's exact file layout.
+- Any engine file reachable from that chain (e.g. `lib/db/client.ts` itself) must use relative imports internally too (`../utils/error-handler.ts`, not `@/lib/utils/error-handler`) — the `@/` alias only resolves inside Next's own bundler graph.
+
+### Generic CRUD (never add a per-table route)
+- `GET/POST /api/templates/[id]/data/[table]` and `PUT/DELETE /api/templates/[id]/data/[table]/[rowId]` work for **any** table in **any** template, purely through runtime column introspection (`lib/db/table-introspect.ts`: `describeTable`, `primaryKeyOf`, `sanitizeValues`, `coercePrimaryKey`). If a new template needs CRUD, it needs a `db/schema.ts` — it does NOT need new routes.
+- The admin UI (`components/TemplateAdmin.tsx`) is equally generic: it reuses `ContextEditor`/`ContextValueEditor` (the same type-driven, recursive editor built for hand-editing a proposal's context) to render a create/edit form for a row of any shape.
 
 ---
 

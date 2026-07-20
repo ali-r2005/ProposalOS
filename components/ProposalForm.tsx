@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { http, toErrorMessage } from "@/lib/utils/http";
 import type { FormField, FormGroup } from "@/lib/engine/types";
 
@@ -146,10 +146,8 @@ function FieldInput({
   );
 }
 
-export default function ProposalForm() {
+export default function ProposalForm({ templateId }: { templateId: string }) {
   const router = useRouter();
-  const params = useSearchParams();
-  const templateId = params.get("templateId") ?? "";
 
   const [groups, setGroups] = useState<FormGroup[]>([]);
   const [step, setStep] = useState(0);
