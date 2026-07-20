@@ -11,7 +11,7 @@ export default async function TemplateLayout({
   return (
     <div className="min-h-screen">
       <TemplateNav templateId={id} />
-      <main className="mx-auto max-w-5xl px-6 py-10">{children}</main>
+      <main className="mx-auto max-w-7xl px-6 py-10">{children}</main>
     </div>
   );
 }

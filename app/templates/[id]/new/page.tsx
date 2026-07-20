@@ -7,7 +7,7 @@ export default async function NewProposalPage({
 }) {
   const { id } = await params;
   return (
-    <div className="mx-auto max-w-2xl rounded-2xl border border-[var(--app-border)] bg-[var(--app-panel)] p-8">
+    <div className="mx-auto max-w-4xl rounded-2xl border border-[var(--app-border)] bg-[var(--app-panel)] p-8">
       <ProposalForm templateId={id} />
     </div>
   );
