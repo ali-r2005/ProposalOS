@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getProposal } from "@/lib/proposal-store";
+import { toErrorResponse } from "@/lib/utils/error-handler";
 
 /**
  * GET /api/proposals/[id] — return the generated presentation as an HTML
@@ -10,14 +11,19 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const proposal = getProposal(id);
 
-  if (!proposal) {
-    return NextResponse.json({ error: "Proposal not found" }, { status: 404 });
+  try {
+    const proposal = await getProposal(id);
+    if (!proposal) {
+      return NextResponse.json({ error: "Proposal not found" }, { status: 404 });
+    }
+
+    return new NextResponse(proposal.html, {
+      status: 200,
+      headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" },
+    });
+  } catch (error) {
+    const { message, status } = toErrorResponse(error);
+    return NextResponse.json({ error: message }, { status });
   }
-
-  return new NextResponse(proposal.html, {
-    status: 200,
-    headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" },
-  });
 }

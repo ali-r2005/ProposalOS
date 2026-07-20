@@ -49,6 +49,7 @@ async function discoverPaths(root: string): Promise<TemplatePaths> {
     promptsDir: await firstDir(root, ["prompts", "propmts"]),
     assetsDir: await firstDir(root, ["assets"]),
     tokensCss: await firstFile(root, ["tokens.css"]),
+    dbDir: await firstDir(root, ["db"]),
   };
 }
 

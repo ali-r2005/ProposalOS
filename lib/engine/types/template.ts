@@ -12,6 +12,8 @@ export interface TemplatePaths {
   promptsDir: string | null;
   assetsDir: string | null;
   tokensCss: string | null;
+  /** Template-owned Drizzle schema (business tables), if the template has one. */
+  dbDir: string | null;
 }
 
 /** A fully loaded template: metadata, plan, paths and theme. */

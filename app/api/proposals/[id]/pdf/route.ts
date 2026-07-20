@@ -15,15 +15,16 @@ export const maxDuration = 60;
  */
 export async function GET( request: Request,{ params }: { params: Promise<{ id: string }> } ) {
   const { id } = await params;
-  if (!getProposal(id)) {
-    return NextResponse.json({ error: "Proposal not found" }, { status: 404 });
-  }
-
-  const origin = new URL(request.url).origin;
-  const pageUrl = `${origin}/api/proposals/${encodeURIComponent(id)}`;
 
   let browser: Awaited<ReturnType<typeof puppeteer.launch>> | undefined;
   try {
+    if (!(await getProposal(id))) {
+      return NextResponse.json({ error: "Proposal not found" }, { status: 404 });
+    }
+
+    const origin = new URL(request.url).origin;
+    const pageUrl = `${origin}/api/proposals/${encodeURIComponent(id)}`;
+
     browser = await puppeteer.launch({
       headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
