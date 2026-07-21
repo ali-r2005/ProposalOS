@@ -44,7 +44,7 @@ Track design decisions and reusable patterns across components.
 - **Layout**: Overlapping "THINK / OUT OF THE BOX" concept/manifesto slide. **Absolute positioning**
   throughout (elements intentionally overlap): `touch.png` logo bridges center-top over the blue box;
   "THINK" sits above the yellow box; "OUT OF THE BOX" below the blue box.
-- **New token**: added `--brand-blue: #2d5cb3` (royal/cobalt) to tokens.css — used for the blue headline
+- **New token**: added `--brand-primary: #2d5cb3` (royal/cobalt) to tokens.css — used for the blue headline
   box bg and the "OUT OF THE BOX" display word.
 - **New asset**: `assets/touch.png` (client/concept "touch" logo, provided by user).
 - **Typography**: `--font-heading` bold for boxes/display words — headline `text-[44px]`, display words
@@ -63,7 +63,7 @@ Track design decisions and reusable patterns across components.
   frame. First slide to use the muted surface — added `--color-surface: #f0f0f0` to tokens.css.
 - **Tile pattern**: photos at row-1 even columns (p2,p4,p6) and row-2 odd columns (p1,p3,p5,p7); solid
   blocks fill the rest — R1: blue,·,yellow,·,green,·,black / R2: ·,green,·,blue,·,yellow,·
-  (colors = `--brand-blue`, `--brand-accent`, `--brand-secondary`, `--color-text-primary`).
+  (colors = `--brand-primary`, `--brand-accent`, `--brand-secondary`, `--color-text-primary`).
 - **Assets**: `assets/p1.png`–`p7.png` (user-provided Morocco photos): p1 Majorelle wall, p2 ONCF train,
   p3 skier, p4 skyline, p5 Koutoubia, p6 desert, p7 carpets. `object-fit: cover` on all tiles.
 - **Typography**: `text-6xl` bold heading, two-tone (destination black + tagline gold).
@@ -90,7 +90,7 @@ Track design decisions and reusable patterns across components.
   • `.card-dots` "•••" bottom-right (`… 50%, #fff`).
   One `--accent` var per card drives body tint, dog-ear, icon tint, heading, and dots. `color-mix()` verified
   in headless Chrome. (Earlier rotated "back-sheet" version was too subtle — replaced by the dog-ear.)
-- **Per-item colors** (from the source's connector-line colors): gold `--brand-accent`, royal `--brand-blue`,
+- **Per-item colors** (from the source's connector-line colors): gold `--brand-accent`, royal `--brand-primary`,
   gray `--color-text-secondary`, green `--brand-secondary`, orange `--brand-accent-dark`, teal `--brand-primary`.
   Icons: ti-language, ti-plane, ti-moon, ti-id, ti-building-skyscraper, ti-temperature, ti-map-pin (pill).
 - **Data fields**: `destination`, `langue`, `travel-duration`, `stay-duration`, `formalities`, `cities`, `climate`.
@@ -121,7 +121,7 @@ Track design decisions and reusable patterns across components.
 - **Phase-color pattern (reusable)**: each `.prog-col` sets `style="--phase: var(--brand-xxx)"`; children read
   `var(--phase)` for header bg, card left-accent, and chapter tag → one variable drives a column's whole color.
   Colors trace day→night: MATINÉE `--brand-accent`, MIDI `--brand-primary`, APRÈS-MIDI `--brand-secondary`,
-  DÎNER `--brand-blue`, NUIT `--color-text-primary`.
+  DÎNER `--brand-primary`, NUIT `--color-text-primary`.
 - **New token**: `--color-highlight: #e23b2e` (red) for value-add callouts. `.offert` = dashed-top red italic
   note w/ `ti-gift`; `.les-plus` = red-bordered tinted box. (Red is a functional callout color, not brand.)
 - **Card**: white, radius 8, `--phase` left accent 5px, chapter tag (uppercase, `--phase`), title 16px bold,
@@ -190,7 +190,7 @@ Track design decisions and reusable patterns across components.
   `ti-star-filled`** (`--brand-accent`), same treatment as components 8/9.
 - **Brand mark**: `assets/logo.png` in the left panel (`h-40`, bottom-left) — same logo used across the deck
   (user asked to use the agency logo rather than a decorative monogram).
-- **Website cell**: `ti-device-laptop` + underlined `--brand-blue` link (`break-all`), data-field `hotel-url`.
+- **Website cell**: `ti-device-laptop` + underlined `--brand-primary` link (`break-all`), data-field `hotel-url`.
 - **Data fields**: `option-label`, `photo-*` (×3), `category`, `hotel-name`, `hotel-url`, `hotel-description`.
 - **Verified**: headless-Chrome screenshot vs source — collage structure/frame lines match, placeholders in all
   photo cells, stars gold, no overflow. Third accommodation slide (8 options / 9 table / 10 showcase).
@@ -232,8 +232,8 @@ Track design decisions and reusable patterns across components.
 ## Component 13: dining-options
 - **Layout**: "RESTAURATION & SOIRÉES OPTIONS" — third instance of the chevron-options family
   (8 accommodation=gold, 11 team-building=green, **13 dining=blue**). Two-line title + numbered list left,
-  zigzag chevrons right. Re-theme by swapping the accent var + middle `<polyline stroke>` to `--brand-blue`.
-- **Theme = `--brand-blue`**: title first word, accent block, `ti-tools-kitchen-2` (fork/knife) icon, middle
+  zigzag chevrons right. Re-theme by swapping the accent var + middle `<polyline stroke>` to `--brand-primary`.
+- **Theme = `--brand-primary`**: title first word, accent block, `ti-tools-kitchen-2` (fork/knife) icon, middle
   chevron band, and the list numbers.
 - **Content**: numbered `.opt-item` (flex number + text, hanging indent, 42px bold uppercase). Items
   `option-1` = ATLAS CAPITAL GALA, `option-2` = TANGER SPIRIT : CÉLÉBRER & RÉUSSIR.
@@ -244,7 +244,7 @@ Track design decisions and reusable patterns across components.
 - **Layout**: single soirée/gala detail ("ATLAS CAPITAL GALA — TANGER SPIRIT"). Long description LEFT
   (~820px column), **one full-bleed image RIGHT** (`960px`, bleeds top/right/bottom). **User asked for one
   placeholder image on the right instead of the source's 4-photo collage.**
-- **Title**: 3-line, `text-5xl`; first line `--brand-blue` (`soiree-name`), rest dark (`soiree-subtitle`),
+- **Title**: 3-line, `text-5xl`; first line `--brand-primary` (`soiree-name`), rest dark (`soiree-subtitle`),
   with the blue accent block sitting behind "RÉUSSIR" (block z-0 under the z-10 heading).
 - **Description**: small body copy (18px/1.5) in 3 groups (`space-y-5` between, `space-y-1` within) — matches
   the source's tight-pair / blank-line-between rhythm. Data field `soiree-description`.

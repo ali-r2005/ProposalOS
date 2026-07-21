@@ -5,7 +5,7 @@
   <svg class="absolute inset-0 z-0" width="1920" height="1080" viewBox="0 0 1920 1080" preserveAspectRatio="none">
     <polyline fill="none" stroke-width="160" stroke-linejoin="miter" stroke="var(--color-border)"
       points="1710,-240 1810,-120 1710,0 1810,120 1710,240 1810,360 1710,480 1810,600 1710,720 1810,840 1710,960 1810,1080 1710,1200 1810,1320" />
-    <polyline fill="none" stroke-width="160" stroke-linejoin="miter" stroke="var(--brand-blue)"
+    <polyline fill="none" stroke-width="160" stroke-linejoin="miter" stroke="var(--brand-primary)"
       points="1480,-240 1580,-120 1480,0 1580,120 1480,240 1580,360 1480,480 1580,600 1480,720 1580,840 1480,960 1580,1080 1480,1200 1580,1320" />
     <polyline fill="none" stroke-width="160" stroke-linejoin="miter" stroke="var(--color-text-primary)"
       points="1250,-240 1350,-120 1250,0 1350,120 1250,240 1350,360 1250,480 1350,600 1250,720 1350,840 1250,960 1350,1080 1250,1200 1350,1320" />
@@ -15,16 +15,16 @@
   <div class="absolute left-[78px] top-[42px] w-[600px] h-[3px] bg-[var(--color-text-primary)] z-10"></div>
   <img src="assets/outline_colored.webp" alt="" class="absolute left-[78px] top-[155px] w-56 h-12 object-contain z-0">
   <h1 class="absolute left-[78px] top-[58px] z-10 text-6xl font-bold leading-[1.05]" style="font-family: var(--font-heading);">
-    <span class="text-[var(--brand-blue)]">RESTAURATION</span> <span class="text-[var(--color-text-primary)]">&amp; SOIRÉES</span><br>
+    <span class="text-[var(--brand-primary)]">RESTAURATION</span> <span class="text-[var(--color-text-primary)]">&amp; SOIRÉES</span><br>
     <span class="text-[var(--color-text-primary)]">OPTIONS</span>
   </h1>
   <!-- Dining accent icon beside the title -->
-  <i class="ti ti-tools-kitchen-2 absolute left-[900px] top-[58px] z-10 text-[var(--brand-blue)] text-8xl"></i>
+  <i class="ti ti-tools-kitchen-2 absolute left-[900px] top-[58px] z-10 text-[var(--brand-primary)] text-8xl"></i>
 
   <!-- Options list (engine injects one row per selected soirée) -->
   <div class="absolute left-[120px] top-[440px] w-[920px] z-10 space-y-6" data-field="soiree-list">
     {{#each soirees}}
-    <p class="flex gap-3 text-[42px] font-bold leading-[1.25] uppercase text-[var(--color-text-primary)]" style="font-family: var(--font-heading);"><span class="flex-shrink-0 text-[var(--brand-blue)]">{{this.option}}.</span><span>{{this.name}}</span></p>
+    <p class="flex gap-3 text-[42px] font-bold leading-[1.25] uppercase text-[var(--color-text-primary)]" style="font-family: var(--font-heading);"><span class="flex-shrink-0 text-[var(--brand-primary)]">{{this.option}}.</span><span>{{this.name}}</span></p>
     {{/each}}
   </div>
 
