@@ -42,14 +42,14 @@
       "key": "destination-image",
       "label": "Destination Image URL ",
       "type": "url",
-      "required": true,
+      "required": false,
       "placeholder": "https://example.com/destination.jpg"
     },
     {
       "key": "client-logo",
       "label": "Client Logo URL",
       "type": "url",
-      "required": true,
+      "required": false,
       "placeholder": "https://example.com/logo.png"
     },
     {
@@ -77,21 +77,21 @@
       "key": "stay-duration",
       "label": "Stay Duration",
       "type": "text",
-      "required": true,
+      "required": false,
       "placeholder": "e.g., 4 days / 3 nights"
     },
     {
       "key": "formalities",
       "label": "Formalities",
       "type": "textarea",
-      "required": true,
+      "required": false,
       "placeholder": "e.g., Visa requirements, passport valkeyity, vaccination info"
     },
     {
       "key": "climate",
       "label": "Climate",
       "type": "text",
-      "required": true,
+      "required": false,
       "placeholder": "e.g., Sunny, 25-30°C in June"
     }
   ]

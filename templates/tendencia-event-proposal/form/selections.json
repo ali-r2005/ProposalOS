@@ -7,7 +7,7 @@
       "key": "selected-accommodation",
       "label": "Accommodation (choose up to 2)",
       "type": "multi-select",
-      "required": true,
+      "required": false,
       "min": 1,
       "max": 2,
       "optionsFrom": { "provider": "accommodation", "collection": "hotels", "valueKey": "id", "labelKey": "name" }
@@ -16,7 +16,7 @@
       "key": "selected-activities",
       "label": "Activities (choose up to 3)",
       "type": "multi-select",
-      "required": true,
+      "required": false,
       "min": 1,
       "max": 3,
       "optionsFrom": { "provider": "activities", "collection": "activities", "valueKey": "id", "labelKey": "name" }
@@ -25,7 +25,7 @@
       "key": "selected-soirees",
       "label": "Soirée (choose 1)",
       "type": "multi-select",
-      "required": true,
+      "required": false,
       "min": 1,
       "max": 1,
       "optionsFrom": { "provider": "soirees", "collection": "soirees", "valueKey": "id", "labelKey": "name" }
