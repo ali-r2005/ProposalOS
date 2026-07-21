@@ -16,6 +16,7 @@ export async function POST(request: Request) {
     const body = (await request.json()) as {
       templateId?: string;
       formInput?: Record<string, unknown>;
+      title?: string;
     };
 
     if (!body.templateId) {
@@ -37,8 +38,10 @@ export async function POST(request: Request) {
       );
     }
 
+    const title = typeof body.title === "string" && body.title.trim() ? body.title.trim() : undefined;
+
     const result = await generatePresentation(body.templateId, formInput);
-    await saveProposal(result.proposalId, body.templateId, result.html, result.context);
+    await saveProposal(result.proposalId, body.templateId, result.html, result.context, title);
 
     // The merged context can be large and is only needed server-side by the
     // editor (fetched separately) — don't ship it back in the generate response.

@@ -7,12 +7,13 @@ export default function TemplateNav({ templateId }: { templateId: string }) {
   const pathname = usePathname();
   const tabs = [
     { href: `/templates/${templateId}/new`, label: "New proposal" },
+    { href: `/templates/${templateId}/history`, label: "History" },
     { href: `/templates/${templateId}/admin`, label: "Manage data" },
   ];
 
   return (
     <header className="border-b border-[var(--app-border)] bg-[var(--app-panel)] px-6 py-3">
-      <div className="mx-auto flex max-w-5xl items-center justify-between">
+      <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Link href="/" className="text-sm text-[var(--app-muted)] hover:text-white">
           ← Templates
         </Link>

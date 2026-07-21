@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getProposal } from "@/lib/proposal-store";
+import { deleteProposal, getProposal } from "@/lib/proposal-store";
 import { toErrorResponse } from "@/lib/utils/error-handler";
 
 /**
@@ -22,6 +22,25 @@ export async function GET(
       status: 200,
       headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" },
     });
+  } catch (error) {
+    const { message, status } = toErrorResponse(error);
+    return NextResponse.json({ error: message }, { status });
+  }
+}
+
+/** DELETE /api/proposals/[id] — remove a saved proposal, used by the history views. */
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+
+  try {
+    const deleted = await deleteProposal(id);
+    if (!deleted) {
+      return NextResponse.json({ error: "Proposal not found" }, { status: 404 });
+    }
+    return NextResponse.json({ success: true });
   } catch (error) {
     const { message, status } = toErrorResponse(error);
     return NextResponse.json({ error: message }, { status });

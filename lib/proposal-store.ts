@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import { getDb } from "@/lib/db/client";
 import { proposals } from "@/lib/db/schema";
 import type { BusinessContext } from "@/lib/engine/types";
@@ -21,9 +21,60 @@ export async function saveProposal(
   proposalId: string,
   templateId: string,
   html: string,
-  context: BusinessContext
+  context: BusinessContext,
+  title?: string
 ): Promise<void> {
-  await getDb().insert(proposals).values({ id: proposalId, templateId, html, context });
+  await getDb()
+    .insert(proposals)
+    .values({ id: proposalId, templateId, html, context, title: title ?? null });
+}
+
+/** Lightweight row for history views — no html/context, so listing stays cheap. */
+export interface ProposalListItem {
+  id: string;
+  templateId: string;
+  title: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export async function listProposals(
+  opts: { templateId?: string; limit?: number; offset?: number } = {}
+): Promise<{ rows: ProposalListItem[]; total: number }> {
+  const db = getDb();
+  const limit = opts.limit ?? 50;
+  const offset = opts.offset ?? 0;
+  const filter = opts.templateId ? eq(proposals.templateId, opts.templateId) : undefined;
+
+  const rows = await db
+    .select({
+      id: proposals.id,
+      templateId: proposals.templateId,
+      title: proposals.title,
+      createdAt: proposals.createdAt,
+      updatedAt: proposals.updatedAt,
+    })
+    .from(proposals)
+    .where(filter)
+    .orderBy(desc(proposals.updatedAt))
+    .limit(limit)
+    .offset(offset);
+
+  const [{ count }] = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(proposals)
+    .where(filter);
+
+  return { rows, total: count };
+}
+
+/** Returns true if a row was deleted, false if it didn't exist. */
+export async function deleteProposal(proposalId: string): Promise<boolean> {
+  const [row] = await getDb()
+    .delete(proposals)
+    .where(eq(proposals.id, proposalId))
+    .returning({ id: proposals.id });
+  return Boolean(row);
 }
 
 export async function getProposal(proposalId: string): Promise<StoredProposal | undefined> {

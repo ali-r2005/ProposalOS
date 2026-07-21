@@ -151,6 +151,7 @@ export default function ProposalForm({ templateId }: { templateId: string }) {
 
   const [groups, setGroups] = useState<FormGroup[]>([]);
   const [step, setStep] = useState(0);
+  const [title, setTitle] = useState("");
   const [values, setValues] = useState<Record<string, FormValue>>({});
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
@@ -308,7 +309,7 @@ export default function ProposalForm({ templateId }: { templateId: string }) {
         invalid?: string[];
       }>(
         "/api/generate",
-        { templateId, formInput },
+        { templateId, formInput, title },
         { validateStatus: () => true }
       );
       if (!data.success) {
@@ -330,6 +331,20 @@ export default function ProposalForm({ templateId }: { templateId: string }) {
 
   return (
     <div>
+      <div className="mb-6">
+        <label className="mb-1 block text-sm font-medium">Proposal name (optional)</label>
+        <input
+          type="text"
+          className="w-full rounded-lg border border-[var(--app-border)] bg-[#0f172a] px-3 py-2 text-sm outline-none focus:border-[var(--app-accent)]"
+          placeholder="e.g. Dupont family — summer trip"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <p className="mt-1 text-xs text-[var(--app-muted)]">
+          Helps you tell this proposal apart later in the history list. Leave blank to auto-name it.
+        </p>
+      </div>
+
       {/* Step indicator */}
       <div className="mb-6 flex items-center gap-2">
         {groups.map((g, i) => (

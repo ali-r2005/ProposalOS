@@ -9,6 +9,7 @@ import { jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 export const proposals = pgTable("proposals", {
   id: text("id").primaryKey(),
   templateId: text("template_id").notNull(),
+  title: text("title"),
   html: text("html").notNull(),
   context: jsonb("context").$type<Record<string, unknown>>().notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
