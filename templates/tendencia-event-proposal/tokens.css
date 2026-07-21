@@ -1,5 +1,7 @@
 /* Design tokens for Tendencia Events & Travel presentation template */
 
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap");
+
 :root {
   /* Brand colors extracted from logo and design system */
   --brand-primary: #0099cc;      /* Teal/cyan blue */
@@ -28,8 +30,8 @@
   --color-frame: #3d4a2b;          /* Dark olive — collage / photo-frame gridlines */
 
   /* Typography */
-  --font-heading: 'Arial', 'Helvetica', sans-serif;
-  --font-body: 'Segoe UI', 'Tahoma', sans-serif;
+  --font-heading: 'Poppins', 'Arial', 'Helvetica', sans-serif;
+  --font-body: 'Poppins', 'Segoe UI', 'Tahoma', sans-serif;
 
   /* Spacing scale (in pixels) */
   --spacing-xs: 8px;
