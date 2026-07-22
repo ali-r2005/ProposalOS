@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
@@ -26,9 +27,7 @@ export default function TopNavigationBar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2 font-bold tracking-tight text-[var(--app-text)]">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--app-accent)] text-sm text-white">
-              P
-            </span>
+            <Image src="/logo.png" alt="ProposalOS" width={50} height={50} className="h-30 w-30 rounded-lg object-contain" />
             ProposalOS
           </Link>
           <nav className="flex items-center gap-1">
