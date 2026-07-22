@@ -5,7 +5,7 @@
   "description": "ProposalOS — an agnostic presentation generation engine",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/compile-templates.js && next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
@@ -16,6 +16,7 @@
     "@anthropic-ai/sdk": "^0.68.0",
     "@langchain/core": "^1.2.1",
     "@langchain/google": "^0.2.1",
+    "@sparticuz/chromium": "^130.0.0",
     "axios": "^1.18.1",
     "drizzle-orm": "^0.45.2",
     "handlebars": "^4.7.8",
@@ -23,13 +24,13 @@
     "pg": "^8.22.0",
     "postgres": "^3.4.9",
     "puppeteer-core": "^25.3.0",
-    "@sparticuz/chromium": "^130.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "yaml": "^2.6.0",
     "zod": "^3.24.0"
   },
   "devDependencies": {
+    "@swc/core": "^1.15.46",
     "@types/node": "^22.10.0",
     "@types/pg": "^8.20.0",
     "@types/react": "^19.0.0",

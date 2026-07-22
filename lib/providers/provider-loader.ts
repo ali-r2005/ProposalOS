@@ -39,7 +39,10 @@ export async function loadProvider(
     throw new EngineError(`Invalid provider name: "${name}"`, 400);
   }
 
-  for (const ext of [".ts", ".js", ".mjs"]) {
+  // On production/serverless, prefer compiled .js over .ts (Node can't execute TS natively)
+  const exts = process.env.NODE_ENV === "production" ? [".js", ".mjs", ".ts"] : [".ts", ".js", ".mjs"];
+
+  for (const ext of exts) {
     const file = path.join(template.paths.providersDir, `${name}${ext}`);
     if (!(await exists(file))) continue;
 

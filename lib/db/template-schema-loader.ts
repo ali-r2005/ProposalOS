@@ -37,7 +37,10 @@ async function exists(target: string): Promise<boolean> {
 export async function loadTemplateSchema(template: LoadedTemplate): Promise<Record<string, PgTable>> {
   if (!template.paths.dbDir) return {};
 
-  for (const ext of [".ts", ".js", ".mjs"]) {
+  // On production/serverless, prefer compiled .js over .ts (Node can't execute TS natively)
+  const exts = process.env.NODE_ENV === "production" ? [".js", ".mjs", ".ts"] : [".ts", ".js", ".mjs"];
+
+  for (const ext of exts) {
     const file = path.join(template.paths.dbDir, `schema${ext}`);
     if (!(await exists(file))) continue;
 
