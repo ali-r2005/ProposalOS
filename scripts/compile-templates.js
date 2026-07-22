@@ -24,8 +24,10 @@ function findTypeScriptFiles(dir) {
 }
 
 function stripTsExtensions(code) {
-  // Remove .ts from relative imports in the compiled output
-  return code.replace(/from\s+["']([^"']+)\.ts(["'])/g, 'from "$1$2');
+  // Remove .ts from relative imports/requires in the compiled output
+  return code
+    .replace(/from\s+["']([^"']+)\.ts(["'])/g, 'from "$1$2')
+    .replace(/require\((["'])([^"']+)\.ts["']\)/g, "require($1$2$1)");
 }
 
 try {
@@ -47,6 +49,11 @@ try {
             syntax: "typescript",
           },
           target: "es2020",
+        },
+        // CommonJS output so plain .js works under Node's default module
+        // system — the deployed package.json has no "type": "module".
+        module: {
+          type: "commonjs",
         },
       });
 
