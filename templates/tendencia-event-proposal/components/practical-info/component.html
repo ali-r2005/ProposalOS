@@ -7,7 +7,7 @@
     <span class="text-[var(--brand-accent)]">CARNET D'INFORMATIONS</span><br>
     <span class="text-[var(--color-text-primary)]">PRATIQUES</span>
   </h1>
-  <img src="assets/outline_colored.webp" alt="" class="absolute left-[78px] top-[196px] w-56 h-12 object-contain z-0">
+  <img src="assets/outline_colored.webp" alt="" class="absolute left-[78px] top-[196px] w-80 h-30 object-contain z-0">
 
   <!-- Destination pill, top-right -->
   <div class="absolute right-[80px] top-[64px] z-10 flex items-center gap-5 bg-[var(--brand-accent)] rounded-2xl px-9 py-5">
@@ -53,7 +53,7 @@
 
     <!-- DURÉE SÉJOUR -->
     {{#if stay-duration}}
-    <div class="relative" style="--accent: var(--color-text-secondary);">
+    <div class="relative" style="--accent: var(--brand-secondary);">
       <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
         <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-moon"></i></div>
@@ -68,7 +68,7 @@
 
     <!-- FORMALITÉS -->
     {{#if formalities}}
-    <div class="relative" style="--accent: var(--brand-secondary);">
+    <div class="relative" style="--accent: var(--brand-accent-dark);">
       <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
         <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-id"></i></div>
@@ -83,7 +83,7 @@
 
     <!-- VILLES DE SÉJOUR -->
     {{#if destination}}
-    <div class="relative" style="--accent: var(--brand-accent-dark);">
+    <div class="relative" style="--accent: var(--brand-blue);">
       <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
         <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-building-skyscraper"></i></div>
@@ -98,7 +98,7 @@
 
     <!-- CLIMAT -->
     {{#if climate}}
-    <div class="relative" style="--accent: var(--brand-primary);">
+    <div class="relative" style="--accent: var(--color-green-dark);">
       <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
         <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-temperature"></i></div>
