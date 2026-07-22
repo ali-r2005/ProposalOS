@@ -70,24 +70,63 @@ export function ContextValueEditor({
   }
 
   if (Array.isArray(value)) {
+    const itemType = value.length > 0 ? typeof value[0] : "string";
+    const addItem = () => {
+      const newItem =
+        itemType === "number" ? 0 : itemType === "boolean" ? false : itemType === "object" ? {} : "";
+      onChange([...value, newItem]);
+    };
+    const removeItem = (index: number) => {
+      const copy = value.slice();
+      copy.splice(index, 1);
+      onChange(copy);
+    };
+
     if (value.length === 0) {
-      return <p className="text-xs text-[var(--app-muted)]">(empty list)</p>;
+      return (
+        <div className="flex items-center gap-2">
+          <p className="text-xs text-[var(--app-muted)]">(empty list)</p>
+          <button
+            type="button"
+            onClick={addItem}
+            className="rounded px-2 py-1 text-xs font-medium bg-[var(--app-accent)] text-white hover:opacity-80"
+          >
+            + Add
+          </button>
+        </div>
+      );
     }
     return (
-      <div className="space-y-3 border-l border-[var(--app-border)] pl-3">
+      <div className="space-y-2 border-l border-[var(--app-border)] pl-3">
         {value.map((item, index) => (
-          <div key={index}>
-            <p className="mb-1 text-xs font-medium text-[var(--app-muted)]">#{index + 1}</p>
-            <ContextValueEditor
-              value={item}
-              onChange={(next) => {
-                const copy = value.slice();
-                copy[index] = next;
-                onChange(copy);
-              }}
-            />
+          <div key={index} className="flex gap-2">
+            <div className="flex-1">
+              <p className="mb-1 text-xs font-medium text-[var(--app-muted)]">#{index + 1}</p>
+              <ContextValueEditor
+                value={item}
+                onChange={(next) => {
+                  const copy = value.slice();
+                  copy[index] = next;
+                  onChange(copy);
+                }}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => removeItem(index)}
+              className="mt-6 rounded px-2 py-1 text-xs text-red-400 hover:bg-red-400/10"
+            >
+              ✕
+            </button>
           </div>
         ))}
+        <button
+          type="button"
+          onClick={addItem}
+          className="mt-2 rounded px-2 py-1 text-xs font-medium bg-[var(--app-accent)] text-white hover:opacity-80"
+        >
+          + Add Item
+        </button>
       </div>
     );
   }
