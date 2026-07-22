@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { loadTemplate } from "@/lib/engine/core/template-loader";
 import { loadTemplateSchema } from "@/lib/db/template-schema-loader";
+import { requireAdminRole } from "@/lib/auth/context";
 import { toErrorResponse } from "@/lib/utils/error-handler";
 
 /**
@@ -8,8 +9,9 @@ import { toErrorResponse } from "@/lib/utils/error-handler";
  * db/schema.ts exports, so an admin UI can build its table list without
  * knowing anything about the template's business domain.
  */
-export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    requireAdminRole(request);
     const { id } = await params;
     const template = await loadTemplate(id);
     const tables = await loadTemplateSchema(template);

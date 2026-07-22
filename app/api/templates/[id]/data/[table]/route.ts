@@ -4,6 +4,7 @@ import { loadTemplate } from "@/lib/engine/core/template-loader";
 import { loadTemplateTable } from "@/lib/db/template-schema-loader";
 import { describeTable, sanitizeValues } from "@/lib/db/table-introspect";
 import { getDb } from "@/lib/db/client";
+import { requireAdminRole } from "@/lib/auth/context";
 import { toErrorResponse } from "@/lib/utils/error-handler";
 
 const DEFAULT_LIMIT = 1000;
@@ -49,6 +50,7 @@ export async function POST(
   { params }: { params: Promise<{ id: string; table: string }> }
 ) {
   try {
+    requireAdminRole(request);
     const { id, table: tableName } = await params;
     const template = await loadTemplate(id);
     const table = await loadTemplateTable(template, tableName);
