@@ -47,7 +47,11 @@ export async function loadProvider(
     if (!(await exists(file))) continue;
 
     const mod = await nativeImport(pathToFileURL(file).href + `?v=${Date.now()}`);
-    const provider = mod.provider ?? mod.default;
+    // Compiled templates/*.js are CommonJS; Node's ESM interop can't
+    // statically detect SWC's custom export helper, so named exports land
+    // inside `mod.default` instead of on `mod` directly. Unwrap it.
+    const ns = mod.provider ? mod : mod.default && typeof mod.default === "object" ? mod.default : mod;
+    const provider = ns.provider ?? ns.default;
     if (!isProvider(provider)) {
       throw new EngineError(
         `Provider "${name}" must export \`const provider = { name, description, execute }\``,

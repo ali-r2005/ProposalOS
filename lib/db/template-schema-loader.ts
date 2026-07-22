@@ -45,8 +45,12 @@ export async function loadTemplateSchema(template: LoadedTemplate): Promise<Reco
     if (!(await exists(file))) continue;
 
     const mod = await nativeImport(pathToFileURL(file).href + `?v=${Date.now()}`);
+    // Compiled templates/*.js are CommonJS; Node's ESM interop can't
+    // statically detect SWC's custom export helper, so named exports land
+    // inside `mod.default` instead of on `mod` directly. Unwrap it.
+    const ns = mod.default && typeof mod.default === "object" ? mod.default : mod;
     const tables: Record<string, PgTable> = {};
-    for (const [key, value] of Object.entries(mod)) {
+    for (const [key, value] of Object.entries(ns)) {
       if (is(value, PgTable)) tables[key] = value;
     }
     return tables;
