@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium";
 import { getProposal } from "@/lib/proposal-store";
 
 // Headless Chrome needs the Node runtime (not edge). PDF generation can take a
@@ -26,8 +27,9 @@ export async function GET( request: Request,{ params }: { params: Promise<{ id: 
     const pageUrl = `${origin}/api/proposals/${encodeURIComponent(id)}`;
 
     browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: chromium.args,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
     });
     const page = await browser.newPage();
     await page.goto(pageUrl, { waitUntil: "networkidle0", timeout: 45_000 });
