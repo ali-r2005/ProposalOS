@@ -15,6 +15,13 @@
       "when": 1784625439488,
       "tag": "0001_mighty_chamber",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1784719623354,
+      "tag": "0002_windy_thaddeus_ross",
+      "breakpoints": true
     }
   ]
 }
