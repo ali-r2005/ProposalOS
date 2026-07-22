@@ -1,7 +1,7 @@
 "use client";
 
 const INPUT_CLS =
-  "w-full rounded-lg border border-[var(--app-border)] bg-[#0f172a] px-3 py-2 text-sm outline-none focus:border-[var(--app-accent)]";
+  "w-full rounded-lg border border-[var(--app-border)] bg-[var(--app-panel)] text-[var(--app-text)] px-3 py-2 text-sm outline-none focus:border-[var(--app-accent)]";
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);

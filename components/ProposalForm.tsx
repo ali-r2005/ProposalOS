@@ -31,7 +31,7 @@ function FieldInput({
   fileError?: string;
 }) {
   const base =
-    "w-full rounded-lg border border-[var(--app-border)] bg-[#0f172a] px-3 py-2 text-sm outline-none focus:border-[var(--app-accent)]";
+    "w-full rounded-lg border border-[var(--app-border)] bg-[var(--app-panel)] text-[var(--app-text)] px-3 py-2 text-sm outline-none focus:border-[var(--app-accent)]";
 
   if (field.type === "file") {
     const fileName = typeof value === "string" ? value : "";
@@ -335,7 +335,7 @@ export default function ProposalForm({ templateId }: { templateId: string }) {
         <label className="mb-1 block text-sm font-medium">Proposal name (optional)</label>
         <input
           type="text"
-          className="w-full rounded-lg border border-[var(--app-border)] bg-[#0f172a] px-3 py-2 text-sm outline-none focus:border-[var(--app-accent)]"
+          className="w-full rounded-lg border border-[var(--app-border)] bg-[var(--app-panel)] text-[var(--app-text)] px-3 py-2 text-sm outline-none focus:border-[var(--app-accent)]"
           placeholder="e.g. Dupont family — summer trip"
           value={title}
           onChange={(e) => setTitle(e.target.value)}

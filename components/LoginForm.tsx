@@ -30,7 +30,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-[var(--color-text-primary)]">
+        <label className="block text-sm font-medium text-[var(--app-text)]">
           Email
         </label>
         <input
@@ -38,12 +38,12 @@ export default function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="mt-1 w-full rounded-lg border border-[var(--color-text-secondary)] px-3 py-2 bg-[var(--color-background)] text-[var(--color-text-primary)]"
+          className="mt-1 w-full rounded-lg border border-[var(--app-border)] px-3 py-2 bg-[var(--app-panel)] text-[var(--app-text)]"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[var(--color-text-primary)]">
+        <label className="block text-sm font-medium text-[var(--app-text)]">
           Password
         </label>
         <input
@@ -51,7 +51,7 @@ export default function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="mt-1 w-full rounded-lg border border-[var(--color-text-secondary)] px-3 py-2 bg-[var(--color-background)] text-[var(--color-text-primary)]"
+          className="mt-1 w-full rounded-lg border border-[var(--app-border)] px-3 py-2 bg-[var(--app-panel)] text-[var(--app-text)]"
         />
       </div>
 
@@ -60,7 +60,7 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-lg bg-[var(--brand-primary)] px-4 py-2 font-medium text-white disabled:opacity-50"
+        className="w-full rounded-lg bg-[var(--app-accent)] px-4 py-2 font-medium text-white disabled:opacity-50"
       >
         {loading ? 'Logging in...' : 'Log in'}
       </button>

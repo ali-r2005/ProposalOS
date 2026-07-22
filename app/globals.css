@@ -5,14 +5,37 @@
 @tailwind utilities;
 
 :root {
+  color-scheme: light;
+  --app-bg: #ffffff;
+  --app-panel: #f8fafc;
+  --app-border: #e2e8f0;
+  --app-text: #0f172a;
+  --app-muted: #64748b;
+  --app-accent: #0099cc;
+  --font-body: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Poppins", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
   --app-bg: #0b1120;
   --app-panel: #111827;
   --app-border: #1f2937;
   --app-text: #e5e7eb;
   --app-muted: #9ca3af;
   --app-accent: #0099cc;
-  --font-body: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Poppins", ui-sans-serif, system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --app-bg: #0b1120;
+    --app-panel: #111827;
+    --app-border: #1f2937;
+    --app-text: #e5e7eb;
+    --app-muted: #9ca3af;
+    --app-accent: #0099cc;
+  }
 }
 
 html,

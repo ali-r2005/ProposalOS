@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '@/components/AuthProvider';
 import { http } from '@/lib/utils/http';
 import { useRouter } from 'next/navigation';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function AdminSettingsPage() {
   const { user, logout } = useAuth();
@@ -21,7 +22,7 @@ export default function AdminSettingsPage() {
   const [emailPassword, setEmailPassword] = useState('');
 
   if (!user) {
-    return <div className="p-8 text-[var(--color-text-primary)]">Loading...</div>;
+    return <div className="p-8 text-[var(--app-text)]">Loading...</div>;
   }
 
   async function handleChangePassword(e: React.FormEvent) {
@@ -81,11 +82,17 @@ export default function AdminSettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)] p-8">
+    <div className="min-h-screen bg-[var(--app-bg)] p-8">
       <div className="max-w-2xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-[var(--color-text-primary)] mb-2">Admin Settings</h1>
-          <p className="text-[var(--color-text-secondary)]">Logged in as: {user.email}</p>
+        <div className="mb-8 flex items-start justify-between">
+          <div>
+            <a href="/" className="text-sm text-[var(--app-muted)] hover:text-[var(--app-accent)] transition">
+              ← Back to templates
+            </a>
+            <h1 className="text-4xl font-bold text-[var(--app-text)] mt-2 mb-2">Admin Settings</h1>
+            <p className="text-[var(--app-muted)]">Logged in as: {user.email}</p>
+          </div>
+          <ThemeToggle />
         </div>
 
         {message && (
@@ -102,11 +109,11 @@ export default function AdminSettingsPage() {
 
         <div className="space-y-8">
           {/* Change Password Section */}
-          <div className="border border-[var(--color-text-secondary)] rounded-lg p-6">
-            <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4">Change Password</h2>
+          <div className="border border-[var(--app-border)] rounded-lg p-6">
+            <h2 className="text-2xl font-bold text-[var(--app-text)] mb-4">Change Password</h2>
             <form onSubmit={handleChangePassword} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">
+                <label className="block text-sm font-medium text-[var(--app-text)] mb-1">
                   Current Password
                 </label>
                 <input
@@ -114,12 +121,12 @@ export default function AdminSettingsPage() {
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   required
-                  className="w-full px-3 py-2 border border-[var(--color-text-secondary)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)]"
+                  className="w-full px-3 py-2 border border-[var(--app-border)] rounded-lg bg-[var(--app-panel)] text-[var(--app-text)]"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">
+                <label className="block text-sm font-medium text-[var(--app-text)] mb-1">
                   New Password
                 </label>
                 <input
@@ -127,12 +134,12 @@ export default function AdminSettingsPage() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   required
-                  className="w-full px-3 py-2 border border-[var(--color-text-secondary)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)]"
+                  className="w-full px-3 py-2 border border-[var(--app-border)] rounded-lg bg-[var(--app-panel)] text-[var(--app-text)]"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">
+                <label className="block text-sm font-medium text-[var(--app-text)] mb-1">
                   Confirm New Password
                 </label>
                 <input
@@ -140,14 +147,14 @@ export default function AdminSettingsPage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
-                  className="w-full px-3 py-2 border border-[var(--color-text-secondary)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)]"
+                  className="w-full px-3 py-2 border border-[var(--app-border)] rounded-lg bg-[var(--app-panel)] text-[var(--app-text)]"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full px-4 py-2 bg-[var(--brand-primary)] text-white font-medium rounded-lg disabled:opacity-50"
+                className="w-full px-4 py-2 bg-[var(--app-accent)] text-white font-medium rounded-lg disabled:opacity-50"
               >
                 {loading ? 'Changing...' : 'Change Password'}
               </button>
@@ -155,11 +162,11 @@ export default function AdminSettingsPage() {
           </div>
 
           {/* Change Email Section */}
-          <div className="border border-[var(--color-text-secondary)] rounded-lg p-6">
-            <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4">Change Email</h2>
+          <div className="border border-[var(--app-border)] rounded-lg p-6">
+            <h2 className="text-2xl font-bold text-[var(--app-text)] mb-4">Change Email</h2>
             <form onSubmit={handleChangeEmail} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">
+                <label className="block text-sm font-medium text-[var(--app-text)] mb-1">
                   New Email
                 </label>
                 <input
@@ -167,12 +174,12 @@ export default function AdminSettingsPage() {
                   value={newEmail}
                   onChange={(e) => setNewEmail(e.target.value)}
                   required
-                  className="w-full px-3 py-2 border border-[var(--color-text-secondary)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)]"
+                  className="w-full px-3 py-2 border border-[var(--app-border)] rounded-lg bg-[var(--app-panel)] text-[var(--app-text)]"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">
+                <label className="block text-sm font-medium text-[var(--app-text)] mb-1">
                   Password (to confirm)
                 </label>
                 <input
@@ -180,14 +187,14 @@ export default function AdminSettingsPage() {
                   value={emailPassword}
                   onChange={(e) => setEmailPassword(e.target.value)}
                   required
-                  className="w-full px-3 py-2 border border-[var(--color-text-secondary)] rounded-lg bg-[var(--color-background)] text-[var(--color-text-primary)]"
+                  className="w-full px-3 py-2 border border-[var(--app-border)] rounded-lg bg-[var(--app-panel)] text-[var(--app-text)]"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full px-4 py-2 bg-[var(--brand-primary)] text-white font-medium rounded-lg disabled:opacity-50"
+                className="w-full px-4 py-2 bg-[var(--app-accent)] text-white font-medium rounded-lg disabled:opacity-50"
               >
                 {loading ? 'Changing...' : 'Change Email'}
               </button>
