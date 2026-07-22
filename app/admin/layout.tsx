@@ -1,6 +1,6 @@
 import TopNavigationBar from "@/components/TopNavigationBar";
 
-export default function HomeLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen">
       <TopNavigationBar />

@@ -1,4 +1,5 @@
-import TemplateNav from "@/components/TemplateNav";
+import TopNavigationBar from "@/components/TopNavigationBar";
+import TemplateSidebar from "@/components/TemplateSidebar";
 
 export default async function TemplateLayout({
   children,
@@ -10,8 +11,11 @@ export default async function TemplateLayout({
   const { id } = await params;
   return (
     <div className="min-h-screen">
-      <TemplateNav templateId={id} />
-      <main className="mx-auto max-w-7xl px-6 py-10">{children}</main>
+      <TopNavigationBar />
+      <div className="mx-auto flex max-w-7xl gap-10 px-6 py-10">
+        <TemplateSidebar templateId={id} />
+        <main className="min-w-0 flex-1">{children}</main>
+      </div>
     </div>
   );
 }

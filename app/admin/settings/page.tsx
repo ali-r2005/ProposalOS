@@ -3,12 +3,9 @@
 import { useState } from 'react';
 import { useAuth } from '@/components/AuthProvider';
 import { http } from '@/lib/utils/http';
-import { useRouter } from 'next/navigation';
-import ThemeToggle from '@/components/ThemeToggle';
 
 export default function AdminSettingsPage() {
   const { user, logout } = useAuth();
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
@@ -82,18 +79,11 @@ export default function AdminSettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--app-bg)] p-8">
-      <div className="max-w-2xl mx-auto">
-        <div className="mb-8 flex items-start justify-between">
-          <div>
-            <a href="/" className="text-sm text-[var(--app-muted)] hover:text-[var(--app-accent)] transition">
-              ← Back to templates
-            </a>
-            <h1 className="text-4xl font-bold text-[var(--app-text)] mt-2 mb-2">Admin Settings</h1>
-            <p className="text-[var(--app-muted)]">Logged in as: {user.email}</p>
-          </div>
-          <ThemeToggle />
-        </div>
+    <div className="max-w-2xl">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-[var(--app-text)] mb-2">Admin Settings</h1>
+        <p className="text-[var(--app-muted)]">Logged in as: {user.email}</p>
+      </div>
 
         {message && (
           <div
@@ -201,7 +191,6 @@ export default function AdminSettingsPage() {
             </form>
           </div>
         </div>
-      </div>
     </div>
   );
 }
