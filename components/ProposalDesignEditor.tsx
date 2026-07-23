@@ -170,9 +170,17 @@ export default function ProposalDesignEditor({ proposalId }: { proposalId: strin
               // the Save button (PUT /api/proposals/[id]/html), so opt out
               // of GrapesJS's own load/autosave entirely.
               storage: { type: "self" },
-              // "Slide" device matches the artboard's real pixel size instead
-              // of a paper size, so the canvas renders the whole slide.
-              devices: { default: [{ id: "slide", name: "Slide", width: "1920px", height: "1080px" }] },
+              // "Slide" device replaces the A3 paper-size selector with one
+              // matching the artboard. `width: ""` (empty, like GrapesJS's
+              // own built-in "desktop" device) marks it as the unconstrained
+              // base tier — any other value (eg. "1920px") makes GrapesJS
+              // treat it as a responsive breakpoint, wrapping every inline
+              // `style="..."` attribute it extracts into an auto-generated
+              // `@media (max-width: 1920px)` rule on Save. Since the actual
+              // 1920x1080 sizing already comes from each slide's own Tailwind
+              // classes (not the device), we don't need — and must avoid —
+              // a pixel value here.
+              devices: { default: [{ id: "slide", name: "Slide", width: "" }] },
               // canvas.styles/scripts is a *core* GrapesJS EditorConfig option
               // (injects <link>/<script> into the canvas iframe's own <head>),
               // exposed here via Studio SDK's `gjsOptions` passthrough — not
