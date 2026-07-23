@@ -70,6 +70,12 @@ export default function ProposalEditor({ proposalId }: { proposalId: string }) {
           >
             Back to preview
           </Link>
+          <Link
+            href={`/proposal/${proposalId}/design`}
+            className="rounded-lg border border-[var(--app-border)] px-3 py-1.5 text-xs"
+          >
+            Visual editor
+          </Link>
           <button
             type="button"
             onClick={save}

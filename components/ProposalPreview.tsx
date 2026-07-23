@@ -47,6 +47,12 @@ export default function ProposalPreview({ proposalId }: { proposalId: string }) 
           >
             Edit proposal
           </Link>
+          <Link
+            href={`/proposal/${proposalId}/design`}
+            className="rounded-lg border border-[var(--app-border)] px-3 py-1.5 text-xs"
+          >
+            Visual editor
+          </Link>
           <a
             href={`/api/proposals/${proposalId}`}
             target="_blank"
