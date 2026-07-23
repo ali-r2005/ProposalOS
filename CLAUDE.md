@@ -36,7 +36,7 @@
 - Errors: `toErrorMessage(err, "fallback")`
 
 ## Dependencies (Locked)
-✅ next, react, typescript, handlebars, @anthropic-ai/sdk, yaml, zod, axios, tailwindcss, autoprefixer, puppeteer, drizzle-orm, drizzle-kit, postgres, dotenv, @grapesjs/studio-sdk, @grapesjs/studio-sdk-plugins (visual proposal editor — free plan only: `document` project type + `presetPrintable`; no paid-tier plugins)
+✅ next, react, typescript, handlebars, @anthropic-ai/sdk, yaml, zod, axios, tailwindcss, autoprefixer, puppeteer, drizzle-orm, drizzle-kit, postgres, dotenv, @grapesjs/studio-sdk (visual proposal editor — free plan: default `web` project type + custom `devices` sized to the slide artboard; no `studio-sdk-plugins` — those (`presetPrintable`, `canvasAbsoluteMode`, `canvasFullSize`, etc.) are paid Startup-plan or print/pagination-oriented and crop+corrupt fixed-size absolute-positioned slides)
 
 ## Server External Packages Rule
 Template files loaded via native `import()` (not webpack). If package imported in `providers/*.ts` or `db/*.ts`:

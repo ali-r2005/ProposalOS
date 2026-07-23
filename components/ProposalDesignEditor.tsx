@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import StudioEditor from "@grapesjs/studio-sdk/react";
 import "@grapesjs/studio-sdk/style";
-import { presetPrintable } from "@grapesjs/studio-sdk-plugins";
 import type { Editor } from "grapesjs";
 import { http, toErrorMessage } from "@/lib/utils/http";
 import type { RenderedSlide } from "@/lib/engine/types";
@@ -154,17 +153,42 @@ export default function ProposalDesignEditor({ proposalId }: { proposalId: strin
         {loading && <p className="p-6 text-sm text-[var(--app-muted)]">Loading…</p>}
         {parsed && (
           <StudioEditor
+            key={proposalId}
             onEditor={setEditor}
             options={{
               licenseKey: "LOCAL_LICENSE_KEY",
-              project: { type: "document", default: { pages } },
-              plugins: [presetPrintable],
+              // Default "web" project type (no print/pagination behavior —
+              // that's what "document" + presetPrintable forced onto us,
+              // cropping slides to an A3 page and mangling text while trying
+              // to paginate a fixed 1920x1080 absolute-positioned artboard).
+              project: { id: proposalId, default: { pages } },
+              // Studio SDK defaults to `storage.type: "browser"`, which
+              // auto-persists the project to the browser and loads from
+              // that cache on next mount instead of `project.default` —
+              // across proposals sharing no unique id, this served whichever
+              // proposal was cached first. We already persist explicitly via
+              // the Save button (PUT /api/proposals/[id]/html), so opt out
+              // of GrapesJS's own load/autosave entirely.
+              storage: { type: "self" },
+              // "Slide" device matches the artboard's real pixel size instead
+              // of a paper size, so the canvas renders the whole slide.
+              devices: { default: [{ id: "slide", name: "Slide", width: "1920px", height: "1080px" }] },
               // canvas.styles/scripts is a *core* GrapesJS EditorConfig option
               // (injects <link>/<script> into the canvas iframe's own <head>),
               // exposed here via Studio SDK's `gjsOptions` passthrough — not
               // the same as Studio SDK's own top-level `canvas` prop, which
               // only configures canvas-spot UI (selection/hover overlays).
-              gjsOptions: { canvas: { styles: parsed.canvasStyles, scripts: parsed.canvasScripts } },
+              gjsOptions: {
+                canvas: { styles: parsed.canvasStyles, scripts: parsed.canvasScripts },
+                // Separate from Studio SDK's `storage` option above: *core*
+                // GrapesJS ships its own StorageManager, defaulting to
+                // `type: "local"` + `autoload: true` — it was silently
+                // loading whichever proposal's editor state got saved to the
+                // browser's localStorage first, ignoring `project.default`
+                // entirely. Disable it outright; we persist explicitly via
+                // the Save button (PUT /api/proposals/[id]/html).
+                storageManager: false,
+              },
             }}
           />
         )}
