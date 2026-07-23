@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium";
 import { getProposal } from "@/lib/proposal-store";
+import { extractTokenFromRequest } from "@/lib/auth/context";
 
 // Headless Chrome needs the Node runtime (not edge). PDF generation can take a
 // few seconds while the CDN Tailwind runtime + icon font load and paint.
@@ -19,6 +20,11 @@ export async function GET( request: Request,{ params }: { params: Promise<{ id: 
 
   let browser: Awaited<ReturnType<typeof puppeteer.launch>> | undefined;
   try {
+    // Extract auth token from request for puppeteer to use
+    const token = extractTokenFromRequest(request);
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     if (!(await getProposal(id))) {
       return NextResponse.json({ error: "Proposal not found" }, { status: 404 });
     }
@@ -32,6 +38,10 @@ export async function GET( request: Request,{ params }: { params: Promise<{ id: 
       headless: chromium.headless,
     });
     const page = await browser.newPage();
+    // Pass auth token to puppeteer so it can access protected routes
+    await page.setExtraHTTPHeaders({
+      Authorization: `Bearer ${token}`,
+    });
     await page.goto(pageUrl, { waitUntil: "networkidle0", timeout: 45_000 });
 
     const pdf = await page.pdf({

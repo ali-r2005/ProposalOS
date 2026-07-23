@@ -4,6 +4,7 @@ import { loadTemplate } from "@/lib/engine/core/template-loader";
 import { loadForms } from "@/lib/forms/form-generator";
 import { validateFormInput } from "@/lib/forms/form-validator";
 import { saveProposal } from "@/lib/proposal-store";
+import { requireAuth } from "@/lib/auth/context";
 import { EngineError, toErrorResponse } from "@/lib/utils/error-handler";
 
 /**
@@ -13,6 +14,7 @@ import { EngineError, toErrorResponse } from "@/lib/utils/error-handler";
  */
 export async function POST(request: Request) {
   try {
+    requireAuth(request);
     const body = (await request.json()) as {
       templateId?: string;
       formInput?: Record<string, unknown>;

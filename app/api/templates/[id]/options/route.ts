@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { loadTemplate } from "@/lib/engine/core/template-loader";
 import { runProvider } from "@/lib/providers/provider-loader";
+import { requireAuth } from "@/lib/auth/context";
 import { EngineError, toErrorResponse } from "@/lib/utils/error-handler";
 
 /**
@@ -15,6 +16,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    requireAuth(request);
     const { id } = await params;
     const url = new URL(request.url);
     const provider = url.searchParams.get("provider");

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { listProposals } from "@/lib/proposal-store";
+import { requireAuth } from "@/lib/auth/context";
 import { toErrorResponse } from "@/lib/utils/error-handler";
 
 /**
@@ -10,6 +11,8 @@ import { toErrorResponse } from "@/lib/utils/error-handler";
  */
 export async function GET(request: Request) {
   try {
+    requireAuth(request);
+
     const { searchParams } = new URL(request.url);
     const templateId = searchParams.get("templateId") ?? undefined;
     const limit = Number(searchParams.get("limit") ?? 50);

@@ -20,6 +20,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string; table: string }> }
 ) {
   try {
+    requireAdminRole(request);
     const { id, table: tableName } = await params;
     const template = await loadTemplate(id);
     const table = await loadTemplateTable(template, tableName);

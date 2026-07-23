@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import { listTemplates } from "@/lib/engine/core/template-loader";
+import { requireAuth } from "@/lib/auth/context";
 import type { TemplateSummary } from "@/lib/engine/types";
 import { toErrorResponse } from "@/lib/utils/error-handler";
 
 /** GET /api/templates — list available templates. */
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    requireAuth(request);
+
     const manifests = await listTemplates();
     const summaries: TemplateSummary[] = manifests.map((m) => ({
       id: m.id,

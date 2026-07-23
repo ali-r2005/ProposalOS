@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getProposal, updateProposal } from "@/lib/proposal-store";
+import { requireAuth } from "@/lib/auth/context";
 import { loadTemplate } from "@/lib/engine/core/template-loader";
 import { wrapPresentation } from "@/lib/engine/renderer/theme-loader";
 import type { RenderedSlide } from "@/lib/engine/types";
@@ -16,6 +17,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   const { id } = await params;
 
   try {
+    requireAuth(request);
     const proposal = await getProposal(id);
     if (!proposal) {
       return NextResponse.json({ error: "Proposal not found" }, { status: 404 });

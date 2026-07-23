@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getProposal, updateProposal } from "@/lib/proposal-store";
+import { requireAuth } from "@/lib/auth/context";
 import { loadTemplate } from "@/lib/engine/core/template-loader";
 import { renderFromContext } from "@/lib/engine/core/pipeline";
 import { toErrorResponse } from "@/lib/utils/error-handler";
@@ -8,9 +9,10 @@ import { toErrorResponse } from "@/lib/utils/error-handler";
  * GET /api/proposals/[id]/context — return the merged context object that
  * produced this proposal, so the editor can load it for hand-editing.
  */
-export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   try {
+    requireAuth(request);
     const proposal = await getProposal(id);
     if (!proposal) {
       return NextResponse.json({ error: "Proposal not found" }, { status: 404 });
@@ -31,6 +33,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   const { id } = await params;
 
   try {
+    requireAuth(request);
     const proposal = await getProposal(id);
     if (!proposal) {
       return NextResponse.json({ error: "Proposal not found" }, { status: 404 });

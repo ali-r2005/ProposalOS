@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { deleteProposal, getProposal } from "@/lib/proposal-store";
+import { requireAuth } from "@/lib/auth/context";
 import { toErrorResponse } from "@/lib/utils/error-handler";
 
 /**
@@ -7,12 +8,14 @@ import { toErrorResponse } from "@/lib/utils/error-handler";
  * document, suitable for embedding directly in a preview iframe.
  */
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
 
   try {
+    requireAuth(request);
+
     const proposal = await getProposal(id);
     if (!proposal) {
       return NextResponse.json({ error: "Proposal not found" }, { status: 404 });
@@ -30,12 +33,14 @@ export async function GET(
 
 /** DELETE /api/proposals/[id] — remove a saved proposal, used by the history views. */
 export async function DELETE(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
 
   try {
+    requireAuth(request);
+
     const deleted = await deleteProposal(id);
     if (!deleted) {
       return NextResponse.json({ error: "Proposal not found" }, { status: 404 });

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { loadTemplate } from "@/lib/engine/core/template-loader";
 import { loadForms } from "@/lib/forms/form-generator";
+import { requireAuth } from "@/lib/auth/context";
 import { toErrorResponse } from "@/lib/utils/error-handler";
 
 /**
@@ -9,10 +10,11 @@ import { toErrorResponse } from "@/lib/utils/error-handler";
  * `{ forms: [{ id, title, fields }] }`.
  */
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    requireAuth(request);
     const { id } = await params;
     const template = await loadTemplate(id);
     const forms = await loadForms(template);
