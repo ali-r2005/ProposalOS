@@ -156,7 +156,10 @@ export default function ProposalDesignEditor({ proposalId }: { proposalId: strin
             key={proposalId}
             onEditor={setEditor}
             options={{
-              licenseKey: "LOCAL_LICENSE_KEY",
+              // "LOCAL_LICENSE_KEY" (any string) only works on localhost — a
+              // real key tied to the deployed domain is required elsewhere.
+              // See https://app.grapesjs.com to create one.
+              licenseKey: process.env.NEXT_PUBLIC_GRAPESJS_LICENSE_KEY || "LOCAL_LICENSE_KEY",
               // Default "web" project type (no print/pagination behavior —
               // that's what "document" + presetPrintable forced onto us,
               // cropping slides to an A3 page and mangling text while trying
