@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
 
     const response = NextResponse.json({ success: true });
     response.cookies.delete('refreshToken');
+    response.cookies.delete('accessToken');
     return response;
   } catch (error) {
     const { message, status } = toErrorResponse(error);

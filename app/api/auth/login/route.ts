@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm';
 import { getDb } from '@/lib/db/client';
 import { users } from '@/lib/db/schema';
 import { verifyPassword } from '@/lib/auth/crypto';
-import { createSession } from '@/lib/auth/session';
+import { ACCESS_TOKEN_TTL, createSession } from '@/lib/auth/session';
 import { toErrorResponse } from '@/lib/utils/error-handler';
 
 export async function POST(request: Request) {
@@ -49,6 +49,17 @@ export async function POST(request: Request) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60,
+      path: '/',
+    });
+
+    // Mirrors the Authorization header the axios client sets in memory —
+    // browser-native requests (iframe/anchor navigation) can't carry that
+    // header, so this cookie is what lets those requests authenticate.
+    response.cookies.set('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: ACCESS_TOKEN_TTL,
       path: '/',
     });
 
