@@ -39,8 +39,16 @@ export async function loadProvider(
     throw new EngineError(`Invalid provider name: "${name}"`, 400);
   }
 
-  // On production/serverless, prefer compiled .js over .ts (Node can't execute TS natively)
-  const exts = process.env.NODE_ENV === "production" ? [".js", ".mjs", ".ts"] : [".ts", ".js", ".mjs"];
+  // Always prefer the .ts source over the compiled .js: providers reach the
+  // engine's lib/db/client.ts (still raw ESM, never compiled) via relative
+  // import, and nativeImport() loads it with native TS type-stripping over
+  // real ESM `import` all the way down. The compiled .js providers are CJS
+  // (SWC's `require()` output) — `require()`-ing that one raw ESM file from
+  // inside them fails in production with "Failed to load the ES module"
+  // (Node can parse the TS fine; it just can't load ESM via `require`).
+  // .js/.mjs stay as a fallback for a template shipped pre-compiled with no
+  // .ts source at all.
+  const exts = [".ts", ".js", ".mjs"];
 
   for (const ext of exts) {
     const file = path.join(template.paths.providersDir, `${name}${ext}`);

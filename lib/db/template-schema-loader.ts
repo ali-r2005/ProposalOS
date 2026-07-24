@@ -37,8 +37,11 @@ async function exists(target: string): Promise<boolean> {
 export async function loadTemplateSchema(template: LoadedTemplate): Promise<Record<string, PgTable>> {
   if (!template.paths.dbDir) return {};
 
-  // On production/serverless, prefer compiled .js over .ts (Node can't execute TS natively)
-  const exts = process.env.NODE_ENV === "production" ? [".js", ".mjs", ".ts"] : [".ts", ".js", ".mjs"];
+  // Always prefer the .ts source over the compiled .js — see the matching
+  // note in provider-loader.ts. Doesn't currently bite here (schema.ts has no
+  // relative imports escaping outside templates/), but the same require()-of-
+  // ESM failure would hit the moment one did, so keep both loaders consistent.
+  const exts = [".ts", ".js", ".mjs"];
 
   for (const ext of exts) {
     const file = path.join(template.paths.dbDir, `schema${ext}`);
