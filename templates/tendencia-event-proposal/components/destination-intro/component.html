@@ -7,18 +7,11 @@
     <img src="{{destination-image}}" alt="Destination" data-field="destination-image" class="w-full h-full object-cover block">
   </div>
 
-  <!-- Decorative arrow markers, top-left -->
-  <div class="absolute top-14 left-16 z-10 flex items-center gap-5">
-    <div class="flex">
-      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--color-text-primary)]"></div>
-      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-accent)] -ml-2"></div>
-    </div>
-    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-secondary)]"></div>
-    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-primary)]"></div>
-  </div>
+  <!-- Decorative line above title -->
+  <div class="absolute left-[100px] top-[50px] w-[560px] h-[3px] bg-[var(--color-text-primary)] z-10"></div>
 
   <!-- Left content: heading + description -->
-  <div class="absolute left-[100px] top-[120px] w-[1160px] z-10">
+  <div class="absolute left-[100px] top-[68px] w-[1160px] z-10">
     <p class="text-xl font-bold uppercase tracking-[0.35em] text-[var(--brand-accent)] mb-3">Destination</p>
     <h1 class="text-[120px] leading-[0.9] font-bold text-[var(--color-text-primary)]" style="font-family: var(--font-heading);" data-field="destination">{{destination}}</h1>
     <img src="assets/outline_colored.webp" alt="" class="w-80 h-30 object-contain mt-5 mb-10">
