@@ -39,7 +39,10 @@
 ✅ next, react, typescript, handlebars, @anthropic-ai/sdk, yaml, zod, axios, tailwindcss, autoprefixer, puppeteer, drizzle-orm, drizzle-kit, postgres, dotenv, @grapesjs/studio-sdk (visual proposal editor — free plan: default `web` project type + custom `devices` sized to the slide artboard; no `studio-sdk-plugins` — those (`presetPrintable`, `canvasAbsoluteMode`, `canvasFullSize`, etc.) are paid Startup-plan or print/pagination-oriented and crop+corrupt fixed-size absolute-positioned slides)
 
 ## Server External Packages Rule
-Template files loaded via native `import()` (not webpack). If package imported in `providers/*.ts` or `db/*.ts`:
+Template files loaded via native `import()` (not webpack), straight from their `.ts` source —
+**no compile step**: Node runs the TypeScript directly (type-stripping), there is no
+`scripts/compile-templates.js` and no `.js` build artifacts in `templates/`. If package imported
+in `providers/*.ts` or `db/*.ts`:
 1. Add to `serverExternalPackages` in `next.config.js`
 2. Add to `outputFileTracingIncludes` (for Vercel deployment)
 
@@ -49,11 +52,28 @@ serverExternalPackages: ["handlebars", "drizzle-orm", "postgres"],
 outputFileTracingIncludes: {
   "/api/**/*": [
     "./templates/**/*",
+    // Any lib/*.ts file reached by a template's relative import (e.g. the
+    // db/client.ts shim below) must be force-included too — it's outside
+    // templates/ so the first glob misses it, and Vercel's static tracer
+    // can't see it either since it's only ever reached by a runtime string
+    // specifier, never a static `@/...` import.
+    "./lib/db/client.ts",
+    "./lib/utils/error-handler.ts",
     "./node_modules/drizzle-orm/**/*",
     "./node_modules/postgres/**/*",
   ],
 }
 ```
+
+**ESM scoping is required, not optional.** `templates/` and `lib/` each need their own
+`package.json` containing `{"type": "module"}` (root `package.json` stays CommonJS — untouched,
+so `next.config.js`/build scripts/webpack are unaffected). Without this, whether a native
+`import()`/`require()` of a `.ts` file works depends on the Node runtime's own ESM-vs-CJS
+auto-detection — which is **version-dependent**: some Node versions silently reparse an
+ambiguous file as ESM, others hard-fail with `Failed to load the ES module ... set "type":
+"module"`. This is exactly why a provider or `loadTemplateSchema()` call can work on `next dev`
+locally and 500/silently-empty on Vercel — don't diagnose that class of bug as a code issue
+before checking these two `package.json` files exist and are unmodified.
 
 ## Provider Interface (Strict)
 ```typescript
@@ -83,7 +103,7 @@ No custom helpers unless necessary.
 
 **Generic CRUD:** `/api/templates/[id]/data/[table]` works for any table (runtime introspection). No per-table routes needed.
 
-**Cross-boundary imports:** Templates use relative `.ts` imports (Node native TS, no webpack). Engine uses `@/` paths. Template `db/client.ts` = one-line shim: `export { getDb } from "../../../lib/db/client.ts";`
+**Cross-boundary imports:** Templates use relative `.ts` imports (Node native TS, no webpack — see ESM scoping note above). Engine uses `@/` paths. Template `db/client.ts` = one-line shim: `export { getDb } from "../../../lib/db/client.ts";`
 
 ## PDF Export (Server-side Puppeteer)
 - Route: `GET /api/proposals/[id]/pdf` (runtime: `"nodejs"`)
@@ -131,4 +151,5 @@ templates/[id]/
 - [ ] Providers: `export const provider`?
 - [ ] Templates use relative `.ts` imports?
 - [ ] serverExternalPackages updated?
+- [ ] `templates/package.json` and `lib/package.json` (`{"type":"module"}`) still present?
 - [ ] No `fetch`, no auth libs, no client PDF libs?

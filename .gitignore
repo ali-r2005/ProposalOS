@@ -8,8 +8,3 @@ next-env.d.ts
 .env*.local
 .DS_Store
 npm-debug.log*
-
-# Compiled from templates/*/{providers,db}/*.ts by scripts/compile-templates.js
-# at build time — never the source of truth, never hand-edit. Edit the .ts file.
-templates/*/providers/*.js
-templates/*/db/*.js

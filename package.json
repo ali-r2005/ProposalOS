@@ -5,7 +5,7 @@
   "description": "ProposalOS — an agnostic presentation generation engine",
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/compile-templates.js && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
@@ -31,7 +31,6 @@
     "zod": "^3.24.0"
   },
   "devDependencies": {
-    "@swc/core": "^1.15.46",
     "@types/node": "^22.10.0",
     "@types/pg": "^8.20.0",
     "@types/react": "^19.0.0",
