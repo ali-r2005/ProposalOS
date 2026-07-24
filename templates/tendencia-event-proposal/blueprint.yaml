@@ -113,6 +113,11 @@ sections:
     source: static
     expansion: single
 
+  - id: event-setup
+    component: event-setup
+    source: static
+    expansion: single
+
   - id: closing-thanks
     component: closing-thanks
     source: static
