@@ -354,7 +354,7 @@ export default function ProposalForm({ templateId }: { templateId: string }) {
                 i === step
                   ? "bg-[var(--app-accent)] text-white"
                   : i < step
-                    ? "bg-[var(--app-accent)]/40 text-white"
+                    ? "bg-[color-mix(in_srgb,var(--app-accent)_40%,transparent)] text-white"
                     : "bg-[var(--app-border)] text-[var(--app-muted)]"
               }`}
             >
