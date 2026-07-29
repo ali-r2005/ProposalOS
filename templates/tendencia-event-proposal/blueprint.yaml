@@ -113,12 +113,38 @@ sections:
     source: static
     expansion: single
 
-  - id: event-setup
-    component: event-setup
-    source: static
-    expansion: single
+  - id: divers-three-columns
+    component: divers-three-columns
+    source: database
+    provider: divers
+    expansion:
+      strategy: repeat
+      collection: diversThreeColumns
+    dependsOn:
+      - divers
+
+  - id: divers-two-columns
+    component: divers-two-columns
+    source: database
+    provider: divers
+    expansion:
+      strategy: repeat
+      collection: diversTwoColumns
+    dependsOn:
+      - divers
+
+  - id: divers-images-only
+    component: divers-images-only
+    source: database
+    provider: divers
+    expansion:
+      strategy: repeat
+      collection: diversImagesOnly
+    dependsOn:
+      - divers
 
   - id: closing-thanks
     component: closing-thanks
     source: static
     expansion: single
+
