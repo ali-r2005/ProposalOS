@@ -35,15 +35,18 @@ type RawDiversPackage = DiversPackage;
 function hasParagraphes(pkg: RawDiversPackage): boolean {
   return pkg.items.some((item) => Array.isArray(item.paragraphes) && item.paragraphes.length > 0);
 }
+interface DiversBuckets {
+  diversImagesOnly?: DiversPackage[];
+  diversTwoColumns?: DiversPackage[];
+  diversThreeColumns?: DiversPackage[];
+}
 
-function bucketDivers(packages: RawDiversPackage[]): {
-  diversImagesOnly: DiversPackage[];
-  diversTwoColumns: DiversPackage[];
-  diversThreeColumns: DiversPackage[];
-} {
+function bucketDivers(packages: RawDiversPackage[]): DiversBuckets {
   const diversImagesOnly: DiversPackage[] = [];
   const diversTwoColumns: DiversPackage[] = [];
   const diversThreeColumns: DiversPackage[] = [];
+  const divers : DiversBuckets = {
+  };
 
   for (const pkg of packages) {
     if (!hasParagraphes(pkg)) {
@@ -54,8 +57,17 @@ function bucketDivers(packages: RawDiversPackage[]): {
       diversThreeColumns.push({ ...pkg, items: pkg.items.slice(0, 3) });
     }
   }
+  if(diversImagesOnly.length > 0){
+    divers["diversImagesOnly"] = diversImagesOnly;
+  }
+  if(diversTwoColumns.length > 0){
+    divers["diversTwoColumns"] = diversTwoColumns;
+  }
+  if(diversThreeColumns.length > 0){
+    divers["diversThreeColumns"] = diversThreeColumns;
+  }
 
-  return { diversImagesOnly, diversTwoColumns, diversThreeColumns };
+  return divers;
 }
 
 const rawDummyDivers: RawDiversPackage[] = [
