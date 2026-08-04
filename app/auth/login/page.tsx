@@ -1,7 +1,29 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/components/AuthProvider';
 import LoginForm from '@/components/LoginForm';
 import ThemeToggle from '@/components/ThemeToggle';
 
 export default function LoginPage() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.push('/');
+    }
+  }, [user, loading, router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[var(--app-bg)]">
+        <div className="text-[var(--app-text)]">Loading...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--app-bg)] text-[var(--app-text)]">
       <div className="absolute top-6 right-6">
