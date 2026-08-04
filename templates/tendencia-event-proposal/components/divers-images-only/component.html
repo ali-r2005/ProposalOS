@@ -27,7 +27,7 @@
   <!-- Clean 4-Image Grid Container -->
   <div class="absolute left-[78px] top-[210px] w-[1764px] h-[780px] grid grid-cols-2 grid-rows-2 gap-7 z-10">
     {{#each items}}
-    <div class="relative w-full h-full rounded-2xl overflow-hidden shadow-lg border border-[var(--color-border)] bg-[var(--color-surface)] group">
+    <div class="relative w-full h-full border overflow-hidden shadow-lg border-[var(--color-border)] bg-[var(--color-surface)] group" style="border-radius: var(--border-radius);">
       <img src="{{#if image}}{{image}}{{else}}assets/placeholder-image.svg{{/if}}"
            alt="{{#if title}}{{title}}{{else}}Image {{@index}}{{/if}}"
            class="w-full h-full object-cover">

@@ -38,4 +38,7 @@
   --spacing-lg: 32px;
   --spacing-xl: 48px;
   --spacing-2xl: 64px;
+
+  /* Border radius */
+  --border-radius: 6px;
 }

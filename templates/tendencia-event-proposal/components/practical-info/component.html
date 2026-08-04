@@ -24,7 +24,7 @@
   </svg>
 
   <!-- Destination pill, top-right -->
-  <div class="absolute right-[80px] top-[64px] z-10 flex items-center gap-5 bg-[var(--brand-accent)] rounded-2xl px-9 py-5">
+  <div class="absolute right-[80px] top-[64px] z-10 flex items-center gap-5 bg-[var(--brand-accent)] px-9 py-5" style="border-radius: var(--border-radius);">
     <i class="ti ti-map-pin text-[var(--color-text-primary)] text-6xl"></i>
     <div>
       <p class="text-[var(--color-text-primary)]/70 text-base font-bold tracking-[0.25em]">DESTINATION</p>
@@ -38,7 +38,7 @@
     <!-- LANGUE -->
     {{#if langue}}
     <div class="relative" style="--accent: var(--brand-accent);">
-      <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
+      <div class="relative overflow-hidden h-full border flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background)); border-radius: var(--border-radius);">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
         <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-language"></i></div>
         <div class="flex-1 min-w-0 z-[1]">
@@ -53,7 +53,7 @@
     <!-- DURÉE DU TRAJET -->
     {{#if travel-duration}}
     <div class="relative" style="--accent: var(--brand-primary);">
-      <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
+      <div class="relative overflow-hidden h-full border flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background)); border-radius: var(--border-radius);">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
         <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-plane"></i></div>
         <div class="flex-1 min-w-0 z-[1]">
@@ -68,7 +68,7 @@
     <!-- DURÉE SÉJOUR -->
     {{#if stay-duration}}
     <div class="relative" style="--accent: var(--brand-secondary);">
-      <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
+      <div class="relative overflow-hidden h-full border flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background)); border-radius: var(--border-radius);">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
         <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-moon"></i></div>
         <div class="flex-1 min-w-0 z-[1]">
@@ -83,7 +83,7 @@
     <!-- FORMALITÉS -->
     {{#if formalities}}
     <div class="relative" style="--accent: var(--brand-accent-dark);">
-      <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
+      <div class="relative overflow-hidden h-full border flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background)); border-radius: var(--border-radius);">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
         <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-id"></i></div>
         <div class="flex-1 min-w-0 z-[1]">
@@ -98,7 +98,7 @@
     <!-- VILLES DE SÉJOUR -->
     {{#if destination}}
     <div class="relative" style="--accent: var(--brand-blue);">
-      <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
+      <div class="relative overflow-hidden h-full border flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background)); border-radius: var(--border-radius);">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
         <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-building-skyscraper"></i></div>
         <div class="flex-1 min-w-0 z-[1]">
@@ -113,7 +113,7 @@
     <!-- CLIMAT -->
     {{#if climate}}
     <div class="relative" style="--accent: var(--color-green-dark);">
-      <div class="relative overflow-hidden h-full rounded-[26px] flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background));">
+      <div class="relative overflow-hidden h-full border flex items-center gap-[30px] pt-[40px] pr-[40px] pb-[40px] pl-[46px] border" style="background: color-mix(in srgb, var(--accent) 7%, var(--color-background)); border-color: color-mix(in srgb, var(--accent) 28%, var(--color-background)); border-radius: var(--border-radius);">
         <div class="absolute top-0 left-0 w-[96px] h-[96px] z-[2]" style="background: var(--accent); clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
         <div class="w-[120px] h-[120px] rounded-full flex-shrink-0 z-[1] flex items-center justify-center text-[56px]" style="background: color-mix(in srgb, var(--accent) 20%, var(--color-background)); color: var(--accent);"><i class="ti ti-temperature"></i></div>
         <div class="flex-1 min-w-0 z-[1]">

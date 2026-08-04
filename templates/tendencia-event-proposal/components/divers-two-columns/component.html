@@ -27,7 +27,7 @@
   <!-- Two-Column Layout Grid -->
   <div class="absolute left-[78px] top-[210px] w-[1764px] h-[780px] grid grid-cols-2 gap-12 z-10">
     {{#each items}}
-    <div class="flex flex-col bg-white rounded-3xl border border-[var(--color-border)] shadow-lg overflow-hidden">
+    <div class="flex flex-col bg-white border border-[var(--color-border)] shadow-lg overflow-hidden" style="border-radius: var(--border-radius);">
       
       <!-- Column Image -->
       <div class="h-[360px] w-full overflow-hidden bg-[var(--color-surface)] relative">
@@ -35,7 +35,7 @@
              alt="{{title}}" 
              class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-        <div class="absolute bottom-4 left-6 px-4 py-1.5 rounded-full bg-[var(--brand-accent)] text-[var(--color-text-primary)] font-bold text-sm uppercase tracking-wider">
+        <div class="absolute bottom-4 left-6 px-4 py-1.5 bg-[var(--brand-accent)] text-[var(--color-text-primary)] font-bold text-sm uppercase tracking-wider" style="border-radius: var(--border-radius);">
           Prestation
         </div>
       </div>

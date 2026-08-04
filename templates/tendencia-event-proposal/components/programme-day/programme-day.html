@@ -28,7 +28,7 @@
   <!-- Synopsis label + date pill, top-right -->
   <div class="absolute right-[64px] top-[52px] z-10 flex flex-col items-end gap-2">
     <span class="text-sm font-bold uppercase tracking-[0.3em] text-[var(--color-text-secondary)]">Synopsis</span>
-    <div class="flex items-center gap-3 bg-[var(--brand-accent)] rounded-xl px-6 py-3">
+    <div class="flex items-center gap-3 bg-[var(--brand-accent)] border px-6 py-3" style="border-radius: var(--border-radius);">
       <i class="ti ti-calendar-event text-[var(--color-text-primary)] text-4xl"></i>
       <div class="leading-tight">
         <p class="text-xs font-bold tracking-[0.2em] text-[var(--color-text-primary)]">PROGRAMME</p>
@@ -52,7 +52,7 @@
         <div class="w-4 h-4 rounded-full bg-[var(--brand-accent)] mt-2.5 relative z-[2]"></div>
         <div class="flex flex-col gap-2 w-full pt-3.5">
           {{#each matinee}}
-          <div class="rounded-lg border border-[var(--color-border)] border-l-4 border-l-[var(--brand-accent)] bg-[var(--color-background)] px-3 py-2.5 text-[13px] leading-[1.45] text-[var(--color-text-primary)]">{{{this}}}</div>
+          <div class="border border-[var(--color-border)] border-l-4 border-l-[var(--brand-accent)] bg-[var(--color-background)] px-3 py-2.5 text-[13px] leading-[1.45] text-[var(--color-text-primary)]" style="border-radius: var(--border-radius);">{{{this}}}</div>
           {{/each}}
         </div>
       </div>
@@ -63,7 +63,7 @@
         <div class="w-4 h-4 rounded-full bg-[var(--brand-accent)] mt-2.5 relative z-[2]"></div>
         <div class="flex flex-col gap-2 w-full pt-3.5">
           {{#each midi}}
-          <div class="rounded-lg border border-[var(--color-border)] border-l-4 border-l-[var(--brand-accent)] bg-[var(--color-background)] px-3 py-2.5 text-[13px] leading-[1.45] text-[var(--color-text-primary)]">{{{this}}}</div>
+          <div class="border border-[var(--color-border)] border-l-4 border-l-[var(--brand-accent)] bg-[var(--color-background)] px-3 py-2.5 text-[13px] leading-[1.45] text-[var(--color-text-primary)]" style="border-radius: var(--border-radius);">{{{this}}}</div>
           {{/each}}
         </div>
       </div>
@@ -74,7 +74,7 @@
         <div class="w-4 h-4 rounded-full bg-[var(--brand-accent)] mt-2.5 relative z-[2]"></div>
         <div class="flex flex-col gap-2 w-full pt-3.5">
           {{#each apres_midi}}
-          <div class="rounded-lg border border-[var(--color-border)] border-l-4 border-l-[var(--brand-accent)] bg-[var(--color-background)] px-3 py-2.5 text-[13px] leading-[1.45] text-[var(--color-text-primary)]">{{{this}}}</div>
+          <div class="border border-[var(--color-border)] border-l-4 border-l-[var(--brand-accent)] bg-[var(--color-background)] px-3 py-2.5 text-[13px] leading-[1.45] text-[var(--color-text-primary)]" style="border-radius: var(--border-radius);">{{{this}}}</div>
           {{/each}}
         </div>
       </div>
@@ -85,7 +85,7 @@
         <div class="w-4 h-4 rounded-full bg-[var(--brand-accent)] mt-2.5 relative z-[2]"></div>
         <div class="flex flex-col gap-2 w-full pt-3.5">
           {{#each soir}}
-          <div class="rounded-lg border border-[var(--color-border)] border-l-4 border-l-[var(--brand-accent)] bg-[var(--color-background)] px-3 py-2.5 text-[13px] leading-[1.45] text-[var(--color-text-primary)]">{{{this}}}</div>
+          <div class="border border-[var(--color-border)] border-l-4 border-l-[var(--brand-accent)] bg-[var(--color-background)] px-3 py-2.5 text-[13px] leading-[1.45] text-[var(--color-text-primary)]" style="border-radius: var(--border-radius);">{{{this}}}</div>
           {{/each}}
         </div>
       </div>
