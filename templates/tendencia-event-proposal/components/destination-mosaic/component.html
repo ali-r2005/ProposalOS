@@ -13,7 +13,21 @@
   </div>
 
   <!-- Small yellow accent block below title -->
-  <img src="assets/outline_colored.webp" alt="" class="absolute left-[78px] top-[155px] w-80 h-30 object-contain z-10">
+  <svg width="300" height="24" viewBox="0 0 300 24" xmlns="http://www.w3.org/2000/svg" class="absolute left-[78px] top-[155px] z-10">
+    <defs>
+      <linearGradient id="underlineGradient4" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#0f7a5e"/>
+        <stop offset="45%" stop-color="#1f9ad6"/>
+        <stop offset="75%" stop-color="#9db85a"/>
+        <stop offset="100%" stop-color="#f0c419"/>
+      </linearGradient>
+    </defs>
+    <path d="M0,18 C75,7 225,7 300,18"
+          fill="none"
+          stroke="url(#underlineGradient4)"
+          stroke-width="13"
+          stroke-linecap="butt"/>
+  </svg>
 
   <!-- 7 x 2 photo / color-block mosaic -->
   <div class="absolute left-[78px] top-[285px] z-10 grid grid-cols-[repeat(7,252px)] auto-rows-[243px]">
