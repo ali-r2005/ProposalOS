@@ -50,7 +50,7 @@
       "label": "Client Logo URL",
       "type": "url",
       "required": false,
-      "placeholder": "https://example.com/logo.png"
+      "placeholder": "https://example.com/logo.svg"
     },
     {
       "key": "participant-count",
