@@ -4,6 +4,10 @@
   "description": "Detail slide, repeated once per selected soirée (repeat over `soirees`).",
   "requiredProps": {
     "image": { "type": "string", "format": "url" },
+    "images": {
+      "type": "array",
+      "items": { "type": "string", "format": "url" }
+    },
     "name": { "type": "string" },
     "subtitle": { "type": "string" },
     "description": {
