@@ -4,9 +4,9 @@
 
 :root {
   /* Brand colors extracted from logo and design system */
-  --brand-primary: #0099cc;      /* Teal/cyan blue */
-  --brand-secondary: #2db84d;    /* Green */
-  --brand-accent: #ffc400;       /* Gold/yellow */
+  --brand-primary: #255AA8;      /* Teal/cyan blue */
+  --brand-secondary: #137E4D;    /* Green */
+  --brand-accent: #FFC000;       /* Gold/yellow */
   --brand-accent-dark: #ff9500;  /* Orange */
   --brand-blue: #2d5cb3;         /* Royal/cobalt blue (concept boxes & display headings) */
 
