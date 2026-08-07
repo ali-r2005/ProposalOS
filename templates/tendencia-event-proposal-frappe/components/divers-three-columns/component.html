@@ -1,0 +1,74 @@
+<!-- Slide component: Divers — Three-Column Layout (Title + 3 Columns with Image, Title & Paragraphs) -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- Decorative line above title -->
+  <div class="absolute left-[78px] top-[50px] w-[580px] h-[3px] bg-[var(--color-text-primary)] z-10"></div>
+
+  <!-- Slide Header -->
+  <h1 class="absolute left-[78px] top-[68px] z-10 text-5xl font-bold leading-[1.05]" style="font-family: var(--font-heading);">
+    <span class="text-[var(--brand-primary)]" data-field="title">{{#if title}}{{title}}{{else}}OFFRES & SERVICES DIVERS{{/if}}</span>
+  </h1>
+  <svg width="300" height="24" viewBox="0 0 300 24" xmlns="http://www.w3.org/2000/svg" class="absolute left-[78px] top-[150px] z-10">
+    <defs>
+      <linearGradient id="underlineGradient7" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#0f7a5e"/>
+        <stop offset="45%" stop-color="#1f9ad6"/>
+        <stop offset="75%" stop-color="#9db85a"/>
+        <stop offset="100%" stop-color="#f0c419"/>
+      </linearGradient>
+    </defs>
+    <path d="M0,18 C75,7 225,7 300,18"
+          fill="none"
+          stroke="url(#underlineGradient7)"
+          stroke-width="13"
+          stroke-linecap="butt"/>
+  </svg>
+
+  <!-- Three-Column Layout Grid -->
+  <div class="absolute left-[78px] top-[210px] w-[1764px] h-[780px] grid grid-cols-3 gap-8 z-10">
+    {{#each items}}
+    <div class="flex flex-col bg-white border border-[var(--color-border)] shadow-md overflow-hidden transition-all duration-300" style="border-radius: var(--border-radius);">
+      
+      <!-- Column Image -->
+      <div class="h-[280px] w-full overflow-hidden bg-[var(--color-surface)] relative">
+        <img src="{{#if image}}{{image}}{{else}}assets/placeholder-image.svg{{/if}}" 
+             alt="{{title}}" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+      </div>
+
+      <!-- Column Content -->
+      <div class="p-7 flex flex-col flex-1 bg-white">
+        <!-- Column Title -->
+        <h2 class="text-2xl font-bold text-[var(--brand-primary)] mb-4 leading-snug" style="font-family: var(--font-heading);">
+          {{title}}
+        </h2>
+
+        <!-- Paragraphs -->
+        <div class="space-y-3 flex-1 text-[var(--color-text-primary)] text-[16px] leading-relaxed">
+          {{#each paragraphes}}
+          <p class="leading-relaxed">{{this}}</p>
+          {{/each}}
+        </div>
+      </div>
+
+    </div>
+    {{/each}}
+  </div>
+
+  <!-- Tendencia logo bottom-left -->
+  <div class="absolute bottom-6 left-12 z-20">
+    <img src="assets/logo-black.png" alt="Tendencia Events & Travel" class="h-16 opacity-80 object-contain">
+  </div>
+
+  <!-- Decorative arrow markers bottom-right -->
+  <div class="absolute bottom-8 right-16 z-10 flex items-center gap-4">
+    <div class="flex">
+      <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-primary)]"></div>
+  </div>
+
+</div>

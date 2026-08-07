@@ -26,6 +26,14 @@ const nextConfig = {
       "./lib/utils/error-handler.ts",
       "./node_modules/drizzle-orm/**/*",
       "./node_modules/postgres/**/*",
+      // Same blind spot, second data source: templates that fetch their catalog
+      // data from a Frappe app (rather than owning Postgres tables) reach this
+      // chain through their own db/client.ts shim, so it needs the same
+      // force-include treatment as lib/db/client.ts above.
+      "./lib/frappe/template-data.ts",
+      "./lib/frappe/client.ts",
+      "./lib/frappe/types.ts",
+      "./node_modules/axios/**/*",
     ],
   },
 };

@@ -1,0 +1,150 @@
+sections:
+  # Static section — always the same layout, no data needed
+  - id: welcome
+    component: welcome
+    source: static
+    expansion: single
+
+  - id: program-cover
+    component: program-cover
+    source: manual
+    expansion: single
+
+  - id: concept-statement
+    component: concept-statement
+    source: static
+    expansion: single
+
+  - id: destination-mosaic
+    component: destination-mosaic
+    source: static
+    expansion: single
+
+  - id: practical-info
+    component: practical-info
+    source: manual
+    expansion: single
+
+  # AI-generated section — one prompt, one slide
+  - id: destination-intro
+    component: destination-intro
+    source: ai
+    prompt: destination
+    expansion: single
+
+  - id: programme-day
+    component: programme-day
+    source: manual
+    expansion:
+      strategy: repeat
+      collection: programme
+    dependsOn:
+      - programme
+
+  - id: accommodation-options
+    component: accommodation-options
+    source: database
+    provider: accommodation
+    expansion:
+      strategy: single
+      collection: accommodation
+    dependsOn:
+      - accommodation
+
+  - id: accommodation-selection
+    component: accommodation-selection
+    source: database
+    expansion: single
+
+  - id: accommodation-showcase
+    component: accommodation-showcase
+    source: database
+    expansion:
+      strategy: repeat
+      collection: hotels
+    dependsOn:
+      - accommodation
+
+  - id: activity-options
+    component: activity-options
+    source: database
+    provider: activities
+    expansion: single
+    dependsOn:
+      - activities
+
+  - id: activity-detail
+    component: activity-detail
+    source: database
+    provider: activities
+    expansion:
+      strategy: repeat
+      collection: activities
+    dependsOn:
+      - activities
+
+  - id: dining-options
+    component: dining-options
+    source: database
+    provider: soirees
+    expansion:
+      strategy: single
+      collection: soirees
+    dependsOn:
+      - soirees
+
+  - id: soiree-detail
+    component: soiree-detail
+    source: database
+    provider: soirees
+    expansion:
+      strategy: repeat
+      collection: soirees
+    dependsOn:
+      - soirees
+
+  - id: invitation-model
+    component: invitation-model
+    source: static
+    expansion: single
+
+  - id: idea-box
+    component: idea-box
+    source: static
+    expansion: single
+
+  - id: divers-three-columns
+    component: divers-three-columns
+    source: database
+    provider: divers
+    expansion:
+      strategy: repeat
+      collection: diversThreeColumns
+    dependsOn:
+      - divers
+
+  - id: divers-two-columns
+    component: divers-two-columns
+    source: database
+    provider: divers
+    expansion:
+      strategy: repeat
+      collection: diversTwoColumns
+    dependsOn:
+      - divers
+
+  - id: divers-images-only
+    component: divers-images-only
+    source: database
+    provider: divers
+    expansion:
+      strategy: repeat
+      collection: diversImagesOnly
+    dependsOn:
+      - divers
+
+  - id: closing-thanks
+    component: closing-thanks
+    source: static
+    expansion: single
+

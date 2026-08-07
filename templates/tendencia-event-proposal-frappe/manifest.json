@@ -1,0 +1,12 @@
+{
+  "id": "tendencia-event-proposal-frappe",
+  "name": "Tendencia Event Proposal (Frappe)",
+  "version": "1.0.0",
+  "author": "Tendencia Events",
+  "description": "Corporate event proposal template whose catalog data (hotels, activities, soirées, divers) is entered in the Frappe app and fetched by the providers, rather than stored in this app's Postgres database",
+  "canvas": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "16:9"
+  }
+}

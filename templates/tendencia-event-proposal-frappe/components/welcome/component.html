@@ -1,0 +1,51 @@
+<!-- Slide component: M'Rahba welcome / hero -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+
+  <!-- Low-poly hero mosaic, bleeding off the top-right corner -->
+  <img src="assets/hero.png" alt="" class="absolute top-[-40px] right-[-40px] w-[1150px] h-[1150px] object-contain pointer-events-none select-none z-0">
+
+  <!-- Main content: left-aligned, vertically centered -->
+  <div class="absolute inset-y-0 left-[80px] z-10 flex flex-col justify-center w-[820px]">
+    <!-- <p class="text-xl font-bold tracking-[0.4em] text-[var(--color-text-secondary)] mb-6">BIENVENUE CHEZ TENDENCIA</p>
+    <div class="w-[580px] h-[3px] bg-[var(--color-text-primary)] mb-8"></div> -->
+    <h1 class="text-[150px] leading-none font-bold text-[var(--color-text-primary)]" style="font-family: var(--font-heading); letter-spacing: 0.02em;">
+      M'RAHBA
+    </h1>
+    <svg width="400" height="34" viewBox="0 0 300 24" xmlns="http://www.w3.org/2000/svg" class="mt-10 mb-10">
+      <defs>
+        <linearGradient id="underlineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#0f7a5e"/>
+          <stop offset="45%" stop-color="#1f9ad6"/>
+          <stop offset="75%" stop-color="#9db85a"/>
+          <stop offset="100%" stop-color="#f0c419"/>
+        </linearGradient>
+      </defs>
+      <path d="M0,18 C75,7 225,7 300,18"
+            fill="none"
+            stroke="url(#underlineGradient)"
+            stroke-width="13"
+            stroke-linecap="butt"/>
+    </svg>
+   
+  </div>
+
+  <!-- Tendencia logo + trust line, bottom-left -->
+  <div class="absolute bottom-10 left-[80px] z-10 flex items-center gap-6">
+    <img src="assets/logo.svg" alt="Tendencia Events & Travel" class="h-40">
+    <p class="text-xl text-[var(--color-text-secondary)]">
+      Merci d'avoir fait confiance à <span class="font-bold text-[var(--color-text-primary)]">Tendencia</span>
+    </p>
+  </div>
+
+  <!-- Decorative arrow markers, bottom-right (consistent with other slides) -->
+  <div class="absolute bottom-16 right-20 z-10 flex items-center gap-5">
+    <div class="flex">
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-primary)]"></div>
+  </div>
+
+</div>
