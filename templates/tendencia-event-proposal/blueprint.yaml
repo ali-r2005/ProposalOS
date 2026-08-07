@@ -103,13 +103,13 @@ sections:
     dependsOn:
       - soirees
 
-  - id: invitation-model
-    component: invitation-model
+  - id: idea-box
+    component: idea-box
     source: static
     expansion: single
 
-  - id: idea-box
-    component: idea-box
+  - id: invitation-model
+    component: invitation-model
     source: static
     expansion: single
 
