@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { http, toErrorMessage } from "@/lib/utils/http";
 import type { TemplateSummary } from "@/lib/engine/types";
+import { useLocale } from "@/components/LocaleProvider";
 
 interface ProposalRow {
   id: string;
@@ -23,6 +24,7 @@ function formatDate(iso: string): string {
  * (`/history`) — the `templateId` prop is the only difference.
  */
 export default function ProposalHistory({ templateId }: { templateId?: string }) {
+  const { t } = useLocale();
   const [rows, setRows] = useState<ProposalRow[]>([]);
   const [total, setTotal] = useState(0);
   const [templateNames, setTemplateNames] = useState<Record<string, string>>({});
@@ -44,9 +46,9 @@ export default function ProposalHistory({ templateId }: { templateId?: string })
           setError(data.error ?? "Failed to load history");
         }
       })
-      .catch((err) => setError(toErrorMessage(err, "Failed to load history")))
+      .catch((err) => setError(toErrorMessage(err, t("history.loadFailed"))))
       .finally(() => setLoading(false));
-  }, [templateId]);
+  }, [templateId, t]);
 
   useEffect(() => {
     load();
@@ -66,43 +68,45 @@ export default function ProposalHistory({ templateId }: { templateId?: string })
   }, [templateId]);
 
   async function remove(id: string) {
-    if (!confirm("Delete this proposal? This cannot be undone.")) return;
+    if (!confirm(t("history.deleteConfirm"))) return;
     setDeletingId(id);
     try {
       await http.delete(`/api/proposals/${id}`);
       load();
     } catch (err) {
-      setError(toErrorMessage(err, "Delete failed"));
+      setError(toErrorMessage(err, t("history.deleteFailed")));
     } finally {
       setDeletingId(null);
     }
   }
 
-  if (loading && rows.length === 0) return <p className="text-[var(--app-muted)]">Loading…</p>;
-  if (error && rows.length === 0) return <p className="text-red-400">Error: {error}</p>;
-  if (rows.length === 0) return <p className="text-[var(--app-muted)]">No proposals yet.</p>;
+  if (loading && rows.length === 0) return <p className="text-[var(--app-muted)]">{t("history.loading")}</p>;
+  if (error && rows.length === 0) return <p className="text-red-400">{t("history.error", { message: error })}</p>;
+  if (rows.length === 0) return <p className="text-[var(--app-muted)]">{t("history.empty")}</p>;
 
   return (
     <div>
       <p className="mb-4 text-sm text-[var(--app-muted)]">
-        {total} proposal{total === 1 ? "" : "s"}
+        {t(total === 1 ? "history.count" : "history.count.plural", { count: total })}
       </p>
       {error && <p className="mb-4 text-sm text-red-400">{error}</p>}
       <div className="overflow-x-auto rounded-xl border border-[var(--app-border)]">
         <table className="w-full text-left text-sm">
           <thead className="bg-[var(--app-panel)] text-xs uppercase tracking-wide text-[var(--app-muted)]">
             <tr>
-              <th className="px-4 py-2 font-medium">Name</th>
-              {!templateId && <th className="px-4 py-2 font-medium">Template</th>}
-              <th className="px-4 py-2 font-medium">Created</th>
-              <th className="px-4 py-2 font-medium">Updated</th>
+              <th className="px-4 py-2 font-medium">{t("history.column.name")}</th>
+              {!templateId && <th className="px-4 py-2 font-medium">{t("history.column.template")}</th>}
+              <th className="px-4 py-2 font-medium">{t("history.column.created")}</th>
+              <th className="px-4 py-2 font-medium">{t("history.column.updated")}</th>
               <th className="px-4 py-2" />
             </tr>
           </thead>
           <tbody>
             {rows.map((row) => (
               <tr key={row.id} className="border-t border-[var(--app-border)]">
-                <td className="px-4 py-2">{row.title || `Untitled — ${formatDate(row.createdAt)}`}</td>
+                <td className="px-4 py-2">
+                  {row.title || t("history.untitled", { date: formatDate(row.createdAt) })}
+                </td>
                 {!templateId && (
                   <td className="px-4 py-2 text-[var(--app-muted)]">
                     {templateNames[row.templateId] ?? row.templateId}
@@ -112,7 +116,7 @@ export default function ProposalHistory({ templateId }: { templateId?: string })
                 <td className="whitespace-nowrap px-4 py-2 text-[var(--app-muted)]">{formatDate(row.updatedAt)}</td>
                 <td className="whitespace-nowrap px-4 py-2 text-right">
                   <Link href={`/proposal/${row.id}`} className="mr-3 text-[var(--app-accent)]">
-                    Open
+                    {t("history.open")}
                   </Link>
                   <button
                     type="button"
@@ -120,7 +124,7 @@ export default function ProposalHistory({ templateId }: { templateId?: string })
                     onClick={() => remove(row.id)}
                     className="text-red-400 disabled:opacity-40"
                   >
-                    Delete
+                    {t("history.delete")}
                   </button>
                 </td>
               </tr>

@@ -5,17 +5,20 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import ThemeToggle from '@/components/ThemeToggle';
-
-const NAV_LINKS = [
-  { href: '/', label: 'Templates' },
-  { href: '/history', label: 'History' },
-  { href: '/admin/settings', label: 'Settings' },
-];
+import LocaleToggle from '@/components/LocaleToggle';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function TopNavigationBar() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
+  const { t } = useLocale();
+
+  const NAV_LINKS = [
+    { href: '/', label: t('nav.templates') },
+    { href: '/history', label: t('nav.history') },
+    { href: '/admin/settings', label: t('nav.settings') },
+  ];
 
   async function handleLogout() {
     await logout();
@@ -53,12 +56,13 @@ export default function TopNavigationBar() {
           {user?.email && (
             <span className="hidden text-sm text-[var(--app-muted)] sm:inline">{user.email}</span>
           )}
+          <LocaleToggle />
           <ThemeToggle />
           <button
             onClick={handleLogout}
             className="rounded-lg border border-[var(--app-border)] px-3 py-1.5 text-sm font-medium text-[var(--app-text)] transition hover:border-[var(--app-accent)]"
           >
-            Logout
+            {t('nav.logout')}
           </button>
         </div>
       </div>

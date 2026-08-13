@@ -15,6 +15,7 @@ export async function GET(request: Request) {
       name: m.name,
       description: m.description,
       version: m.version,
+      lang: m.lang,
     }));
     return NextResponse.json(summaries);
   } catch (error) {

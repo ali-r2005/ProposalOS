@@ -11,5 +11,9 @@ export interface TemplateManifest {
   version: string;
   author?: string;
   description?: string;
+  /** Language the template's own content (form labels, components, prompts) is written
+   *  in, e.g. "en" or "fr". Independent of the app UI language — a user can browse the
+   *  admin in French while creating an English-content proposal. */
+  lang: string;
   canvas: Canvas;
 }

@@ -31,4 +31,5 @@ export interface TemplateSummary {
   name: string;
   description?: string;
   version: string;
+  lang: string;
 }

@@ -2,13 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function TemplateSidebar({ templateId }: { templateId: string }) {
   const pathname = usePathname();
+  const { t } = useLocale();
   const tabs = [
-    { href: `/templates/${templateId}/new`, label: 'New proposal' },
-    { href: `/templates/${templateId}/history`, label: 'History' },
-    { href: `/templates/${templateId}/admin`, label: 'Manage data' },
+    { href: `/templates/${templateId}/new`, label: t('sidebar.new') },
+    { href: `/templates/${templateId}/history`, label: t('sidebar.history') },
+    { href: `/templates/${templateId}/admin`, label: t('sidebar.admin') },
   ];
 
   return (
@@ -17,7 +19,7 @@ export default function TemplateSidebar({ templateId }: { templateId: string }) 
         href="/"
         className="mb-8 block text-sm text-[var(--app-muted)] transition hover:text-[var(--app-accent)]"
       >
-        ← Templates
+        {t('sidebar.back')}
       </Link>
       <nav className="flex flex-col gap-1">
         {tabs.map((tab) => {
