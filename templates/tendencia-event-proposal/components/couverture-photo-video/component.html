@@ -1,0 +1,107 @@
+<!-- Slide component: Couverture Photo & Vidéo (Static slide using exact divers-two-columns layout) -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- Decorative line above title -->
+  <div class="absolute left-[78px] top-[50px] w-[580px] h-[3px] bg-[var(--color-text-primary)] z-10"></div>
+
+  <!-- Slide Header -->
+  <h1 class="absolute left-[78px] top-[68px] z-10 text-5xl font-bold leading-[1.05]" style="font-family: var(--font-heading);">
+    <span class="text-[var(--color-text-primary)]" data-field="title">COUVERTURE PHOTO & VIDEO</span>
+  </h1>
+  <svg width="300" height="24" viewBox="0 0 300 24" xmlns="http://www.w3.org/2000/svg" class="absolute left-[78px] top-[125px] z-10">
+    <path d="M0,18 C75,7 225,7 300,18"
+          fill="none"
+          stroke="var(--color-text-primary)"
+          stroke-width="13"
+          stroke-linecap="butt"/>
+  </svg>
+
+  <!-- Two-Column Layout Grid (exact divers-two-columns layout) -->
+  <div class="absolute left-[78px] top-[210px] w-[1764px] h-[780px] grid grid-cols-2 gap-12 z-10">
+
+    <!-- Column 1 -->
+    <div class="flex flex-col bg-white border border-[var(--color-border)] shadow-lg overflow-hidden" style="border-radius: var(--border-radius);">
+      
+      <!-- Column Image -->
+      <div class="h-[360px] w-full overflow-hidden bg-[var(--color-surface)] relative">
+        <img src="assets/technique.png" 
+             alt="NOTRE TECHNIQUE" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+        <div class="absolute bottom-4 left-6 px-4 py-1.5 bg-[var(--brand-accent)] text-[var(--color-text-primary)] font-bold text-sm uppercase tracking-wider" style="border-radius: var(--border-radius);">
+          TECHNIQUE & CAPTATION
+        </div>
+      </div>
+
+      <!-- Column Content -->
+      <div class="p-9 flex flex-col flex-1 bg-white">
+        <!-- Column Title -->
+        <h2 class="text-3xl font-bold text-[var(--color-text-primary)] mb-5 leading-tight" style="font-family: var(--font-heading);">
+          NOTRE TECHNIQUE
+        </h2>
+
+        <!-- Paragraphs -->
+        <div class="space-y-4 flex-1 text-[var(--color-text-primary)] text-[18px] leading-relaxed">
+          <p class="leading-relaxed">
+            Plans réfléchis & scénarisés, jeu sur la profondeur de champ, 4K, Full HD, SlowMotion, Travelling, Grue, Steadycam, Drone ... nous utiliserons ce matériel et ces différentes techniques de captation dans un seul but.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Column 2 -->
+    <div class="flex flex-col bg-white border border-[var(--color-border)] shadow-lg overflow-hidden" style="border-radius: var(--border-radius);">
+      
+      <!-- Column Image -->
+      <div class="h-[360px] w-full overflow-hidden bg-[var(--color-surface)] relative">
+        <img src="assets/restitution.png" 
+             alt="NOTRE APPROCHE & RESTITUTION" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+        <div class="absolute bottom-4 left-6 px-4 py-1.5 bg-[var(--brand-accent)] text-[var(--color-text-primary)] font-bold text-sm uppercase tracking-wider" style="border-radius: var(--border-radius);">
+          RESTITUTION & BEST-OF
+        </div>
+      </div>
+
+      <!-- Column Content -->
+      <div class="p-9 flex flex-col flex-1 bg-white">
+        <!-- Column Title -->
+        <h2 class="text-3xl font-bold text-[var(--color-text-primary)] mb-5 leading-tight" style="font-family: var(--font-heading);">
+          NOTRE APPROCHE & RESTITUTION
+        </h2>
+
+        <!-- Paragraphs -->
+        <div class="space-y-4 flex-1 text-[var(--color-text-primary)] text-[18px] leading-relaxed">
+          <p class="leading-relaxed">
+            Un film est une histoire, nous sommes là pour vous aider à la raconter et à la mettre en scène.
+          </p>
+          <p class="leading-relaxed">
+            Réaliser une couverture photo & vidéo corporates dans un esprit moderne, dynamique et toujours dans l'optique de faire passer le bon message.
+          </p>
+          <div class="mt-4 p-4 bg-[var(--color-background)] border-l-4 border-[var(--brand-accent)] text-[var(--color-text-primary)] font-semibold text-[16px]">
+            BOOK PHOTO BEST OF AVEC DVD ET QR CODE POUR TELECHARGEMENT A DISTANCE
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Tendencia logo bottom-left -->
+  <div class="absolute bottom-10 left-10 z-20">
+    <img src="assets/logo-black.svg" alt="Tendencia Events & Travel" class="h-24">
+  </div>
+
+  <!-- Decorative arrow markers bottom-right -->
+  <div class="absolute bottom-8 right-16 z-10 flex items-center gap-4">
+    <div class="flex">
+      <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-primary)]"></div>
+  </div>
+
+</div>

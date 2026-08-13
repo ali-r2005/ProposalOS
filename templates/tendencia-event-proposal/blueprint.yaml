@@ -113,6 +113,41 @@ sections:
     source: static
     expansion: single
 
+  - id: branding
+    component: branding
+    source: static
+    expansion: single
+
+  - id: scenographie-fb
+    component: scenographie-fb
+    source: static
+    expansion: single
+
+  - id: couverture-photo-video
+    component: couverture-photo-video
+    source: static
+    expansion: single
+
+  - id: idees-gifts
+    component: idees-gifts
+    source: static
+    expansion: single
+
+  - id: supports-de-com
+    component: supports-de-com
+    source: static
+    expansion: single
+
+  - id: logo-crea-artwork
+    component: logo-crea-artwork
+    source: static
+    expansion: single
+
+  - id: goodies
+    component: goodies
+    source: static
+    expansion: single
+
   - id: divers-three-columns
     component: divers-three-columns
     source: database

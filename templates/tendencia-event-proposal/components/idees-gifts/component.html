@@ -1,0 +1,63 @@
+<!-- Slide component: Idées Gifts (Static slide using divers-images-only 3-card layout) -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- Decorative line above title -->
+  <div class="absolute left-[78px] top-[50px] w-[580px] h-[3px] bg-[var(--color-text-primary)] z-10"></div>
+
+  <!-- Slide Header -->
+  <h1 class="absolute left-[78px] top-[68px] z-10 text-5xl font-bold leading-[1.05]" style="font-family: var(--font-heading);">
+    <span class="text-[var(--color-text-primary)]" data-field="title">IDÉES GIFTS</span>
+  </h1>
+  <svg width="300" height="24" viewBox="0 0 300 24" xmlns="http://www.w3.org/2000/svg" class="absolute left-[78px] top-[125px] z-10">
+    <path d="M0,18 C75,7 225,7 300,18"
+          fill="none"
+          stroke="var(--color-text-primary)"
+          stroke-width="13"
+          stroke-linecap="butt"/>
+  </svg>
+
+  <!-- Clean 3-Image Grid Container (divers-images-only 3-column layout) -->
+  <div class="absolute left-[78px] top-[210px] w-[1764px] h-[780px] grid grid-cols-3 gap-8 z-10">
+
+    <!-- Card 1 -->
+    <div class="relative w-full h-full border overflow-hidden shadow-lg border-[var(--color-border)] bg-[var(--color-surface)] group" style="border-radius: var(--border-radius);">
+      <img src="assets/troph.png" alt="TROPHÉES & AWARDS" class="w-full h-full object-cover">
+      <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent p-6 text-white text-xl font-bold font-['Poppins']">
+        TROPHÉES & AWARDS
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="relative w-full h-full border overflow-hidden shadow-lg border-[var(--color-border)] bg-[var(--color-surface)] group" style="border-radius: var(--border-radius);">
+      <img src="assets/personalized.png" alt="TROPHÉE PERSONNALISÉ" class="w-full h-full object-cover">
+      <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent p-6 text-white text-xl font-bold font-['Poppins']">
+        TROPHÉE PERSONNALISÉ
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="relative w-full h-full border overflow-hidden shadow-lg border-[var(--color-border)] bg-[var(--color-surface)] group" style="border-radius: var(--border-radius);">
+      <img src="assets/gifts.png" alt="GIFTS & SOUVENIRS" class="w-full h-full object-cover">
+      <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent p-6 text-white text-xl font-bold font-['Poppins']">
+        GIFTS & SOUVENIRS
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tendencia logo bottom-left -->
+  <div class="absolute bottom-10 left-10 z-20">
+    <img src="assets/logo-black.svg" alt="Tendencia Events & Travel" class="h-24">
+  </div>
+
+  <!-- Decorative arrow markers bottom-right -->
+  <div class="absolute bottom-8 right-16 z-10 flex items-center gap-4">
+    <div class="flex">
+      <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-primary)]"></div>
+  </div>
+
+</div>

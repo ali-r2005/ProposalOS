@@ -31,9 +31,9 @@
     <u class="underline-offset-[6px] decoration-2">Takk</u>, <span dir="rtl">شكراً</span>
   </p>
 
-  <!-- Presentation date, bottom-left (on the yellow band) -->
+  <!-- Presentation date, bottom-left (dynamically set via JS) -->
   <p class="absolute left-[64px] bottom-[40px] z-10 text-3xl font-medium text-[var(--color-text-primary)]"
-     style="font-family: var(--font-heading);" data-field="date">05/05/2026</p>
+     style="font-family: var(--font-heading);" data-field="date"></p>
 
   <!-- Sign-off, bottom-center -->
   <p class="absolute left-0 right-0 bottom-[44px] z-10 text-center text-3xl font-semibold tracking-wide text-[var(--color-text-primary)]"
@@ -43,5 +43,19 @@
   <div class="absolute bottom-8 right-10 z-20">
     <img src="assets/logo.svg" alt="Tendencia Events &amp; Travel" class="h-24">
   </div>
+
+  <!-- Dynamic current date script -->
+  <script>
+    (function() {
+      var dateEl = document.querySelector('[data-field="date"]');
+      if (dateEl) {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+        dateEl.textContent = dd + '/' + mm + '/' + yyyy;
+      }
+    })();
+  </script>
 
 </div>
