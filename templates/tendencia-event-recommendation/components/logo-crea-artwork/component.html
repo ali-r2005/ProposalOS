@@ -16,22 +16,22 @@
           stroke-linecap="butt"/>
   </svg>
 
-  <!-- Clean 3-Row Grid Container (1 column x 3 rows) -->
-  <div class="absolute left-[78px] top-[210px] w-[1764px] h-[780px] grid grid-cols-1 grid-rows-3 gap-6 z-10">
+  <!-- Clean 2-Row Grid Container (Row 1: 2 cards; Row 2: 1 full-width card) -->
+  <div class="absolute left-[78px] top-[210px] w-[1764px] h-[780px] grid grid-cols-2 grid-rows-2 gap-6 z-10">
 
     <!-- Card 1 -->
     <div class="relative w-full h-full border overflow-hidden shadow-lg border-[var(--color-border)] bg-[var(--color-surface)] group" style="border-radius: var(--border-radius);">
-      <img src="assets/Foliatech.webp" alt="Artwork 1" class="w-full h-full object-cover">
+      <img src="assets/Foliatech.webp" alt="Artwork 1" class="w-full h-full object-contain p-2">
     </div>
 
     <!-- Card 2 -->
     <div class="relative w-full h-full border overflow-hidden shadow-lg border-[var(--color-border)] bg-[var(--color-surface)] group" style="border-radius: var(--border-radius);">
-      <img src="assets/fo.png" alt="Artwork 2" class="w-full h-full object-cover">
+      <img src="assets/fo.png" alt="Artwork 2" class="w-full h-full object-contain p-2">
     </div>
 
-    <!-- Card 3 -->
-    <div class="relative w-full h-full border overflow-hidden shadow-lg border-[var(--color-border)] bg-[var(--color-surface)] group" style="border-radius: var(--border-radius);">
-      <img src="assets/fo2.png" alt="Artwork 3" class="w-full h-full object-cover">
+    <!-- Card 3 (Full width second row) -->
+    <div class="col-span-2 relative w-full h-full border overflow-hidden shadow-lg border-[var(--color-border)] bg-[var(--color-surface)] group" style="border-radius: var(--border-radius);">
+      <img src="assets/fo2.png" alt="Artwork 3" class="w-full h-full object-contain p-2">
     </div>
 
   </div>
@@ -42,13 +42,13 @@
   </div>
 
   <!-- Decorative arrow markers bottom-right -->
-  <div class="absolute bottom-8 right-16 z-10 flex items-center gap-4">
+  <div class="absolute bottom-8 right-16 z-10 flex items-center gap-5">
     <div class="flex">
-      <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--color-text-primary)]"></div>
-      <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-accent)] -ml-2"></div>
     </div>
-    <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-secondary)]"></div>
-    <div class="w-0 h-0 border-y-[16px] border-y-transparent border-l-[24px] border-l-[color:var(--brand-primary)]"></div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-primary)]"></div>
   </div>
 
 </div>
