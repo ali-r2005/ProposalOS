@@ -11,6 +11,11 @@ const DEAL_FIELD_MAP: Record<string, string> = {
   custom_destination: "destination",
   custom_participants_count: "participant-count",
   custom_event_type: "event-type",
+  custom_event_start_date: "event-dates",
+  custom_destination_image_url:"destination-image",
+  custom_travel_duration:"travel-duration",
+  custom_formalities:"formalities",
+  custom_climate:"climate"
 };
 
 interface CrmDeal {
@@ -33,6 +38,13 @@ function daysBetween(start?: string, end?: string): string | undefined {
   return `${nights + 1} jours / ${nights} nuits`;
 }
 
+function getYearFromDate(dateStr?: string): string | undefined {
+  if (!dateStr) return undefined;
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return undefined;
+  return date.getFullYear().toString();
+}
+
 export const plugin = {
   name: "prefill-destination",
   description: "Prefills the destination form from a Frappe CRM Deal (?deal=<name>).",
@@ -53,6 +65,7 @@ export const plugin = {
     const deal = data.data;
 
     const values: Record<string, any> = {};
+
     for (const [dealField, formKey] of Object.entries(DEAL_FIELD_MAP)) {
       const value = deal[dealField];
       if (value !== undefined && value !== null && value !== "") values[formKey] = value;
@@ -60,6 +73,11 @@ export const plugin = {
 
     const duration = daysBetween(deal.custom_event_start_date, deal.custom_event_end_date);
     if (duration) values["stay-duration"] = duration;
+
+    const year = getYearFromDate(deal.custom_event_start_date);
+    if (year) values["event-year"] = year;
+
+    values["langue"] = "fr"; 
 
     return values;
   },
