@@ -1,0 +1,72 @@
+<!-- Slide component: Team-building activity detail ("ANIMATE") — green header, text left, photo collage right -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- Green header band -->
+  <div class="absolute left-0 top-0 w-full h-[200px] bg-[var(--brand-secondary)] z-0"></div>
+  <h1 class="absolute left-[90px] top-[58px] z-10 text-white text-7xl font-bold tracking-wide" style="font-family: var(--font-heading);" data-field="activity-name">{{name}}</h1>
+  <!-- ANIMATE wordmark, header right -->
+  <img src="assets/animate.png" alt="Animate" class="absolute right-[70px] top-[45px] h-[110px] z-10">
+
+  <!-- Left: activity description -->
+  <div class="absolute left-[80px] top-[250px] w-[930px] z-10">
+    <div data-field="activity-description" class="text-[22px] leading-[1.6] text-[var(--color-text-primary)]">
+      {{#each description}}
+      <p class="{{#unless @first}}mt-7{{/unless}}">{{this}}</p>
+      {{/each}}
+    </div>
+
+    <p class="text-[22px] font-bold text-[var(--color-text-primary)] mt-10 italic">
+      Lien Video: <a class="underline" href="{{video}}" data-field="activity-video">{{video}}</a>
+    </p>
+    <p class="text-[22px] font-bold text-[var(--color-text-primary)] mt-4 italic">
+      <span class="underline">Détails de l'activité</span> : <span data-field="activity-meta">{{meta}}</span>
+    </p>
+  </div>
+
+  <!-- Right: photo collage (conditional 4 vs 3 images layout) -->
+  {{#if images.[3]}}
+  <!-- 4-Image Clean Grid Layout (No overlapping or obscuring) -->
+  <div class="absolute z-10 bg-white p-[8px] border border-[var(--color-border)] shadow-md" style="left: 1060px; top: 240px; width: 380px; height: 290px; transform: rotate(-1.5deg); border-radius: var(--border-radius);">
+    <img src="{{images.[0]}}" alt="{{name}}" data-field="photo-1" class="w-full h-full object-cover block" style="border-radius: calc(var(--border-radius) - 2px);">
+  </div>
+  <div class="absolute z-10 bg-white p-[8px] border border-[var(--color-border)] shadow-md" style="left: 1460px; top: 235px; width: 380px; height: 290px; transform: rotate(1.5deg); border-radius: var(--border-radius);">
+    <img src="{{images.[1]}}" alt="{{name}}" data-field="photo-2" class="w-full h-full object-cover block" style="border-radius: calc(var(--border-radius) - 2px);">
+  </div>
+  <div class="absolute z-10 bg-white p-[8px] border border-[var(--color-border)] shadow-md" style="left: 1060px; top: 550px; width: 380px; height: 290px; transform: rotate(1deg); border-radius: var(--border-radius);">
+    <img src="{{images.[2]}}" alt="{{name}}" data-field="photo-3" class="w-full h-full object-cover block" style="border-radius: calc(var(--border-radius) - 2px);">
+  </div>
+  <div class="absolute z-10 bg-white p-[8px] border border-[var(--color-border)] shadow-md" style="left: 1460px; top: 545px; width: 380px; height: 290px; transform: rotate(-1deg); border-radius: var(--border-radius);">
+    <img src="{{images.[3]}}" alt="{{name}}" data-field="photo-4" class="w-full h-full object-cover block" style="border-radius: calc(var(--border-radius) - 2px);">
+  </div>
+  {{else}}
+  <!-- 3-Image Clean Layout -->
+  <div class="absolute z-10 bg-white p-[10px] border border-[var(--color-border)] shadow-md" style="left: 1070px; top: 250px; width: 440px; height: 320px; transform: rotate(-2deg); border-radius: var(--border-radius);">
+    <img src="{{#if images.[0]}}{{images.[0]}}{{else}}assets/placeholder-image.svg{{/if}}" alt="{{name}}" data-field="photo-1" class="w-full h-full object-cover block" style="border-radius: calc(var(--border-radius) - 2px);">
+  </div>
+  <div class="absolute z-10 bg-white p-[10px] border border-[var(--color-border)] shadow-md" style="left: 1070px; top: 580px; width: 440px; height: 320px; transform: rotate(2deg); border-radius: var(--border-radius);">
+    <img src="{{#if images.[1]}}{{images.[1]}}{{else}}assets/placeholder-image.svg{{/if}}" alt="{{name}}" data-field="photo-2" class="w-full h-full object-cover block" style="border-radius: calc(var(--border-radius) - 2px);">
+  </div>
+  <div class="absolute z-10 bg-white p-[10px] border border-[var(--color-border)] shadow-md" style="left: 1530px; top: 270px; width: 330px; height: 610px; transform: rotate(1.5deg); border-radius: var(--border-radius);">
+    <img src="{{#if images.[2]}}{{images.[2]}}{{else}}assets/placeholder-image.svg{{/if}}" alt="{{name}}" data-field="photo-3" class="w-full h-full object-cover block" style="border-radius: calc(var(--border-radius) - 2px);">
+  </div>
+  {{/if}}
+
+  <!-- Tendencia logo, bottom-left -->
+  <div class="absolute bottom-10 left-10 z-40">
+    <img src="assets/logo-green.svg" alt="Tendencia Events & Travel" class="h-24">
+  </div>
+
+  <!-- Arrow markers, left of images -->
+  <div class="absolute bottom-10 left-[1000px] z-40 flex items-center gap-5">
+    <div class="flex">
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-primary)]"></div>
+  </div>
+
+  <!-- Catalyst partner logo, bottom-right -->
+  <img src="assets/catalyst.png" alt="Catalyst Global — exclusive licensed partner" class="absolute bottom-8 right-12 h-[150px] z-40">
+
+</div>

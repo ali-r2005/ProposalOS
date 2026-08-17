@@ -1,0 +1,24 @@
+{
+  "id": "hotel-comparison",
+  "name": "Hotel Comparison Slide",
+  "description": "Side-by-side comparison of 2 hotels with key details and amenities",
+  "requiredProps": {
+    "hotels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "city": { "type": "string" },
+          "stars": { "type": "number", "min": 1, "max": 5 },
+          "price": { "type": "number" },
+          "currency": { "type": "string" },
+          "description": { "type": "string" },
+          "image": { "type": "string", "format": "url" },
+          "amenities": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["name", "city", "stars", "price"]
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "tendencia-event-recommendation",
+  "name": "Tendencia Event Recommendation",
+  "version": "1.0.0",
+  "author": "Tendencia Events",
+  "lang": "fr",
+  "description": "Modèle professionnel de recommandation d'événements d'entreprise avec hôtels, activités et programmes multi-jours personnalisables",
+  "canvas": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "16:9"
+  }
+}

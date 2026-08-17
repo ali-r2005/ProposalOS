@@ -1,0 +1,47 @@
+<!-- Slide component: Destination intro ("TANGER") — text left, rounded feature image right -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- Rounded feature image (right), with brand-yellow ring -->
+  <div class="absolute w-[1230px] h-[1230px] rounded-full right-[-615px] top-1/2 -translate-y-1/2 bg-[var(--brand-accent)] z-0"></div>
+  <div class="absolute w-[1150px] h-[1150px] rounded-full right-[-575px] top-1/2 -translate-y-1/2 overflow-hidden z-[1]">
+    <img src="{{destination-image}}" alt="Destination" data-field="destination-image" class="w-full h-full object-cover block">
+  </div>
+
+  <!-- Decorative line above title -->
+  <div class="absolute left-[100px] top-[50px] w-[560px] h-[3px] bg-[var(--color-text-primary)] z-10"></div>
+
+  <!-- Left content: heading + description -->
+  <div class="absolute left-[100px] top-[68px] w-[1160px] z-10">
+    <p class="text-xl font-bold uppercase tracking-[0.35em] text-[var(--brand-accent)] mb-3">Destination</p>
+    <h1 class="text-[120px] leading-[0.9] font-bold text-[var(--color-text-primary)]" style="font-family: var(--font-heading);" data-field="destination">{{destination}}</h1>
+    <svg width="300" height="24" viewBox="0 0 300 24" xmlns="http://www.w3.org/2000/svg" class="mt-5 mb-10">
+      <defs>
+        <linearGradient id="underlineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#0f7a5e"/>
+          <stop offset="45%" stop-color="#1f9ad6"/>
+          <stop offset="75%" stop-color="#9db85a"/>
+          <stop offset="100%" stop-color="#f0c419"/>
+        </linearGradient>
+      </defs>
+      <path d="M0,18 C75,7 225,7 300,18"
+            fill="none"
+            stroke="url(#underlineGradient)"
+            stroke-width="13"
+            stroke-linecap="butt"/>
+    </svg>
+
+    <div class="space-y-6 text-[var(--color-text-primary)] text-[26px] leading-relaxed" data-field="destination-paragraphs">
+      {{#each destination-paragraphs}}
+      <p>
+        {{this}}
+      </p>
+      {{/each}}
+    </div>
+  </div>
+
+  <!-- Tendencia logo, bottom-left -->
+  <div class="absolute bottom-10 left-10 z-10">
+    <img src="assets/logo.svg" alt="Tendencia Events & Travel" class="h-24">
+  </div>
+
+</div>

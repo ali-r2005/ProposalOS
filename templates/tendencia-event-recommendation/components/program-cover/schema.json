@@ -1,0 +1,15 @@
+{
+  "id": "program-cover",
+  "name": "Program Cover Slide",
+  "description": "Slide displaying the main program details and client information",
+  "requiredProps": {
+    "event-type": { "type": "string" },
+    "event-year": { "type": "string" },
+    "destination-image": { "type": "string", "format": "url" },
+    "event-name": { "type": "string" },
+    "destination": { "type": "string" },
+    "client-logo": { "type": "string", "format": "url" },
+    "event-dates": { "type": "string" },
+    "participant-count": { "type": "string" }
+  }
+}

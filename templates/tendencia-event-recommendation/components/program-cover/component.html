@@ -1,0 +1,71 @@
+<!-- Slide component: Program cover (feature image + client details) -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)] flex" style="font-family: var(--font-body);">
+
+  <!-- LEFT: single feature image -->
+  <div class="w-[860px] h-full flex-shrink-0 p-8">
+    <img src="{{destination-image}}" alt="Destination" data-field="cover-image" class="w-full h-full object-cover">
+  </div>
+
+  <!-- RIGHT: content panel -->
+  <div class="flex-1 h-full flex flex-col justify-start pl-4 pr-24 py-16">
+
+    <div class="w-[560px] h-1 bg-[var(--color-text-primary)] mb-4"></div>
+
+    <h2 class="text-6xl font-bold mb-6" style="font-family: var(--font-heading);">
+      <span class="text-[var(--brand-accent)]">{{event-type}}</span>
+      <span class="text-[var(--color-text-primary)]" data-field="event-year">{{event-year}}</span>
+    </h2>
+
+    <svg width="300" height="24" viewBox="0 0 300 24" xmlns="http://www.w3.org/2000/svg" class="mb-12">
+      <defs>
+        <linearGradient id="underlineGradient3" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#0f7a5e"/>
+          <stop offset="45%" stop-color="#1f9ad6"/>
+          <stop offset="75%" stop-color="#9db85a"/>
+          <stop offset="100%" stop-color="#f0c419"/>
+        </linearGradient>
+      </defs>
+      <path d="M0,18 C75,7 225,7 300,18"
+            fill="none"
+            stroke="url(#underlineGradient3)"
+            stroke-width="13"
+            stroke-linecap="butt"/>
+    </svg>
+
+    <h1 class="text-5xl font-bold leading-tight text-[var(--color-text-primary)] mb-16" style="font-family: var(--font-heading);">
+      {{event-name}} <br>
+      <span data-field="destination">{{destination}}</span> <span data-field="event-year">{{event-year}}</span>
+    </h1>
+
+    <p class="text-3xl text-[var(--color-text-primary)] mb-10" style="font-family: var(--font-body);">
+      Spécialement étudié pour
+    </p>
+
+    <div class="mb-14">
+      <img src="{{client-logo}}" alt="Client logo" data-field="client-logo" class="h-32 object-contain">
+    </div>
+
+    <p class="text-3xl font-semibold text-[var(--color-text-primary)] mb-4" style="font-family: var(--font-heading);">
+      <span data-field="event-dates">{{event-dates}}</span>
+    </p>
+
+    <p class="text-5xl font-bold text-[var(--color-text-primary)]" style="font-family: var(--font-heading);">
+      <span data-field="participant-count">{{participant-count}}</span> Pers
+    </p>
+
+    <!-- Bottom: Tendencia logo + arrow markers -->
+    <div class="mt-auto flex items-end justify-between">
+      <img src="assets/logo.svg" alt="Tendencia Events & Travel" class="h-24">
+      <div class="flex items-center gap-6">
+        <div class="flex">
+          <div class="w-0 h-0 border-y-[22px] border-y-transparent border-l-[34px] border-l-[color:var(--color-text-primary)]"></div>
+          <div class="w-0 h-0 border-y-[22px] border-y-transparent border-l-[34px] border-l-[color:var(--brand-accent)] -ml-3"></div>
+        </div>
+        <div class="w-0 h-0 border-y-[22px] border-y-transparent border-l-[34px] border-l-[color:var(--brand-secondary)]"></div>
+        <div class="w-0 h-0 border-y-[22px] border-y-transparent border-l-[34px] border-l-[color:var(--brand-primary)]"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
