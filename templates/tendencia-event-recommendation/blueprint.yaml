@@ -34,7 +34,8 @@ sections:
 
   - id: programme-day
     component: programme-day
-    source: manual
+    source: database
+    provider: programme
     expansion:
       strategy: repeat
       collection: programme

@@ -93,6 +93,13 @@
       "type": "text",
       "required": false,
       "placeholder": "p. ex. Ensoleillé, 25-30 °C en juin"
+    },
+    {
+      "key": "programme",
+      "label": "Programme",
+      "type": "textarea",
+      "required": true,
+      "placeholder": "it json object"
     }
   ]
 }

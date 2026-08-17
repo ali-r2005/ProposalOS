@@ -15,7 +15,8 @@ const DEAL_FIELD_MAP: Record<string, string> = {
   custom_destination_image_url:"destination-image",
   custom_travel_duration:"travel-duration",
   custom_formalities:"formalities",
-  custom_climate:"climate"
+  custom_climate:"climate",
+  custom_programme:"programme"
 };
 
 interface CrmDeal {
