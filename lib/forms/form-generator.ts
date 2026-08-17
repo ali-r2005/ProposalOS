@@ -34,6 +34,10 @@ function normaliseField(raw: unknown): FormField | null {
     min: typeof f.min === "number" ? f.min : undefined,
     max: typeof f.max === "number" ? f.max : undefined,
     optionsFrom: normaliseOptionsSource(f.optionsFrom),
+    itemFields: Array.isArray(f.itemFields)
+      ? f.itemFields.map(normaliseField).filter((x): x is FormField => x !== null)
+      : undefined,
+    itemLabel: typeof f.itemLabel === "string" ? f.itemLabel : undefined,
   };
 }
 

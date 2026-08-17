@@ -5,7 +5,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { http, toErrorMessage } from "@/lib/utils/http";
 import type { FormField, FormGroup } from "@/lib/engine/types";
 
-type FormValue = string | number | string[];
+type RecordValue = Record<string, unknown>;
+type ScalarFormValue = string | number | string[];
+type FormValue = ScalarFormValue | RecordValue[];
 type Option = { label: string; value: string };
 type OptionsMeta = { total: number; loading: boolean; error?: string };
 
@@ -22,8 +24,8 @@ function FieldInput({
   fileError,
 }: {
   field: FormField;
-  value: FormValue | undefined;
-  onChange: (value: FormValue) => void;
+  value: ScalarFormValue | undefined;
+  onChange: (value: ScalarFormValue) => void;
   options: Option[];
   meta?: OptionsMeta;
   onLoadMore?: () => void;
@@ -143,6 +145,132 @@ function FieldInput({
       value={(value as string) ?? ""}
       onChange={(e) => onChange(field.type === "number" ? Number(e.target.value) : e.target.value)}
     />
+  );
+}
+
+/** One sub-field inside a record-list row. Deliberately simpler than
+ *  FieldInput — no provider options/file upload inside a row, just the
+ *  scalar/array cases a catalogue record needs (text, number, textarea,
+ *  and a one-URL-per-line list for `images`). */
+function RecordFieldInput({
+  field,
+  value,
+  onChange,
+}: {
+  field: FormField;
+  value: unknown;
+  onChange: (value: unknown) => void;
+}) {
+  const base =
+    "w-full rounded-lg border border-[var(--app-border)] bg-[var(--app-panel)] text-[var(--app-text)] px-3 py-2 text-sm outline-none focus:border-[var(--app-accent)]";
+
+  if (field.type === "textarea") {
+    return (
+      <textarea
+        className={base}
+        rows={3}
+        placeholder={field.placeholder}
+        value={(value as string) ?? ""}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    );
+  }
+
+  if (field.type === "image-list") {
+    const urls = Array.isArray(value) ? (value as string[]) : [];
+    return (
+      <textarea
+        className={base}
+        rows={3}
+        placeholder="One image URL per line"
+        value={urls.join("\n")}
+        onChange={(e) => onChange(e.target.value.split("\n").map((s) => s.trim()).filter(Boolean))}
+      />
+    );
+  }
+
+  const inputType = field.type === "number" ? "number" : field.type === "url" ? "url" : "text";
+  return (
+    <input
+      type={inputType}
+      className={base}
+      placeholder={field.placeholder}
+      value={(value as string | number) ?? ""}
+      onChange={(e) => onChange(field.type === "number" ? Number(e.target.value) : e.target.value)}
+    />
+  );
+}
+
+/** Repeatable list of structured records (e.g. hotels resolved from a CRM
+ *  deal) — add, edit, or remove rows, each shaped by `field.itemFields`. */
+function RecordListInput({
+  field,
+  value,
+  onChange,
+}: {
+  field: FormField;
+  value: RecordValue[];
+  onChange: (rows: RecordValue[]) => void;
+}) {
+  const itemFields = field.itemFields ?? [];
+  const itemLabel = field.itemLabel ?? field.label;
+
+  function updateRow(index: number, key: string, v: unknown) {
+    const next = value.slice();
+    next[index] = { ...next[index], [key]: v };
+    onChange(next);
+  }
+
+  function removeRow(index: number) {
+    onChange(value.filter((_, i) => i !== index));
+  }
+
+  function addRow() {
+    const blank: RecordValue = {};
+    for (const f of itemFields) blank[f.key] = f.type === "image-list" ? [] : "";
+    onChange([...value, blank]);
+  }
+
+  return (
+    <div className="space-y-4">
+      {value.map((row, index) => (
+        <div key={index} className="rounded-lg border border-[var(--app-border)] p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <span className="text-sm font-semibold">
+              {itemLabel} {index + 1}
+            </span>
+            <button
+              type="button"
+              onClick={() => removeRow(index)}
+              className="text-xs font-medium text-red-400"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="space-y-3">
+            {itemFields.map((sub) => (
+              <div key={sub.key}>
+                <label className="mb-1 block text-xs font-medium text-[var(--app-muted)]">
+                  {sub.label}
+                </label>
+                <RecordFieldInput
+                  field={sub}
+                  value={row[sub.key]}
+                  onChange={(v) => updateRow(index, sub.key, v)}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={addRow}
+        className="rounded-lg border border-[var(--app-border)] px-3 py-1.5 text-xs font-medium text-[var(--app-accent)]"
+      >
+        + Add {itemLabel}
+      </button>
+    </div>
   );
 }
 
@@ -398,20 +526,28 @@ export default function ProposalForm({ templateId }: { templateId: string }) {
               {field.label}
               {field.required && <span className="ml-1 text-red-400">*</span>}
             </label>
-            <FieldInput
-              field={field}
-              value={values[field.key]}
-              onChange={(v) => setValue(field.key, v)}
-              options={optionsFor(field)}
-              meta={field.optionsFrom ? optionsMeta[field.key] : undefined}
-              onLoadMore={
-                field.optionsFrom
-                  ? () => loadOptions(field, (dynamicOptions[field.key] ?? []).length, true)
-                  : undefined
-              }
-              onFile={field.type === "file" ? (file) => handleFile(field, file) : undefined}
-              fileError={fileErrors[field.key]}
-            />
+            {field.type === "record-list" ? (
+              <RecordListInput
+                field={field}
+                value={(values[field.key] as RecordValue[]) ?? []}
+                onChange={(rows) => setValue(field.key, rows)}
+              />
+            ) : (
+              <FieldInput
+                field={field}
+                value={values[field.key] as ScalarFormValue | undefined}
+                onChange={(v) => setValue(field.key, v)}
+                options={optionsFor(field)}
+                meta={field.optionsFrom ? optionsMeta[field.key] : undefined}
+                onLoadMore={
+                  field.optionsFrom
+                    ? () => loadOptions(field, (dynamicOptions[field.key] ?? []).length, true)
+                    : undefined
+                }
+                onFile={field.type === "file" ? (file) => handleFile(field, file) : undefined}
+                fileError={fileErrors[field.key]}
+              />
+            )}
           </div>
         ))}
       </div>

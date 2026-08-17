@@ -30,6 +30,10 @@ export interface FormField {
   max?: number;
   /** When set, options are fetched from a provider instead of `options`. */
   optionsFrom?: FieldOptionsSource;
+  /** For `type: "record-list"` — the field schema of one record/row. */
+  itemFields?: FormField[];
+  /** For `type: "record-list"` — label for one row, e.g. "Hotel". Defaults to `label`. */
+  itemLabel?: string;
 }
 
 /** A group of fields — one wizard step. */

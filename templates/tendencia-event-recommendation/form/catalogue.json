@@ -1,0 +1,50 @@
+{
+  "id": "catalogue",
+  "title": "Catalogue",
+  "description": "Hôtels, activités et soirées proposés pour cet événement. Pré-remplis depuis le devis CRM — ajustez si nécessaire.",
+  "fields": [
+    {
+      "key": "catalogue-hotels",
+      "label": "Hôtels",
+      "type": "record-list",
+      "required": false,
+      "itemLabel": "Hôtel",
+      "itemFields": [
+        { "key": "hotel-name", "label": "Nom de l'hôtel", "type": "text", "required": true },
+        { "key": "city", "label": "Ville", "type": "text", "required": false },
+        { "key": "category", "label": "Catégorie (étoiles)", "type": "number", "required": false },
+        { "key": "hotel-url", "label": "Site web", "type": "url", "required": false },
+        { "key": "description", "label": "Description", "type": "textarea", "required": false },
+        { "key": "images", "label": "Images", "type": "image-list", "required": false }
+      ]
+    },
+    {
+      "key": "catalogue-activities",
+      "label": "Activités",
+      "type": "record-list",
+      "required": false,
+      "itemLabel": "Activité",
+      "itemFields": [
+        { "key": "activity-name", "label": "Nom de l'activité", "type": "text", "required": true },
+        { "key": "type", "label": "Type", "type": "text", "required": false, "placeholder": "indoor / outdoor" },
+        { "key": "difficulty", "label": "Difficulté", "type": "text", "required": false },
+        { "key": "description", "label": "Description", "type": "textarea", "required": false },
+        { "key": "images", "label": "Images", "type": "image-list", "required": false }
+      ]
+    },
+    {
+      "key": "catalogue-soirees",
+      "label": "Soirées",
+      "type": "record-list",
+      "required": false,
+      "itemLabel": "Soirée",
+      "itemFields": [
+        { "key": "soiree-name", "label": "Nom de la soirée", "type": "text", "required": true },
+        { "key": "subtitle", "label": "Sous-titre", "type": "text", "required": false },
+        { "key": "keywords", "label": "Mots-clés", "type": "text", "required": false },
+        { "key": "description", "label": "Description", "type": "textarea", "required": false },
+        { "key": "images", "label": "Images", "type": "image-list", "required": false }
+      ]
+    }
+  ]
+}

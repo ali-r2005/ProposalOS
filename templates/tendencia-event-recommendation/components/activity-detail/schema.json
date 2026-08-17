@@ -4,10 +4,7 @@
   "description": "Detail slide, repeated once per selected activity (repeat over `activities`).",
   "requiredProps": {
     "name": { "type": "string" },
-    "description": {
-      "type": "array",
-      "items": { "type": "string" }
-    },
+    "description": { "type": "string" },
     "video": { "type": "string", "format": "url" },
     "meta": { "type": "string" },
     "images": {

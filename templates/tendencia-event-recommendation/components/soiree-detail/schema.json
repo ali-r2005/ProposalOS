@@ -10,9 +10,6 @@
     },
     "name": { "type": "string" },
     "subtitle": { "type": "string" },
-    "description": {
-      "type": "array",
-      "items": { "type": "string" }
-    }
+    "description": { "type": "string" }
   }
 }
