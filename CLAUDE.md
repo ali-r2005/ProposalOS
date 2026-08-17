@@ -85,6 +85,19 @@ export const provider = {
 ```
 NOT: default/function/class exports.
 
+## Plugin Interface (Strict)
+```typescript
+export const plugin = {
+  name: string;
+  description: string;
+  trigger: "onMount";
+  async execute(context: any): Promise<any>;
+}
+```
+NOT: default/function/class exports. Opt-in via manifest `"plugins": ["name"]` — templates that omit the field run no plugin logic. Loaded from `templates/[id]/plugins/*.ts` the same way providers are (`nativeImport`, `.ts`/`.js`/`.mjs` fallback). `execute()` returns a partial `{ [fieldKey]: value }` object merged into the form's initial values on mount (`GET /api/templates/[id]/plugins/prefill`); a user-entered value always wins over a prefilled one.
+
+**Extensible trigger set:** `trigger: "onMount"` is the only value today, but the field exists so triggers like `"onFieldChange"` or `"onStepEnter"` can be added later without changing the loader contract.
+
 ## Handlebars (Simple)
 - `{{variable}}`, `{{object.property}}`
 - `{{#each array}}...{{/each}}`
@@ -128,6 +141,8 @@ templates/[id]/
   providers/          (discover at runtime via nativeImport)
     hotels.ts
     activities.ts
+  plugins/            (opt-in, listed in manifest "plugins")
+    prefill-x.ts
   forms/
     client.json
     event.json

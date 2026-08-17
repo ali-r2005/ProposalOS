@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { http, toErrorMessage } from "@/lib/utils/http";
 import type { FormField, FormGroup } from "@/lib/engine/types";
 
@@ -148,6 +148,7 @@ function FieldInput({
 
 export default function ProposalForm({ templateId }: { templateId: string }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [groups, setGroups] = useState<FormGroup[]>([]);
   const [step, setStep] = useState(0);
@@ -185,6 +186,26 @@ export default function ProposalForm({ templateId }: { templateId: string }) {
       .catch((err) => setError(toErrorMessage(err, "Failed to load forms")))
       .finally(() => setLoading(false));
   }, [templateId]);
+
+  // Template plugins (opt-in via manifest) can prefill values on mount, e.g.
+  // from a CRM lookup. The page's own query string (e.g. ?deal=...) is
+  // forwarded verbatim so a plugin can key its lookup off it. Silent on
+  // failure — prefill is a convenience, never a blocker — and never
+  // overwrites a value the user already typed.
+  useEffect(() => {
+    if (!templateId) return;
+    const qs = searchParams.toString();
+    http
+      .get<Record<string, FormValue>>(
+        `/api/templates/${encodeURIComponent(templateId)}/plugins/prefill${qs ? `?${qs}` : ""}`
+      )
+      .then(({ data }) => {
+        if (data && typeof data === "object") {
+          setValues((prev) => ({ ...data, ...prev }));
+        }
+      })
+      .catch(() => {});
+  }, [templateId, searchParams]);
 
   const current = groups[step];
   const isLast = step === groups.length - 1;

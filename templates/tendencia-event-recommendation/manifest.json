@@ -5,6 +5,7 @@
   "author": "Tendencia Events",
   "lang": "fr",
   "description": "Modèle professionnel de recommandation d'événements d'entreprise avec hôtels, activités et programmes multi-jours personnalisables",
+  "plugins": ["prefill-destination"],
   "canvas": {
     "width": 1920,
     "height": 1080,

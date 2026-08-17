@@ -5,94 +5,94 @@
   "fields": [
     {
       "key": "event-name",
-      "label": "Event Name",
+      "label": "Nom de l'événement",
       "type": "text",
       "required": true,
-      "placeholder": "e.g., Annual Leadership Summit 2025"
+      "placeholder": "p. ex. Sommet annuel du leadership 2025"
     },
     {
       "key": "event-type",
-      "label": "Event Type",
+      "label": "Type d'événement",
       "type": "text",
       "required": true,
-      "placeholder": "e.g., Corporate Retreat, Incentive Trip, Conference"
+      "placeholder": "p. ex. Retraite d'entreprise, voyage incitatif, conférence"
     },
     {
       "key": "event-year",
-      "label": "Event Year",
+      "label": "Année de l'événement",
       "type": "text",
       "required": true,
-      "placeholder": "e.g., 2025"
+      "placeholder": "p. ex. 2025"
     },
     {
       "key": "event-dates",
-      "label": "Event Dates",
+      "label": "Dates de l'événement",
       "type": "text",
       "required": true,
-      "placeholder": "e.g., June 15-18, 2025"
+      "placeholder": "p. ex. 15-18 juin 2025"
     },
     {
       "key": "destination",
       "label": "Destination",
       "type": "text",
       "required": true,
-      "placeholder": "e.g., Marrakech, Morocco"
+      "placeholder": "p. ex. Marrakech, Maroc"
     },
     {
       "key": "destination-image",
-      "label": "Destination Image URL ",
+      "label": "URL de l'image de la destination ",
       "type": "url",
       "required": false,
-      "placeholder": "https://example.com/destination.jpg"
+      "placeholder": "https://exemple.com/destination.jpg"
     },
     {
       "key": "client-logo",
-      "label": "Client Logo URL",
+      "label": "URL du logo du client",
       "type": "url",
       "required": false,
-      "placeholder": "https://example.com/logo.svg"
+      "placeholder": "https://exemple.com/logo.svg"
     },
     {
       "key": "participant-count",
-      "label": "Participant Count",
+      "label": "Nombre de participants",
       "type": "number",
       "required": true,
-      "placeholder": "e.g., 50"
+      "placeholder": "p. ex. 50"
     },
     {
       "key": "langue",
-      "label": "Language",
+      "label": "Langue",
       "type": "text",
       "required": true,
-      "placeholder": "e.g., French, Arabic, English"
+      "placeholder": "p. ex. Français, arabe, anglais"
     },
     {
       "key": "travel-duration",
-      "label": "Travel Duration",
+      "label": "Durée du voyage",
       "type": "text",
       "required": true,
-      "placeholder": "e.g., 3h 30m from Paris"
+      "placeholder": "p. ex. 3h 30m depuis Paris"
     },
     {
       "key": "stay-duration",
-      "label": "Stay Duration",
+      "label": "Durée du séjour",
       "type": "text",
       "required": false,
-      "placeholder": "e.g., 4 days / 3 nights"
+      "placeholder": "p. ex. 4 jours / 3 nuits"
     },
     {
       "key": "formalities",
-      "label": "Formalities",
+      "label": "Formalités",
       "type": "textarea",
       "required": false,
-      "placeholder": "e.g., Visa requirements, passport valkeyity, vaccination info"
+      "placeholder": "p. ex. Exigences de visa, validité du passeport, informations sur les vaccins"
     },
     {
       "key": "climate",
-      "label": "Climate",
+      "label": "Climat",
       "type": "text",
       "required": false,
-      "placeholder": "e.g., Sunny, 25-30°C in June"
+      "placeholder": "p. ex. Ensoleillé, 25-30 °C en juin"
     }
   ]
 }
