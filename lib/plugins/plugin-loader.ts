@@ -82,6 +82,11 @@ export async function runPlugins(
       if (result && typeof result === "object") merged = { ...merged, ...result };
     } catch (error) {
       devWarn(`Plugin "${name}" failed:`, error);
+      // TEMPORARY: devWarn is silent in production (NODE_ENV=production on
+      // Vercel), which is why prefill failures were invisible there. This
+      // console.error is unconditional so we can see the real cause in
+      // Vercel's logs, then remove it once the root cause is fixed.
+      console.error(`[plugin-debug] Plugin "${name}" failed:`, error);
     }
   }
 
