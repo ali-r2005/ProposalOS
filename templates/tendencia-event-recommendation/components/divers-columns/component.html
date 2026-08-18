@@ -1,4 +1,6 @@
-<!-- Slide component: Divers — Two-Column Layout (Title + 2 Columns with Image, Title & Paragraphs) -->
+<!-- Slide component: Divers — Columns Layout (Title + 3 or 4 Columns with Image, Title & Paragraphs).
+     Column count (3 or 4) is decided by the provider from items.length and passed
+     as `grid-columns` — the component never counts or branches on the number itself. -->
 <div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
 
   <!-- Decorative line above title -->
@@ -16,31 +18,28 @@
           stroke-linecap="butt"/>
   </svg>
 
-  <!-- Two-Column Layout Grid -->
-  <div class="absolute left-[78px] top-[210px] w-[1764px] h-[780px] grid grid-cols-2 gap-12 z-10">
+  <!-- Column Layout Grid — column count set by the provider via `grid-columns` -->
+  <div class="absolute left-[78px] top-[210px] w-[1764px] h-[780px] grid {{grid-columns}} gap-8 z-10">
     {{#each items}}
-    <div class="flex flex-col bg-white border border-[var(--color-border)] shadow-lg overflow-hidden" style="border-radius: var(--border-radius);">
-      
+    <div class="flex flex-col bg-white border border-[var(--color-border)] shadow-md overflow-hidden transition-all duration-300" style="border-radius: var(--border-radius);">
+
       <!-- Column Image -->
-      <div class="h-[360px] w-full overflow-hidden bg-[var(--color-surface)] relative">
-        <img src="{{#if image}}{{image}}{{else}}assets/placeholder-image.svg{{/if}}" 
-             alt="{{title}}" 
+      <div class="h-[280px] w-full overflow-hidden bg-[var(--color-surface)] relative">
+        <img src="{{#if image}}{{image}}{{else}}assets/placeholder-image.svg{{/if}}"
+             alt="{{title}}"
              class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-        <div class="absolute bottom-4 left-6 px-4 py-1.5 bg-[var(--brand-accent)] text-[var(--color-text-primary)] font-bold text-sm uppercase tracking-wider" style="border-radius: var(--border-radius);">
-          Prestation
-        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
       </div>
 
       <!-- Column Content -->
-      <div class="p-9 flex flex-col flex-1 bg-white">
+      <div class="p-7 flex flex-col flex-1 bg-white">
         <!-- Column Title -->
-        <h2 class="text-3xl font-bold text-[var(--color-text-primary)] mb-5 leading-tight" style="font-family: var(--font-heading);">
+        <h2 class="text-2xl font-bold text-[var(--color-text-primary)] mb-4 leading-snug" style="font-family: var(--font-heading);">
           {{title}}
         </h2>
 
         <!-- Paragraphs -->
-        <div class="space-y-4 flex-1 text-[var(--color-text-primary)] text-[18px] leading-relaxed">
+        <div class="space-y-3 flex-1 text-[var(--color-text-primary)] text-[16px] leading-relaxed">
           {{#each paragraphes}}
           <p class="leading-relaxed">{{this}}</p>
           {{/each}}

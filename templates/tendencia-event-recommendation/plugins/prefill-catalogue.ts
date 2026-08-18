@@ -5,7 +5,7 @@
 // Triggered from /templates/tendencia-event-recommendation/new?deal=<CRM Deal name>.
 // The chain: CRM Deal.products[] -> Item (per product_code) -> branch on
 // custom_catalogue_type -> Hotel/Activity/Soiree (by custom_catalogue_reference).
-import axios from "axios";
+import { getWithRetry } from "./frappe-http.ts";
 
 const FRAPPE_BASE_URL = "https://erp.tendenciaevents.com";
 
@@ -78,7 +78,7 @@ async function fetchItem(
   apiSecret: string
 ): Promise<ItemDoc | null> {
   try {
-    const { data } = await axios.get<{ data: ItemDoc }>(
+    const data = await getWithRetry<{ data: ItemDoc }>(
       `${FRAPPE_BASE_URL}/api/resource/Item/${encodeURIComponent(productCode)}`,
       { headers: authHeaders(apiKey, apiSecret), timeout: 15_000 }
     );
@@ -95,7 +95,7 @@ async function fetchCatalogueDoc<T>(
   apiSecret: string
 ): Promise<T | null> {
   try {
-    const { data } = await axios.get<{ data: T }>(
+    const data = await getWithRetry<{ data: T }>(
       `${FRAPPE_BASE_URL}/api/resource/${encodeURIComponent(doctype)}/${encodeURIComponent(reference)}`,
       { headers: authHeaders(apiKey, apiSecret), timeout: 15_000 }
     );
@@ -151,7 +151,7 @@ export const plugin = {
     const apiSecret = process.env.FRAPPE_CRM_API_SECRET;
     if (!apiKey || !apiSecret) return {};
 
-    const { data: deal } = await axios.get<{ data: CrmDeal }>(
+    const deal = await getWithRetry<{ data: CrmDeal }>(
       `${FRAPPE_BASE_URL}/api/resource/CRM%20Deal/${encodeURIComponent(dealId)}`,
       { headers: authHeaders(apiKey, apiSecret), timeout: 15_000 }
     );

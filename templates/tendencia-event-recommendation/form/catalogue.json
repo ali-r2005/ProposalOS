@@ -45,6 +45,13 @@
         { "key": "description", "label": "Description", "type": "textarea", "required": false },
         { "key": "images", "label": "Images", "type": "image-list", "required": false }
       ]
+    },
+    {
+      "key": "divers",
+      "label": "Divers (JSON)",
+      "type": "textarea",
+      "required": false,
+      "placeholder": "[{\"title\": \"...\", \"items\": [{\"title\": \"...\", \"image\": \"...\", \"paragraphes\": [\"...\"]}, ...]}]"
     }
   ]
 }

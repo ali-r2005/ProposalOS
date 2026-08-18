@@ -149,33 +149,13 @@ sections:
     source: static
     expansion: single
 
-  - id: divers-three-columns
-    component: divers-three-columns
+  - id: divers-columns
+    component: divers-columns
     source: database
     provider: divers
     expansion:
       strategy: repeat
-      collection: diversThreeColumns
-    dependsOn:
-      - divers
-
-  - id: divers-two-columns
-    component: divers-two-columns
-    source: database
-    provider: divers
-    expansion:
-      strategy: repeat
-      collection: diversTwoColumns
-    dependsOn:
-      - divers
-
-  - id: divers-images-only
-    component: divers-images-only
-    source: database
-    provider: divers
-    expansion:
-      strategy: repeat
-      collection: diversImagesOnly
+      collection: divers
     dependsOn:
       - divers
 

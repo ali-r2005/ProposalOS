@@ -4,7 +4,7 @@
 // Triggered from /templates/tendencia-event-recommendation/new?deal=<CRM Deal name>.
 // The `deal` query param is forwarded into `execute()`'s context by the engine's
 // prefill route (verbatim passthrough — the engine never inspects it).
-import axios from "axios";
+import { getWithRetry } from "./frappe-http.ts";
 
 const DEAL_FIELD_MAP: Record<string, string> = {
   custom_theme: "event-name",
@@ -59,7 +59,7 @@ export const plugin = {
     const apiSecret = process.env.FRAPPE_CRM_API_SECRET;
     if (!baseUrl || !apiKey || !apiSecret) return {};
 
-    const { data } = await axios.get<{ data: CrmDeal }>(
+    const data = await getWithRetry<{ data: CrmDeal }>(
       `${baseUrl.replace(/\/+$/, "")}/api/resource/CRM%20Deal/${encodeURIComponent(dealId)}`,
       { headers: { Authorization: `token ${apiKey}:${apiSecret}` }, timeout: 15_000 }
     );
