@@ -3,7 +3,16 @@ const nextConfig = {
   reactStrictMode: true,
   // Provider files inside templates are loaded at runtime via dynamic import,
   // so they must not be bundled by webpack. Mark them external on the server.
-  serverExternalPackages: ["handlebars", "drizzle-orm", "postgres"],
+  // `axios` belongs here (not just in outputFileTracingIncludes below): a raw
+  // `node_modules/axios/**/*` glob only grabs axios's own files, not its own
+  // `require()`/`import`s (form-data, proxy-from-env, follow-redirects,
+  // https-proxy-agent, and *their* transitive deps) — those only got pulled
+  // in one broken package at a time as each one surfaced at runtime in
+  // production ("Cannot find package 'form-data'", then 'proxy-from-env', ...).
+  // serverExternalPackages makes Next.js's tracer walk axios's whole
+  // dependency closure properly, the same way it already does for
+  // drizzle-orm/postgres below — no more whack-a-mole.
+  serverExternalPackages: ["handlebars", "drizzle-orm", "postgres", "axios"],
   // Template files (templates/*/{providers,db}/*.js) are loaded via a runtime
   // string path (nativeImport), invisible to Vercel's output file tracer —
   // without the first glob, those compiled files get pruned from the deployed
@@ -34,12 +43,33 @@ const nextConfig = {
       "./lib/frappe/client.ts",
       "./lib/frappe/types.ts",
       "./node_modules/axios/**/*",
-      // axios's own Node platform adapter does `import "form-data"` internally
-      // (for multipart support) — one hop deeper than the axios glob above,
-      // so the tracer still misses it: "Cannot find package 'form-data'"
-      // at runtime in production even though `node_modules/axios/**/*` is
-      // already force-included.
+      // axios's own runtime require()s/imports (its Node http adapter, proxy
+      // support, multipart forms) reach a chain of transitive dependencies
+      // that Vercel's tracer can't discover on its own — axios is only ever
+      // reached via nativeImport()'s string specifier here, so trace analysis
+      // never walks its require graph, and adding "axios" to
+      // serverExternalPackages does NOT fix this either (confirmed by
+      // re-tracing: that setting affects webpack bundling, not the file
+      // tracer's inclusion set). Every package below was hit one at a time in
+      // production ("Cannot find package 'form-data'", then 'proxy-from-env',
+      // ...) before force-including the whole closure here at once.
       "./node_modules/form-data/**/*",
+      "./node_modules/proxy-from-env/**/*",
+      "./node_modules/follow-redirects/**/*",
+      "./node_modules/https-proxy-agent/**/*",
+      "./node_modules/agent-base/**/*",
+      "./node_modules/debug/**/*",
+      "./node_modules/asynckit/**/*",
+      "./node_modules/combined-stream/**/*",
+      "./node_modules/es-set-tostringtag/**/*",
+      "./node_modules/hasown/**/*",
+      "./node_modules/mime-types/**/*",
+      "./node_modules/mime-db/**/*",
+      "./node_modules/delayed-stream/**/*",
+      "./node_modules/es-errors/**/*",
+      "./node_modules/get-intrinsic/**/*",
+      "./node_modules/has-tostringtag/**/*",
+      "./node_modules/ms/**/*",
     ],
   },
 };
