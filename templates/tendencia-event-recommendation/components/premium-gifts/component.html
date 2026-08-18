@@ -1,0 +1,74 @@
+<!-- Slide component: Premium Gifts (Static slide using exact goodies layout and design) -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- Decorative line above title -->
+  <div class="absolute left-[78px] top-[50px] w-[580px] h-[3px] bg-[var(--color-text-primary)] z-10"></div>
+
+  <!-- Slide Header -->
+  <h1 class="absolute left-[78px] top-[68px] z-10 text-5xl font-bold leading-[1.05]" style="font-family: var(--font-heading);">
+    <span class="text-[var(--color-text-primary)]" data-field="title">PREMIUM GIFTS</span>
+  </h1>
+  <svg width="300" height="24" viewBox="0 0 300 24" xmlns="http://www.w3.org/2000/svg" class="absolute left-[78px] top-[125px] z-10">
+    <path d="M0,18 C75,7 225,7 300,18"
+          fill="none"
+          stroke="var(--color-text-primary)"
+          stroke-width="13"
+          stroke-linecap="butt"/>
+  </svg>
+
+  <!-- Single Card Layout Container (1 main card containing all 4 images) -->
+  <div class="absolute left-[78px] top-[210px] w-[1764px] h-[780px] z-10">
+
+    <div class="flex flex-col w-full h-full bg-white border border-[var(--color-border)] overflow-hidden transition-all duration-300" style="border-radius: var(--border-radius);">
+      
+      <!-- 4-Image Grid Area inside the single card -->
+      <div class="h-[580px] w-full p-4 bg-white relative border-b border-[var(--color-border)] grid grid-cols-4 gap-4">
+        <div class="rounded overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)]">
+          <img src="assets/premium1.png" alt="Premium Gift 1" class="w-full h-full object-contain p-2">
+        </div>
+        <div class="rounded overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)]">
+          <img src="assets/premium2.png" alt="Premium Gift 2" class="w-full h-full object-contain p-2">
+        </div>
+        <div class="rounded overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)]">
+          <img src="assets/premium3.png" alt="Premium Gift 3" class="w-full h-full object-contain p-2">
+        </div>
+        <div class="rounded overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)]">
+          <img src="assets/premium4.png" alt="Premium Gift 4" class="w-full h-full object-contain p-2">
+        </div>
+      </div>
+
+      <!-- Single Card Bottom Content -->
+      <div class="p-6 flex flex-col justify-center items-start flex-1 bg-white">
+        <h2 class="text-2xl font-bold text-[var(--color-text-primary)] leading-tight mb-1" style="font-family: var(--font-heading);">
+          COFFRETS ARTISANALES
+        </h2>
+        <p class="text-base font-semibold text-[var(--brand-primary)] mb-2">
+          en Boucherouite, Cuir Marin ou Cuivre :
+        </p>
+        <ol class="text-base flex gap-10 list-decimal list-inside font-medium text-[var(--color-text-primary)]">
+          <li>Fait main</li>
+          <li>Eco friendly</li>
+          <li>Personnalisable</li>
+        </ol>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Tendencia logo bottom-left -->
+  <div class="absolute bottom-10 left-10 z-20">
+    <img src="assets/logo-black.svg" alt="Tendencia Events & Travel" class="h-24">
+  </div>
+
+  <!-- Decorative arrow markers bottom-right -->
+  <div class="absolute bottom-8 right-16 z-10 flex items-center gap-5">
+    <div class="flex">
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-primary)]"></div>
+  </div>
+
+</div>

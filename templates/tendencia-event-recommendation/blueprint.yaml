@@ -139,6 +139,11 @@ sections:
     source: static
     expansion: single
 
+  - id: supports-de-com-2
+    component: supports-de-com-2
+    source: static
+    expansion: single
+
   - id: logo-crea-artwork
     component: logo-crea-artwork
     source: static
@@ -146,6 +151,11 @@ sections:
 
   - id: goodies
     component: goodies
+    source: static
+    expansion: single
+
+  - id: premium-gifts
+    component: premium-gifts
     source: static
     expansion: single
 
