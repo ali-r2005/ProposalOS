@@ -34,6 +34,12 @@ const nextConfig = {
       "./lib/frappe/client.ts",
       "./lib/frappe/types.ts",
       "./node_modules/axios/**/*",
+      // axios's own Node platform adapter does `import "form-data"` internally
+      // (for multipart support) — one hop deeper than the axios glob above,
+      // so the tracer still misses it: "Cannot find package 'form-data'"
+      // at runtime in production even though `node_modules/axios/**/*` is
+      // already force-included.
+      "./node_modules/form-data/**/*",
     ],
   },
 };
