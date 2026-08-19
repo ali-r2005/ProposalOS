@@ -80,7 +80,7 @@ async function fetchItem(
   try {
     const data = await getWithRetry<{ data: ItemDoc }>(
       `${FRAPPE_BASE_URL}/api/resource/Item/${encodeURIComponent(productCode)}`,
-      { headers: authHeaders(apiKey, apiSecret), timeout: 15_000 }
+      { headers: authHeaders(apiKey, apiSecret), timeoutMs: 15_000 }
     );
     return data.data;
   } catch {
@@ -97,7 +97,7 @@ async function fetchCatalogueDoc<T>(
   try {
     const data = await getWithRetry<{ data: T }>(
       `${FRAPPE_BASE_URL}/api/resource/${encodeURIComponent(doctype)}/${encodeURIComponent(reference)}`,
-      { headers: authHeaders(apiKey, apiSecret), timeout: 15_000 }
+      { headers: authHeaders(apiKey, apiSecret), timeoutMs: 15_000 }
     );
     return data.data;
   } catch {
@@ -153,7 +153,7 @@ export const plugin = {
 
     const deal = await getWithRetry<{ data: CrmDeal }>(
       `${FRAPPE_BASE_URL}/api/resource/CRM%20Deal/${encodeURIComponent(dealId)}`,
-      { headers: authHeaders(apiKey, apiSecret), timeout: 15_000 }
+      { headers: authHeaders(apiKey, apiSecret), timeoutMs: 15_000 }
     );
     const productCodes = (deal.data.products ?? [])
       .map((p) => p.product_code)

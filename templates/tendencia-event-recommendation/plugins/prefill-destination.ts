@@ -61,7 +61,7 @@ export const plugin = {
 
     const data = await getWithRetry<{ data: CrmDeal }>(
       `${baseUrl.replace(/\/+$/, "")}/api/resource/CRM%20Deal/${encodeURIComponent(dealId)}`,
-      { headers: { Authorization: `token ${apiKey}:${apiSecret}` }, timeout: 15_000 }
+      { headers: { Authorization: `token ${apiKey}:${apiSecret}` }, timeoutMs: 15_000 }
     );
     const deal = data.data;
 

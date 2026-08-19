@@ -30,10 +30,13 @@
 - ❌ Use NextAuth, non-Drizzle ORMs, or client-side PDF libs
 
 ## HTTP (Strict)
-- ✅ Use `axios` only: `import { http, toErrorMessage } from "@/lib/utils/http";`
-- ❌ Never `fetch()`
+- ✅ Engine code (`app/`, `components/`, `lib/`) uses `axios` only: `import { http, toErrorMessage } from "@/lib/utils/http";`
+- ❌ Engine code never uses `fetch()`
 - Response: `res.data` (not `res.json()`)
 - Errors: `toErrorMessage(err, "fallback")`
+- **Exception — template `providers/*.ts` and `plugins/*.ts` calling an external third-party API (not the engine's own `/api/*` routes): use the built-in `fetch`, not `axios`.**
+  Reason: these files are loaded via runtime `nativeImport()` (see Server External Packages Rule below), invisible to Vercel's output file tracer. `axios` pulls in a chain of transitive npm dependencies (`form-data`, `proxy-from-env`, `follow-redirects`, `https-proxy-agent`, and *their* own sub-dependencies) that the tracer cannot discover through that runtime import path — each missing package only surfaces one at a time in production (`Cannot find package 'form-data'`, then `'proxy-from-env'`, ...), and neither `serverExternalPackages` nor a hand-maintained `outputFileTracingIncludes` glob list reliably closes the gap. `fetch` is a Node global with zero `node_modules` footprint, so there is nothing for the tracer to miss. See `templates/tendencia-event-recommendation/plugins/frappe-http.ts` for the pattern (retry-with-backoff wrapper around `fetch`, `AbortController` for timeouts).
+  This exception does not apply to a provider/plugin calling this app's own `/api/*` routes — that's engine-internal traffic and should still go through `lib/utils/http.ts`.
 
 ## Dependencies (Locked)
 ✅ next, react, typescript, handlebars, @anthropic-ai/sdk, yaml, zod, axios, tailwindcss, autoprefixer, puppeteer, drizzle-orm, drizzle-kit, postgres, dotenv, @grapesjs/studio-sdk (visual proposal editor — free plan: default `web` project type + custom `devices` sized to the slide artboard; no `studio-sdk-plugins` — those (`presetPrintable`, `canvasAbsoluteMode`, `canvasFullSize`, etc.) are paid Startup-plan or print/pagination-oriented and crop+corrupt fixed-size absolute-positioned slides)
@@ -167,4 +170,4 @@ templates/[id]/
 - [ ] Templates use relative `.ts` imports?
 - [ ] serverExternalPackages updated?
 - [ ] `templates/package.json` and `lib/package.json` (`{"type":"module"}`) still present?
-- [ ] No `fetch`, no auth libs, no client PDF libs?
+- [ ] No `fetch` in engine code (templates' external-API providers/plugins are the one exception), no auth libs, no client PDF libs?

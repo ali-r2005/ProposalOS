@@ -16,22 +16,30 @@
           stroke-linecap="butt"/>
   </svg>
 
-  <!-- Clean 2-Row Grid Container (Row 1: 2 cards; Row 2: 1 full-width card) -->
+  <!-- Clean 2-Row Layout Container -->
   <div class="absolute left-[78px] top-[210px] w-[1764px] h-[780px] grid grid-cols-2 grid-rows-2 gap-6 z-10">
 
-    <!-- Card 1 -->
-    <div class="relative w-full h-full border overflow-hidden border-[var(--color-border)] bg-white group" style="border-radius: var(--border-radius);">
-      <img src="assets/Foliatech.webp" alt="Artwork 1" class="w-full h-full object-contain p-2">
-    </div>
-
-    <!-- Card 2 -->
-    <div class="relative w-full h-full border overflow-hidden border-[var(--color-border)] bg-white group" style="border-radius: var(--border-radius);">
-      <img src="assets/fo.png" alt="Artwork 2" class="w-full h-full object-contain p-2">
-    </div>
-
-    <!-- Card 3 (Full width second row) -->
+    <!-- Row 1: 1 Full-width card with 1 image -->
     <div class="col-span-2 relative w-full h-full border overflow-hidden border-[var(--color-border)] bg-white group" style="border-radius: var(--border-radius);">
-      <img src="assets/fo2.png" alt="Artwork 3" class="w-full h-full object-contain p-2">
+      <img src="assets/Foliatech.webp" alt="Logo Créa Artwork" class="w-full h-full object-contain p-2">
+    </div>
+
+    <!-- Row 2 Container: Title first, then 2 cards -->
+    <div class="col-span-2 flex flex-col gap-3 relative w-full h-full">
+      <!-- One shared title for the second row (placed above the 2 images) -->
+      <div class="w-full bg-white border border-[var(--color-border)] p-3 text-center text-[var(--color-text-primary)] text-lg font-bold font-['Poppins']" style="border-radius: var(--border-radius);">
+        DÉCLINAISON LOGO & ARTWORK
+      </div>
+      <div class="grid grid-cols-2 gap-6 flex-1 min-h-0">
+        <!-- Card 1 in Row 2 -->
+        <div class="relative w-full h-full border overflow-hidden border-[var(--color-border)] bg-white group" style="border-radius: var(--border-radius);">
+          <img src="assets/fo.png" alt="Artwork Declinaison 1" class="w-full h-full object-contain p-2">
+        </div>
+        <!-- Card 2 in Row 2 -->
+        <div class="relative w-full h-full border overflow-hidden border-[var(--color-border)] bg-white group" style="border-radius: var(--border-radius);">
+          <img src="assets/fo2.png" alt="Artwork Declinaison 2" class="w-full h-full object-contain p-2">
+        </div>
+      </div>
     </div>
 
   </div>
