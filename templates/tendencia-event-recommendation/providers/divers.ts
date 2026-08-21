@@ -1,62 +1,61 @@
-// Divers provider — parses the form's `divers` textarea (a raw JSON string,
-// same convention as the `programme` field) and shapes each package into the
-// `divers` collection the divers-columns component repeats over. Column
-// count (3 or 4) is decided here from each package's item count and passed
-// as `grid-columns`, so the component itself never counts or branches.
+// Divers provider — shapes the form's `divers` record-list (package title +
+// nested items, filled by hand or by the prefill-catalogue plugin from a
+// Frappe Divers doctype) into the `divers` collection the divers-columns
+// component repeats over. Column count (3 or 4) is decided here from each
+// package's item count and passed as `grid-columns`, so the component itself
+// never counts or branches.
 // Provider contract (strict): export const provider = { name, description, execute }.
 //
 // No database here — like the other providers in this template, packages come
 // from the form/context, not a table.
 
-interface DiversItem {
-  title?: string;
+interface DiversFormItem {
+  "diver-item-title"?: string;
   image?: string;
-  paragraphes?: string[];
+  paragraphes?: string;
 }
 
-interface DiversPackage {
-  id?: string;
-  title?: string;
-  items?: DiversItem[];
+interface DiversFormPackage {
+  "diver-title"?: string;
+  items?: DiversFormItem[];
 }
 
-function shape(pkg: DiversPackage) {
-  // Column layout only supports 3 or 4 columns; cap overflow to 4 and skip
-  // packages that don't have enough items for either layout.
-  const items = (pkg.items ?? []).slice(0, 4);
+/** \n -> <br> so the component can drop the converted string straight into
+ *  HTML with a triple-stache, no Handlebars helper needed — same convention
+ *  as the other providers' description fields. */
+function toHtmlParagraph(text: string | undefined): string {
+  if (!text) return "";
+  return text.replace(/\r\n|\r|\n/g, "<br>");
+}
+
+const GRID_COLUMNS_CLASS: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-2",
+  3: "grid-cols-3",
+  4: "grid-cols-4",
+};
+
+function shape(pkg: DiversFormPackage) {
+  // Column layout supports 1-4 columns; cap overflow to 4.
+  const items = (pkg.items ?? []).slice(0, 4).map((item) => ({
+    title: item["diver-item-title"] ?? "",
+    image: item.image ?? "",
+    paragraphes: toHtmlParagraph(item.paragraphes),
+  }));
   return {
-    title: pkg.title ?? "",
-    "grid-columns": items.length >= 4 ? "grid-cols-4" : "grid-cols-3",
+    title: pkg["diver-title"] ?? "",
+    "grid-columns": GRID_COLUMNS_CLASS[items.length] ?? "grid-cols-1",
     items,
   };
 }
 
-/** Parse the raw `divers` field: an array, a JSON string of one, or (like
- *  `programme`) a `{ "divers": [...] }` wrapper someone naturally pastes
- *  since the field is itself named "divers". */
-function parseDivers(raw: unknown): DiversPackage[] {
-  if (Array.isArray(raw)) return raw;
-  if (typeof raw !== "string" || !raw.trim()) return [];
-
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(raw);
-  } catch {
-    return [];
-  }
-  if (!Array.isArray(parsed) && parsed && typeof parsed === "object" && Array.isArray((parsed as any).divers)) {
-    parsed = (parsed as any).divers;
-  }
-  return Array.isArray(parsed) ? parsed : [];
-}
-
 export const provider = {
   name: "divers",
-  description: "Parses the raw JSON divers field into 3/4-item packages for divers-columns.",
+  description: "Shapes divers packages (1 to 4 items each) for the divers-columns component.",
   async execute(context: Record<string, any>): Promise<Record<string, any>> {
-    const packages = parseDivers(context.divers);
+    const packages: DiversFormPackage[] = Array.isArray(context.divers) ? context.divers : [];
     const shaped = packages
-      .filter((pkg) => Array.isArray(pkg.items) && pkg.items.length >= 3)
+      .filter((pkg) => Array.isArray(pkg.items) && pkg.items.length >= 1)
       .map(shape);
     return { divers: shaped };
   },

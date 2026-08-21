@@ -1,5 +1,5 @@
-<!-- Slide component: Divers — Columns Layout (Title + 3 or 4 Columns with Image, Title & Paragraphs).
-     Column count (3 or 4) is decided by the provider from items.length and passed
+<!-- Slide component: Divers — Columns Layout (Title + 1 to 4 Columns with Image, Title & Paragraph).
+     Column count is decided by the provider from items.length and passed
      as `grid-columns` — the component never counts or branches on the number itself. -->
 <div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
 
@@ -38,11 +38,9 @@
           {{title}}
         </h2>
 
-        <!-- Paragraphs -->
+        <!-- Paragraph -->
         <div class="space-y-3 flex-1 text-[var(--color-text-primary)] text-[16px] leading-relaxed">
-          {{#each paragraphes}}
-          <p class="leading-relaxed">{{this}}</p>
-          {{/each}}
+          <p class="leading-relaxed">{{{paragraphes}}}</p>
         </div>
       </div>
 

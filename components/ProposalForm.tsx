@@ -151,7 +151,8 @@ function FieldInput({
 /** One sub-field inside a record-list row. Deliberately simpler than
  *  FieldInput — no provider options/file upload inside a row, just the
  *  scalar/array cases a catalogue record needs (text, number, textarea,
- *  and a one-URL-per-line list for `images`). */
+ *  a one-URL-per-line list for `images`, and one level of nested
+ *  record-list so e.g. a divers package can hold its own list of items). */
 function RecordFieldInput({
   field,
   value,
@@ -163,6 +164,17 @@ function RecordFieldInput({
 }) {
   const base =
     "w-full rounded-lg border border-[var(--app-border)] bg-[var(--app-panel)] text-[var(--app-text)] px-3 py-2 text-sm outline-none focus:border-[var(--app-accent)]";
+
+  if (field.type === "record-list") {
+    return (
+      <RecordListInput
+        field={field}
+        value={Array.isArray(value) ? (value as RecordValue[]) : []}
+        onChange={(rows) => onChange(rows)}
+        nested
+      />
+    );
+  }
 
   if (field.type === "textarea") {
     return (
@@ -201,16 +213,26 @@ function RecordFieldInput({
   );
 }
 
+/** Blank value for a field when a new record-list row is added — empty
+ *  array for the two array-shaped field types, empty string otherwise. */
+function blankValueFor(field: FormField): unknown {
+  return field.type === "image-list" || field.type === "record-list" ? [] : "";
+}
+
 /** Repeatable list of structured records (e.g. hotels resolved from a CRM
- *  deal) — add, edit, or remove rows, each shaped by `field.itemFields`. */
+ *  deal) — add, edit, or remove rows, each shaped by `field.itemFields`.
+ *  `nested` renders one level lighter (used when this list is itself a
+ *  sub-field of an outer record-list row, e.g. a divers package's items). */
 function RecordListInput({
   field,
   value,
   onChange,
+  nested = false,
 }: {
   field: FormField;
   value: RecordValue[];
   onChange: (rows: RecordValue[]) => void;
+  nested?: boolean;
 }) {
   const itemFields = field.itemFields ?? [];
   const itemLabel = field.itemLabel ?? field.label;
@@ -227,14 +249,17 @@ function RecordListInput({
 
   function addRow() {
     const blank: RecordValue = {};
-    for (const f of itemFields) blank[f.key] = f.type === "image-list" ? [] : "";
+    for (const f of itemFields) blank[f.key] = blankValueFor(f);
     onChange([...value, blank]);
   }
 
   return (
     <div className="space-y-4">
       {value.map((row, index) => (
-        <div key={index} className="rounded-lg border border-[var(--app-border)] p-4">
+        <div
+          key={index}
+          className={`rounded-lg border border-[var(--app-border)] p-4 ${nested ? "bg-[var(--app-bg)]" : ""}`}
+        >
           <div className="mb-3 flex items-center justify-between">
             <span className="text-sm font-semibold">
               {itemLabel} {index + 1}

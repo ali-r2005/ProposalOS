@@ -51,6 +51,17 @@ interface SoireeDoc {
   images?: CatalogueImage[];
 }
 
+interface DiversItemDoc {
+  diver_item_title?: string;
+  image?: string;
+  paragraphes?: string;
+}
+
+interface DiversDoc {
+  diver_title?: string;
+  diver_items?: DiversItemDoc[];
+}
+
 function authHeaders(apiKey: string, apiSecret: string) {
   return { Authorization: `token ${apiKey}:${apiSecret}` };
 }
@@ -139,6 +150,30 @@ function shapeSoiree(id: string, doc: SoireeDoc) {
   };
 }
 
+/** Frappe stores an uploaded file's path as either "/private/files/x.jpg" or
+ *  "/files/x.jpg" depending on whether the file was marked private — both
+ *  are server-relative, so both just need the base URL prepended. */
+function resolveImageUrl(path: string | undefined): string {
+  if (!path) return "";
+  return `${FRAPPE_BASE_URL}${path}`;
+}
+
+// Shaped to match the `divers` record-list form field's keys exactly
+// (form/catalogue.json): "diver-title" + nested "items" with
+// "diver-item-title"/"image"/"paragraphes" — so this plugin's output can be
+// merged straight into that field's initial value, same as the other
+// catalogue-* fields.
+function shapeDivers(doc: DiversDoc) {
+  return {
+    "diver-title": doc.diver_title ?? "",
+    items: (doc.diver_items ?? []).map((item) => ({
+      "diver-item-title": item.diver_item_title ?? "",
+      image: resolveImageUrl(item.image),
+      paragraphes: item.paragraphes ?? "",
+    })),
+  };
+}
+
 export const plugin = {
   name: "prefill-catalogue",
   description: "Resolves the CRM Deal's selected products into hotel/activity/soirée catalogue records.",
@@ -164,6 +199,7 @@ export const plugin = {
     const hotels: ReturnType<typeof shapeHotel>[] = [];
     const activities: ReturnType<typeof shapeActivity>[] = [];
     const soirees: ReturnType<typeof shapeSoiree>[] = [];
+    const divers: ReturnType<typeof shapeDivers>[] = [];
 
     await Promise.all(
       items.map(async (item) => {
@@ -179,8 +215,10 @@ export const plugin = {
         } else if (item.custom_catalogue_type === "Soiree") {
           const doc = await fetchCatalogueDoc<SoireeDoc>("Soiree", reference, apiKey, apiSecret);
           if (doc) soirees.push(shapeSoiree(reference, doc));
+        } else if (item.custom_catalogue_type === "Divers") {
+          const doc = await fetchCatalogueDoc<DiversDoc>("Divers", reference, apiKey, apiSecret);
+          if (doc) divers.push(shapeDivers(doc));
         }
-        // "Divers" intentionally skipped — handled later per the user's instruction.
       })
     );
 
@@ -188,6 +226,7 @@ export const plugin = {
     if (hotels.length) values["catalogue-hotels"] = hotels;
     if (activities.length) values["catalogue-activities"] = activities;
     if (soirees.length) values["catalogue-soirees"] = soirees;
+    if (divers.length) values["divers"] = divers;
     return values;
   },
 };

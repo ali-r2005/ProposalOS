@@ -1,15 +1,15 @@
 {
   "id": "divers-columns",
   "name": "Divers Columns Slide",
-  "description": "Divers package as 3 or 4 image+text columns. Column count is decided by the provider from items.length (3 items -> 3 columns, 4 items -> 4 columns) and passed via `grid-columns`.",
+  "description": "Divers package as 1 to 4 image+text columns. Column count is decided by the provider from items.length and passed via `grid-columns`.",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
     "title": { "type": "string" },
-    "grid-columns": { "type": "string", "description": "Tailwind grid class, e.g. \"grid-cols-3\" or \"grid-cols-4\"." },
+    "grid-columns": { "type": "string", "description": "Tailwind grid class, e.g. \"grid-cols-1\" through \"grid-cols-4\"." },
     "items": {
       "type": "array",
-      "minItems": 3,
+      "minItems": 1,
       "maxItems": 4,
       "items": {
         "type": "object",
@@ -17,8 +17,8 @@
           "title": { "type": "string" },
           "image": { "type": "string" },
           "paragraphes": {
-            "type": "array",
-            "items": { "type": "string" }
+            "type": "string",
+            "description": "Single paragraph; line breaks already converted to <br> server-side, rendered unescaped."
           }
         }
       }

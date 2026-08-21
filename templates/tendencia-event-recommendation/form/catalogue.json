@@ -48,10 +48,25 @@
     },
     {
       "key": "divers",
-      "label": "Divers (JSON)",
-      "type": "textarea",
+      "label": "Divers",
+      "type": "record-list",
       "required": false,
-      "placeholder": "[{\"title\": \"...\", \"items\": [{\"title\": \"...\", \"image\": \"...\", \"paragraphes\": [\"...\"]}, ...]}]"
+      "itemLabel": "Package divers",
+      "itemFields": [
+        { "key": "diver-title", "label": "Titre du package", "type": "text", "required": true },
+        {
+          "key": "items",
+          "label": "Éléments (3 ou 4)",
+          "type": "record-list",
+          "required": false,
+          "itemLabel": "Élément",
+          "itemFields": [
+            { "key": "diver-item-title", "label": "Titre", "type": "text", "required": false },
+            { "key": "image", "label": "Image", "type": "url", "required": false },
+            { "key": "paragraphes", "label": "Paragraphe", "type": "textarea", "required": false }
+          ]
+        }
+      ]
     }
   ]
 }
