@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { http, toErrorMessage } from "@/lib/utils/http";
+import ShareProposalModal from "./ShareProposalModal";
 
 export default function ProposalPreview({ proposalId }: { proposalId: string }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
+  const [sharing, setSharing] = useState(false);
 
   // Fetch the server-rendered PDF (headless Chrome) and trigger a file download.
   async function exportPdf() {
@@ -69,6 +71,13 @@ export default function ProposalPreview({ proposalId }: { proposalId: string }) 
           >
             {exporting ? "Exporting…" : "Export PDF"}
           </button>
+          <button
+            type="button"
+            onClick={() => setSharing(true)}
+            className="rounded-lg border border-[var(--app-border)] px-3 py-1.5 text-xs"
+          >
+            Share
+          </button>
           <Link
             href="/"
             className="rounded-lg bg-[var(--app-accent)] px-3 py-1.5 text-xs font-semibold text-white"
@@ -81,6 +90,9 @@ export default function ProposalPreview({ proposalId }: { proposalId: string }) 
         <p className="border-b border-[var(--app-border)] bg-[var(--app-panel)] px-6 py-2 text-xs text-red-400">
           {exportError}
         </p>
+      )}
+      {sharing && (
+        <ShareProposalModal proposalId={proposalId} onClose={() => setSharing(false)} />
       )}
       <iframe
         ref={iframeRef}
