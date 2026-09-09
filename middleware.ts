@@ -11,6 +11,8 @@ const PROTECTED_ROUTES = [
 const PUBLIC_ROUTES = [
   '/auth/login',
   '/api/auth',
+  '/p',
+  '/api/proposals',
 ];
 
 export function middleware(request: NextRequest) {
