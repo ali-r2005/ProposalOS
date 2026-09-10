@@ -16,8 +16,17 @@ export default function PublicProposalView({
 }) {
   useEffect(() => {
     if (dealId) {
-      console.log("I'm here in the useEffect and dealId is:", dealId);
-      trackProposalClick(dealId);
+      // Capture the browser's User Agent
+      const userAgent = navigator.userAgent;
+      
+      // Call the Next.js Server Action
+      trackProposalClick(dealId, userAgent)
+        .then((res) => {
+          if (res.success) {
+            console.log("Click logged successfully via Next.js Server");
+          }
+        })
+        .catch((err) => console.error(err));
     }
   }, [dealId]);
 

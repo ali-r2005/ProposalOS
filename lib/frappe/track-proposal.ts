@@ -1,36 +1,28 @@
-import axios from 'axios';
-import { FRAPPE_BASE_URL } from "../../templates/tendencia-event-recommendation/plugins/frappe-http.ts";
+"use server";
 
-export const trackProposalClick = async (dealId: string) => {
+import { http, toErrorMessage } from "@/lib/utils/http";
+
+const FRAPPE_BASE_URL = process.env.FRAPPE_CRM_URL || "https://erp.tendenciaevents.com";
+
+/** Server action: records a public proposal-link view against the CRM deal. */
+export async function trackProposalClick(
+  dealId: string,
+  userAgent?: string
+): Promise<{ success: boolean }> {
+  if (!dealId) return { success: false };
+
   try {
-    // 1. Capture Client Timestamp (Formatted for ERPNext Datetime format: YYYY-MM-DD HH:mm:ss)
     const now = new Date();
-    const timestamp = now.toISOString().replace('T', ' ').substring(0, 19);
+    const timestamp = now.toISOString().replace("T", " ").substring(0, 19);
 
-    // 2. Capture Browser & Device Details
-    const userAgent = navigator.userAgent;
-
-    // 3. Prepare Payload
-    const payload = {
-      deal_id: dealId,
-      timestamp: timestamp,
-      user_agent: userAgent,
-    };
-
-    // 4. Send POST request to ERPNext
-    const response = await axios.post(
+    await http.post(
       `${FRAPPE_BASE_URL}/api/method/record_proposal_click`,
-      payload,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+      { deal_id: dealId, timestamp, user_agent: userAgent || "" },
+      { headers: { "Content-Type": "application/json" } }
     );
-    console.log('Proposal click registered successfully:', response.data);
-
-    return response.data;
+    return { success: true };
   } catch (error) {
-    console.error('Failed to register proposal click:', error);
+    console.error("Failed to register proposal click:", toErrorMessage(error, "unknown error"));
+    return { success: false };
   }
-};
+}
