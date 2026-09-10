@@ -5,9 +5,7 @@
 // Triggered from /templates/tendencia-event-recommendation/new?deal=<CRM Deal name>.
 // The chain: CRM Deal.products[] -> Item (per product_code) -> branch on
 // custom_catalogue_type -> Hotel/Activity/Soiree (by custom_catalogue_reference).
-import { getWithRetry } from "./frappe-http.ts";
-
-const FRAPPE_BASE_URL = "https://erp.tendenciaevents.com";
+import { getWithRetry, FRAPPE_BASE_URL } from "./frappe-http.ts";
 
 interface CrmDealProduct {
   product_code?: string;

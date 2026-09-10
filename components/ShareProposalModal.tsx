@@ -18,7 +18,7 @@ export default function ShareProposalModal({
   onClose: () => void;
 }) {
   const [ttlDays, setTtlDays] = useState(7);
-  const [dealID, setDealID] = useState(""); // State for dealID
+  const [dealId, setDealId] = useState(""); // State for dealId
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [url, setUrl] = useState<string | null>(null);
@@ -31,7 +31,7 @@ export default function ShareProposalModal({
     try {
       const { data } = await http.post<{ url: string }>(
         `/api/proposals/${proposalId}/share`,
-        { ttlDays , dealID }
+        { ttlDays , dealId }
       );
       setUrl(data.url);
     } catch (err) {
@@ -81,8 +81,8 @@ export default function ShareProposalModal({
             <label className="mb-1 block text-xs text-[var(--app-muted)]">Deal ID</label>
             <input
               type="text"
-              value={dealID}
-              onChange={(e) => setDealID(e.target.value)}
+              value={dealId}
+              onChange={(e) => setDealId(e.target.value)}
               className="mb-4 w-full rounded-lg border border-[var(--app-border)] bg-transparent px-3 py-1.5 text-xs"
               placeholder="Enter Deal ID"
             />

@@ -20,6 +20,8 @@
 // deal id, permission denied) is not retried since retrying won't change the
 // outcome.
 
+export const FRAPPE_BASE_URL = "https://erp.tendenciaevents.com";
+
 export class FrappeHttpError extends Error {
   readonly status?: number;
 

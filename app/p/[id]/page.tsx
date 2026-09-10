@@ -10,9 +10,9 @@ export default async function PublicProposalPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ expires?: string; sig?: string }>;
+  searchParams: Promise<{ expires?: string; sig?: string; dealId?: string }>;
 }) {
   const { id } = await params;
-  const { expires, sig } = await searchParams;
-  return <PublicProposalView proposalId={id} expires={expires} sig={sig} />;
+  const { expires, sig, dealId } = await searchParams;
+  return <PublicProposalView proposalId={id} expires={expires} sig={sig} dealId={dealId} />;
 }

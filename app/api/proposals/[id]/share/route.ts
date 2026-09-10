@@ -39,9 +39,9 @@ export async function POST(
     const signature = createShareSignature(id, expiresAt);
 
     const origin = new URL(request.url).origin;
-    //i will add a field of dealID
-    const dealID = body?.dealID; 
-    const url = `${origin}/p/${id}?expires=${expiresAt}&sig=${signature}&dealID=${dealID}`;
+    //i will add a field of dealId
+    const dealId = body?.dealId; 
+    const url = `${origin}/p/${id}?expires=${expiresAt}&sig=${signature}&dealId=${dealId}`;
 
     return NextResponse.json({ url, expiresAt });
   } catch (error) {
