@@ -44,10 +44,13 @@
     <img src="assets/logo.svg" alt="Tendencia Events &amp; Travel" class="h-24">
   </div>
 
-  <!-- Dynamic current date script -->
+  <!-- Dynamic current date script — scoped to this slide only; other slides
+       (e.g. programme-day) also use data-field="date" for unrelated dates,
+       so an unscoped document.querySelector would grab the wrong element. -->
   <script>
     (function() {
-      var dateEl = document.querySelector('[data-field="date"]');
+      var slide = document.currentScript.closest('.slide');
+      var dateEl = slide ? slide.querySelector('[data-field="date"]') : null;
       if (dateEl) {
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
