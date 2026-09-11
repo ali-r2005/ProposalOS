@@ -38,6 +38,10 @@ interface ActivityDoc {
   type?: string;
   description?: string;
   difficulty?: string;
+  number_of_participants?: string;
+  video?: string;
+  space?: string;
+  timeframe?: string;
   images?: CatalogueImage[];
 }
 
@@ -133,6 +137,10 @@ function shapeActivity(id: string, doc: ActivityDoc) {
     type: doc.type ?? "",
     description: toHtmlParagraphs(doc.description),
     difficulty: doc.difficulty ?? "",
+    video: doc.video ?? "",
+    space: doc.space ?? "",
+    timeframe: doc.timeframe ?? "",
+    "number-of-participants": doc.number_of_participants ?? "",
     images: resolveImageUrls(doc.images),
   };
 }

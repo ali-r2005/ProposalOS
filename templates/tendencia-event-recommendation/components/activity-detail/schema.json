@@ -6,7 +6,10 @@
     "name": { "type": "string" },
     "description": { "type": "string" },
     "video": { "type": "string", "format": "url" },
-    "meta": { "type": "string" },
+    "space": { "type": "string" },
+    "timeframe": { "type": "string" },
+    "number-of-participants": { "type": "string" },
+    "difficulty": { "type": "string" },
     "images": {
       "type": "array",
       "items": { "type": "string", "format": "url" }

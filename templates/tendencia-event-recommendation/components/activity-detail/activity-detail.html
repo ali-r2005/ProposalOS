@@ -13,12 +13,31 @@
       <p>{{{description}}}</p>
     </div>
 
+    {{#if video}}
     <p class="text-[22px] font-bold text-[var(--color-text-primary)] mt-10 italic">
-      Lien Video: <a class="underline" href="{{video}}" data-field="activity-video">{{video}}</a>
+      Lien Video: <a class="underline" href="{{video}}" target="_blank" data-field="activity-video">{{video}}</a>
     </p>
+    {{/if}}
+    {{#if space}}
     <p class="text-[22px] font-bold text-[var(--color-text-primary)] mt-4 italic">
-      <span class="underline">Détails de l'activité</span> : <span data-field="activity-meta">{{meta}}</span>
+      <span class="underline">Espace</span> : <span data-field="activity-space">{{space}}</span>
     </p>
+    {{/if}}
+    {{#if timeframe}}
+    <p class="text-[22px] font-bold text-[var(--color-text-primary)] mt-4 italic">
+      <span class="underline">Durée</span> : <span data-field="activity-timeframe">{{timeframe}}</span>
+    </p>
+    {{/if}}
+    {{#if [number-of-participants]}}
+    <p class="text-[22px] font-bold text-[var(--color-text-primary)] mt-4 italic">
+      <span class="underline">Participants</span> : <span data-field="activity-participants">{{[number-of-participants]}}</span>
+    </p>
+    {{/if}}
+    {{#if [difficulty]}}
+    <p class="text-[22px] font-bold text-[var(--color-text-primary)] mt-4 italic">
+      <span class="underline">Difficulté</span> : <span data-field="activity-difficulty">{{[difficulty]}}</span>
+    </p>
+    {{/if}}
   </div>
 
   <!-- Right: photo collage (conditional 4 vs 3 images layout) -->

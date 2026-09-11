@@ -12,6 +12,10 @@ interface CatalogueActivity {
   type?: string;
   difficulty?: string;
   description?: string;
+  video?: string;
+  space?: string;
+  timeframe?: string;
+  "number-of-participants"?: string;
   images?: string[];
 }
 
@@ -24,8 +28,10 @@ function shape(activity: CatalogueActivity, index: number) {
     type: activity.type ?? "",
     category: activity.difficulty ?? "",
     description: activity.description ?? "",
-    video: "",
-    meta: "",
+    video: activity.video ?? "",
+    space: activity.space ?? "",
+    timeframe: activity.timeframe ?? "",
+    "number-of-participants": activity["number-of-participants"] ?? "",
     images: Array.isArray(activity.images) ? activity.images : [],
   };
 }

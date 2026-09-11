@@ -29,6 +29,10 @@
         { "key": "type", "label": "Type", "type": "text", "required": false, "placeholder": "indoor / outdoor" },
         { "key": "difficulty", "label": "Difficulté", "type": "text", "required": false },
         { "key": "description", "label": "Description", "type": "textarea", "required": false },
+        { "key": "video", "label": "Lien vidéo", "type": "url", "required": false },
+        { "key": "space", "label": "Espace", "type": "text", "required": false },
+        { "key": "timeframe", "label": "Durée", "type": "text", "required": false },
+        { "key": "number-of-participants", "label": "Nombre de participants", "type": "text", "required": false },
         { "key": "images", "label": "Images", "type": "image-list", "required": false }
       ]
     },
