@@ -25,8 +25,15 @@
       "placeholder": "p. ex. 2025"
     },
     {
-      "key": "event-dates",
+      "key": "event-start-dates",
       "label": "Dates de l'événement",
+      "type": "text",
+      "required": true,
+      "placeholder": "p. ex. 15-18 juin 2025"
+    },
+    {
+      "key": "event-end-dates",
+      "label": "Dates de fin de l'événement",
       "type": "text",
       "required": true,
       "placeholder": "p. ex. 15-18 juin 2025"
