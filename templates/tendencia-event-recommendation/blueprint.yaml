@@ -70,7 +70,9 @@ sections:
     component: activity-options
     source: database
     provider: activities
-    expansion: single
+    expansion:
+      strategy: single
+      collection: activities
     dependsOn:
       - activities
 

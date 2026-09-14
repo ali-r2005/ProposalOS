@@ -17,6 +17,6 @@ export function expand(section: BlueprintSection, context: BusinessContext): Bus
       return expandChunk(context, config);
     case "single":
     default:
-      return expandSingle(context);
+      return expandSingle(context, config);
   }
 }
