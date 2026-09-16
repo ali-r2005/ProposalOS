@@ -42,7 +42,7 @@ export default function PublicProposalView({
 
   return (
     <div className="h-screen bg-[#333]">
-      <iframe title="Proposal" src={src} className="h-full w-full border-0" />
+      <iframe title="Proposal" src={src} className="block h-full w-full border-0" />
     </div>
   );
 }
