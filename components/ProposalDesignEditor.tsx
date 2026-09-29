@@ -8,6 +8,7 @@ import type { Editor } from "grapesjs";
 import { http, toErrorMessage } from "@/lib/utils/http";
 import type { RenderedSlide } from "@/lib/engine/types";
 import { useUserSettings } from "@/components/useUserSettings";
+import { useProposalName } from "@/components/useProposalName";
 import { useLocale } from "@/components/LocaleProvider";
 
 interface ParsedDocument {
@@ -103,6 +104,7 @@ export default function ProposalDesignEditor({ proposalId }: { proposalId: strin
   const [dirty, setDirty] = useState(false);
   const { settings } = useUserSettings();
   const { t } = useLocale();
+  const proposalName = useProposalName(proposalId);
 
   useEffect(() => {
     http
@@ -229,7 +231,7 @@ export default function ProposalDesignEditor({ proposalId }: { proposalId: strin
       <header className="flex items-center justify-between border-b border-[var(--app-border)] bg-[var(--app-panel)] px-6 py-3">
         <div>
           <h1 className="text-sm font-semibold">Visual editor</h1>
-          <p className="text-xs text-[var(--app-muted)]">{proposalId}</p>
+          <p className="text-xs text-[var(--app-muted)]">{proposalName}</p>
         </div>
         <div className="flex items-center gap-3">
           {settings.autosaveEnabled && (

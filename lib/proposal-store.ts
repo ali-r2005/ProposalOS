@@ -83,6 +83,27 @@ export async function getProposal(proposalId: string): Promise<StoredProposal | 
   return { templateId: row.templateId, html: row.html, context: row.context as BusinessContext };
 }
 
+/**
+ * Metadata for a single proposal — the same columns listProposals returns,
+ * without pulling the html/context blobs the editor headers don't need.
+ */
+export async function getProposalMeta(
+  proposalId: string
+): Promise<ProposalListItem | undefined> {
+  const [row] = await getDb()
+    .select({
+      id: proposals.id,
+      templateId: proposals.templateId,
+      title: proposals.title,
+      createdAt: proposals.createdAt,
+      updatedAt: proposals.updatedAt,
+    })
+    .from(proposals)
+    .where(eq(proposals.id, proposalId))
+    .limit(1);
+  return row;
+}
+
 /** Overwrite the html + context of an existing proposal (used by the editor). */
 export async function updateProposal(
   proposalId: string,

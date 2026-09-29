@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { http, toErrorMessage } from "@/lib/utils/http";
+import { useProposalName } from "@/components/useProposalName";
 import ShareProposalModal from "./ShareProposalModal";
 
 export default function ProposalPreview({ proposalId }: { proposalId: string }) {
+  const proposalName = useProposalName(proposalId);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
@@ -40,7 +42,7 @@ export default function ProposalPreview({ proposalId }: { proposalId: string }) 
       <header className="flex items-center justify-between border-b border-[var(--app-border)] bg-[var(--app-panel)] px-6 py-3">
         <div>
           <h1 className="text-sm font-semibold">Proposal preview</h1>
-          <p className="text-xs text-[var(--app-muted)]">{proposalId}</p>
+          <p className="text-xs text-[var(--app-muted)]">{proposalName}</p>
         </div>
         <div className="flex items-center gap-3">
           <Link
