@@ -4,10 +4,14 @@ import { useState } from 'react';
 import { useAuth } from '@/components/AuthProvider';
 import { http } from '@/lib/utils/http';
 import { useLocale } from '@/components/LocaleProvider';
+import { useUserSettings } from '@/components/useUserSettings';
 
 export default function AdminSettingsPage() {
   const { user, logout } = useAuth();
   const { t } = useLocale();
+  // Called before the `!user` early return below — hooks must run on every
+  // render, in the same order.
+  const { settings, loading: settingsLoading, update: updateSettings } = useUserSettings();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
@@ -52,6 +56,19 @@ export default function AdminSettingsPage() {
       });
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleToggleAutosave(enabled: boolean) {
+    setMessage(null);
+    try {
+      await updateSettings({ autosaveEnabled: enabled });
+      setMessage({ type: 'success', text: t('settings.editor.saved') });
+    } catch (error) {
+      setMessage({
+        type: 'error',
+        text: error instanceof Error ? error.message : t('settings.editor.failed'),
+      });
     }
   }
 
@@ -100,6 +117,30 @@ export default function AdminSettingsPage() {
         )}
 
         <div className="space-y-8">
+          {/* Visual Editor Preferences */}
+          <div className="border border-[var(--app-border)] rounded-lg p-6">
+            <h2 className="text-2xl font-bold text-[var(--app-text)] mb-4">
+              {t('settings.editor.title')}
+            </h2>
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={settings.autosaveEnabled}
+                disabled={settingsLoading}
+                onChange={(e) => handleToggleAutosave(e.target.checked)}
+                className="mt-1 h-4 w-4 accent-[var(--app-accent)] disabled:opacity-50"
+              />
+              <span>
+                <span className="block text-sm font-medium text-[var(--app-text)]">
+                  {t('settings.editor.autosave')}
+                </span>
+                <span className="block text-sm text-[var(--app-muted)]">
+                  {t('settings.editor.autosaveHint')}
+                </span>
+              </span>
+            </label>
+          </div>
+
           {/* Change Password Section */}
           <div className="border border-[var(--app-border)] rounded-lg p-6">
             <h2 className="text-2xl font-bold text-[var(--app-text)] mb-4">{t('settings.password.title')}</h2>

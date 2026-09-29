@@ -1,4 +1,11 @@
 import axios from "axios";
+import type { AxiosRequestConfig, AxiosResponse } from "axios";
+
+/** Original request config, tagged once it has been replayed after a refresh. */
+type RetriableConfig = AxiosRequestConfig & {
+  _retried?: boolean;
+  headers: Record<string, unknown>;
+};
 
 export const http = axios.create({
   headers: { "Content-Type": "application/json" },
@@ -11,6 +18,30 @@ export const http = axios.create({
 // the httpOnly refreshToken cookie and retry once. Concurrent 401s share a
 // single in-flight refresh instead of each firing their own.
 let refreshPromise: Promise<string | null> | null = null;
+
+// Resolved by AuthProvider once its initial refresh has settled. Child effects
+// run before parent effects in React, so without this gate a page's mount
+// fetch races the provider and goes out with no Authorization header — landing
+// as "Unauthorized: invalid token" whenever the accessToken cookie has also
+// expired. Stays null outside the browser (SSR/route handlers), where there is
+// no provider and nothing to wait for.
+let authReadyPromise: Promise<void> | null = null;
+
+export function setAuthReady(promise: Promise<void>): void {
+  authReadyPromise = promise;
+}
+
+http.interceptors.request.use(async (config) => {
+  // Auth endpoints bootstrap the gate — awaiting it here would deadlock.
+  if (authReadyPromise && !config.url?.includes("/api/auth/")) {
+    await authReadyPromise;
+    const token = http.defaults.headers.common["Authorization"];
+    if (token && !config.headers["Authorization"]) {
+      config.headers["Authorization"] = token;
+    }
+  }
+  return config;
+});
 
 function refreshAccessToken(): Promise<string | null> {
   if (!refreshPromise) {
@@ -25,21 +56,46 @@ function refreshAccessToken(): Promise<string | null> {
   return refreshPromise;
 }
 
+/** Refresh once and replay the original request. Returns null if refresh failed. */
+async function retryWithFreshToken(
+  original: RetriableConfig
+): Promise<AxiosResponse | null> {
+  original._retried = true;
+
+  const accessToken = await refreshAccessToken();
+  if (!accessToken) return null;
+
+  http.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+  original.headers["Authorization"] = `Bearer ${accessToken}`;
+  return http(original);
+}
+
+function isRetryable401(
+  config: RetriableConfig | undefined,
+  status: number | undefined
+): boolean {
+  return status === 401 && !config?._retried && !config?.url?.includes("/api/auth/");
+}
+
 http.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const original = error.config;
-    if (error.response?.status !== 401 || original._retried || original.url?.includes("/api/auth/")) {
+  // Callers that pass `validateStatus: () => true` (the save paths) land a 401
+  // here as a *success*, so it would otherwise skip the refresh-and-retry below
+  // and surface as a hard "Unauthorized" — losing unsaved editor work. Catch
+  // that case on the success branch too.
+  async (response: AxiosResponse) => {
+    const config = response.config as RetriableConfig;
+    if (!isRetryable401(config, response.status)) return response;
+    const retried = await retryWithFreshToken(config);
+    return retried ?? response;
+  },
+  async (error: unknown) => {
+    if (!axios.isAxiosError(error)) return Promise.reject(error);
+    const original = error.config as RetriableConfig | undefined;
+    if (!original || !isRetryable401(original, error.response?.status)) {
       return Promise.reject(error);
     }
-    original._retried = true;
-
-    const accessToken = await refreshAccessToken();
-    if (!accessToken) return Promise.reject(error);
-
-    http.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-    original.headers["Authorization"] = `Bearer ${accessToken}`;
-    return http(original);
+    const retried = await retryWithFreshToken(original);
+    return retried ?? Promise.reject(error);
   }
 );
 

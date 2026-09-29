@@ -1,7 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { http } from '@/lib/utils/http';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { http, setAuthReady } from '@/lib/utils/http';
 
 export interface AuthUser {
   id: string;
@@ -16,6 +16,13 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   setAccessToken: (token: string) => void;
+  /**
+   * Resolves once the initial refresh has finished and the Authorization
+   * header is in place. Child effects run before parent effects in React, so
+   * any component that fetches on mount must await this first — otherwise its
+   * request races the provider and goes out unauthenticated.
+   */
+  authReady: Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,6 +32,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+
+  // Created during render — before any child effect can fire a request — so
+  // `authReady` is always awaitable, never undefined on first paint.
+  const readyRef = useRef<{ promise: Promise<void>; resolve: () => void } | null>(null);
+  if (!readyRef.current) {
+    let resolve!: () => void;
+    const promise = new Promise<void>((r) => {
+      resolve = r;
+    });
+    readyRef.current = { promise, resolve };
+    // Hand the same gate to the axios layer so its 401-retry path can await it.
+    setAuthReady(promise);
+  }
+  const authReady = readyRef.current.promise;
 
   useEffect(() => {
     async function initAuth() {
@@ -43,6 +64,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // No valid refresh token, user not logged in
       } finally {
         setLoading(false);
+        // Unblock waiters whether or not auth succeeded; a request that still
+        // 401s falls through to the interceptor's refresh-and-retry.
+        readyRef.current?.resolve();
       }
     }
 
@@ -81,6 +105,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     user,
     loading,
     error,
+    authReady,
     login,
     logout,
     setAccessToken: (token) => {

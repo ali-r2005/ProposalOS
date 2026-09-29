@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import StudioEditor from "@grapesjs/studio-sdk/react";
 import "@grapesjs/studio-sdk/style";
 import type { Editor } from "grapesjs";
 import { http, toErrorMessage } from "@/lib/utils/http";
 import type { RenderedSlide } from "@/lib/engine/types";
+import { useUserSettings } from "@/components/useUserSettings";
+import { useLocale } from "@/components/LocaleProvider";
 
 interface ParsedDocument {
   slides: RenderedSlide[];
@@ -58,6 +60,39 @@ function relativizeAssetPaths(html: string, assetBase: string): string {
   return html.replace(new RegExp(`(src|href)="${escaped}assets/`, "g"), `$1="assets/`);
 }
 
+/**
+ * A save that fails after the session has fully lapsed (refresh token gone, so
+ * the silent retry in lib/utils/http.ts can't recover) would otherwise discard
+ * every edit in the canvas. Keep the serialized slides in localStorage so they
+ * survive a re-login or reload, and offer them back on next mount.
+ */
+const stashKey = (proposalId: string) => `proposalos:unsaved-slides:${proposalId}`;
+
+function stashUnsavedSlides(proposalId: string, slides: RenderedSlide[]): void {
+  try {
+    localStorage.setItem(stashKey(proposalId), JSON.stringify(slides));
+  } catch {
+    // Private mode / quota exceeded — nothing more we can do here.
+  }
+}
+
+function readUnsavedSlides(proposalId: string): RenderedSlide[] | null {
+  try {
+    const raw = localStorage.getItem(stashKey(proposalId));
+    return raw ? (JSON.parse(raw) as RenderedSlide[]) : null;
+  } catch {
+    return null;
+  }
+}
+
+function clearUnsavedSlides(proposalId: string): void {
+  try {
+    localStorage.removeItem(stashKey(proposalId));
+  } catch {
+    // Ignore — a stale stash is harmless, it is only offered, never forced.
+  }
+}
+
 export default function ProposalDesignEditor({ proposalId }: { proposalId: string }) {
   const [parsed, setParsed] = useState<ParsedDocument | null>(null);
   const [editor, setEditor] = useState<Editor | null>(null);
@@ -65,11 +100,25 @@ export default function ProposalDesignEditor({ proposalId }: { proposalId: strin
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [dirty, setDirty] = useState(false);
+  const { settings } = useUserSettings();
+  const { t } = useLocale();
 
   useEffect(() => {
     http
       .get<string>(`/api/proposals/${proposalId}`)
-      .then(({ data }) => setParsed(parseDocument(data)))
+      .then(({ data }) => {
+        const doc = parseDocument(data);
+        // A previous save died after the session lapsed — prefer the stashed
+        // edits over the server copy so the work isn't silently dropped.
+        const stashed = readUnsavedSlides(proposalId);
+        if (stashed?.length === doc.slides.length) {
+          setParsed({ ...doc, slides: stashed });
+          setError("Restored unsaved edits from your last session — press Save to persist them.");
+          return;
+        }
+        setParsed(doc);
+      })
       .catch((err) => setError(toErrorMessage(err, "Failed to load proposal")))
       .finally(() => setLoading(false));
   }, [proposalId]);
@@ -87,9 +136,11 @@ export default function ProposalDesignEditor({ proposalId }: { proposalId: strin
     setSaving(true);
     setError(null);
     setSaved(false);
+    // Hoisted so the catch below can stash it if the request never lands.
+    let slides: RenderedSlide[] = [];
     try {
       const editorPages = editor.Pages.getAll();
-      const slides: RenderedSlide[] = editorPages.map((page, i) => {
+      slides = editorPages.map((page, i) => {
         const mainComponent = page.getMainComponent();
         const css = editor.getCss({ component: mainComponent }) ?? "";
         const bodyHtml = editor.getHtml({ component: mainComponent });
@@ -107,16 +158,71 @@ export default function ProposalDesignEditor({ proposalId }: { proposalId: strin
         { validateStatus: () => true }
       );
       if (!data.success) {
-        setError(data.error ?? "Save failed");
+        stashUnsavedSlides(proposalId, slides);
+        setError(
+          `${data.error ?? "Save failed"} — your edits are kept in this browser; ` +
+            `sign in again in another tab, then press Save once more.`
+        );
         return;
       }
+      clearUnsavedSlides(proposalId);
       setSaved(true);
+      setDirty(false);
     } catch (err) {
-      setError(toErrorMessage(err, "Save failed"));
+      stashUnsavedSlides(proposalId, slides);
+      setError(
+        `${toErrorMessage(err, "Save failed")} — your edits are kept in this browser; ` +
+          `sign in again in another tab, then press Save once more.`
+      );
     } finally {
       setSaving(false);
     }
   }, [editor, parsed, proposalId]);
+
+  // Mark the document dirty on any canvas mutation. GrapesJS fires `update`
+  // for component, style and attribute changes alike, which is exactly the
+  // set of edits that belong in a save.
+  useEffect(() => {
+    if (!editor) return;
+    const onUpdate = () => {
+      setDirty(true);
+      setSaved(false);
+    };
+    editor.on("update", onUpdate);
+    return () => {
+      editor.off("update", onUpdate);
+    };
+  }, [editor]);
+
+  // `save` is recreated whenever its deps change; keeping it in a ref lets the
+  // debounce timer below fire the current version without resetting the timer
+  // on every render.
+  const saveRef = useRef(save);
+  useEffect(() => {
+    saveRef.current = save;
+  }, [save]);
+
+  // Debounced autosave: restart the countdown on each edit, so it fires once
+  // the user pauses rather than on every keystroke.
+  useEffect(() => {
+    if (!settings.autosaveEnabled || !dirty || saving || !editor) return;
+    const timer = setTimeout(() => {
+      void saveRef.current();
+    }, settings.autosaveIntervalMs);
+    return () => clearTimeout(timer);
+  }, [settings.autosaveEnabled, settings.autosaveIntervalMs, dirty, saving, editor]);
+
+  // Last-ditch guard: if the tab is closed with edits still pending, keep them
+  // in localStorage so the next mount can offer them back.
+  useEffect(() => {
+    if (!dirty || !editor || !parsed) return;
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [dirty, editor, parsed]);
 
   return (
     <div className="flex h-screen flex-col">
@@ -126,6 +232,17 @@ export default function ProposalDesignEditor({ proposalId }: { proposalId: strin
           <p className="text-xs text-[var(--app-muted)]">{proposalId}</p>
         </div>
         <div className="flex items-center gap-3">
+          {settings.autosaveEnabled && (
+            <span className="text-xs text-[var(--app-muted)]">
+              {saving
+                ? t("editor.autosave.saving")
+                : dirty
+                  ? t("editor.autosave.pending")
+                  : saved
+                    ? t("editor.autosave.saved")
+                    : t("editor.autosave.on")}
+            </span>
+          )}
           <Link
             href={`/proposal/${proposalId}`}
             className="rounded-lg border border-[var(--app-border)] px-3 py-1.5 text-xs"

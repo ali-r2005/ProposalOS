@@ -38,6 +38,20 @@ export const sessions = pgTable("sessions", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+/**
+ * Per-user UI preferences (autosave toggle, and whatever comes later).
+ * Deliberately a single jsonb blob rather than a column per setting — the
+ * engine stays agnostic about which keys exist, and adding a preference
+ * needs no migration.
+ */
+export const userSettings = pgTable("user_settings", {
+  userId: text("user_id")
+    .primaryKey()
+    .references(() => users.id, { onDelete: "cascade" }),
+  settings: jsonb("settings").$type<Record<string, unknown>>().notNull().default({}),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const userRoles = pgTable(
   "user_roles",
   {

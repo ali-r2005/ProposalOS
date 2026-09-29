@@ -73,6 +73,18 @@ const en = {
   "settings.email.submitting": "Changing...",
   "settings.email.success": "Email changed successfully! Please log in again.",
   "settings.email.failed": "Failed to change email",
+
+  "settings.editor.title": "Visual Editor",
+  "settings.editor.autosave": "Enable autosave",
+  "settings.editor.autosaveHint":
+    "Automatically save your changes in the visual editor a few seconds after you stop editing.",
+  "settings.editor.saved": "Preference saved",
+  "settings.editor.failed": "Failed to save preference",
+
+  "editor.autosave.on": "Autosave on",
+  "editor.autosave.saving": "Saving…",
+  "editor.autosave.saved": "All changes saved",
+  "editor.autosave.pending": "Unsaved changes",
 } as const;
 
 export type MessageKey = keyof typeof en;
@@ -136,5 +148,17 @@ export const messages: Record<Locale, Record<MessageKey, string>> = {
     "settings.email.submitting": "Modification...",
     "settings.email.success": "E-mail modifié avec succès ! Veuillez vous reconnecter.",
     "settings.email.failed": "Échec de la modification de l'e-mail",
+
+    "settings.editor.title": "Éditeur visuel",
+    "settings.editor.autosave": "Activer l'enregistrement automatique",
+    "settings.editor.autosaveHint":
+      "Enregistrer automatiquement vos modifications dans l'éditeur visuel quelques secondes après avoir arrêté de modifier.",
+    "settings.editor.saved": "Préférence enregistrée",
+    "settings.editor.failed": "Échec de l'enregistrement de la préférence",
+
+    "editor.autosave.on": "Enregistrement auto activé",
+    "editor.autosave.saving": "Enregistrement…",
+    "editor.autosave.saved": "Toutes les modifications sont enregistrées",
+    "editor.autosave.pending": "Modifications non enregistrées",
   },
 };
