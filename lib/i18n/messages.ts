@@ -80,6 +80,12 @@ const en = {
     "Automatically save your changes in the visual editor a few seconds after you stop editing.",
   "settings.editor.saved": "Preference saved",
   "settings.editor.failed": "Failed to save preference",
+  "settings.editor.intervalLabel": "Save after",
+  "settings.editor.intervalHint": "How long to wait after you stop editing before saving.",
+  "settings.editor.interval.5s": "5 seconds",
+  "settings.editor.interval.10s": "10 seconds",
+  "settings.editor.interval.30s": "30 seconds",
+  "settings.editor.interval.60s": "1 minute",
 
   "editor.autosave.on": "Autosave on",
   "editor.autosave.saving": "Saving…",
@@ -155,6 +161,13 @@ export const messages: Record<Locale, Record<MessageKey, string>> = {
       "Enregistrer automatiquement vos modifications dans l'éditeur visuel quelques secondes après avoir arrêté de modifier.",
     "settings.editor.saved": "Préférence enregistrée",
     "settings.editor.failed": "Échec de l'enregistrement de la préférence",
+    "settings.editor.intervalLabel": "Enregistrer après",
+    "settings.editor.intervalHint":
+      "Délai d'attente après l'arrêt des modifications avant l'enregistrement.",
+    "settings.editor.interval.5s": "5 secondes",
+    "settings.editor.interval.10s": "10 secondes",
+    "settings.editor.interval.30s": "30 secondes",
+    "settings.editor.interval.60s": "1 minute",
 
     "editor.autosave.on": "Enregistrement auto activé",
     "editor.autosave.saving": "Enregistrement…",

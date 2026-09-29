@@ -3,6 +3,7 @@ import { eq } from 'drizzle-orm';
 import { getDb } from '@/lib/db/client';
 import { userSettings } from '@/lib/db/schema';
 import { requireAuth } from '@/lib/auth/context';
+import { isValidAutosaveInterval } from '@/lib/settings';
 import { toErrorResponse } from '@/lib/utils/error-handler';
 
 /**
@@ -37,6 +38,18 @@ export async function PUT(request: Request) {
     if (!settings || typeof settings !== 'object' || Array.isArray(settings)) {
       return NextResponse.json(
         { error: 'settings must be an object' },
+        { status: 400 }
+      );
+    }
+
+    // Guard the one key with a bounded set of values — an arbitrary number
+    // here would become a runaway setTimeout in every editor session.
+    if (
+      'autosaveIntervalMs' in settings &&
+      !isValidAutosaveInterval(settings.autosaveIntervalMs)
+    ) {
+      return NextResponse.json(
+        { error: 'Unsupported autosave interval' },
         { status: 400 }
       );
     }

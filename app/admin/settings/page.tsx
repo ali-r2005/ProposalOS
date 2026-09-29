@@ -5,6 +5,8 @@ import { useAuth } from '@/components/AuthProvider';
 import { http } from '@/lib/utils/http';
 import { useLocale } from '@/components/LocaleProvider';
 import { useUserSettings } from '@/components/useUserSettings';
+import { AUTOSAVE_INTERVALS } from '@/lib/settings';
+import type { UserSettings } from '@/lib/settings';
 
 export default function AdminSettingsPage() {
   const { user, logout } = useAuth();
@@ -59,10 +61,10 @@ export default function AdminSettingsPage() {
     }
   }
 
-  async function handleToggleAutosave(enabled: boolean) {
+  async function saveEditorPreference(patch: Partial<UserSettings>) {
     setMessage(null);
     try {
-      await updateSettings({ autosaveEnabled: enabled });
+      await updateSettings(patch);
       setMessage({ type: 'success', text: t('settings.editor.saved') });
     } catch (error) {
       setMessage({
@@ -127,7 +129,7 @@ export default function AdminSettingsPage() {
                 type="checkbox"
                 checked={settings.autosaveEnabled}
                 disabled={settingsLoading}
-                onChange={(e) => handleToggleAutosave(e.target.checked)}
+                onChange={(e) => saveEditorPreference({ autosaveEnabled: e.target.checked })}
                 className="mt-1 h-4 w-4 accent-[var(--app-accent)] disabled:opacity-50"
               />
               <span>
@@ -139,6 +141,36 @@ export default function AdminSettingsPage() {
                 </span>
               </span>
             </label>
+
+            {/* Only meaningful while autosave is on. */}
+            {settings.autosaveEnabled && (
+              <div className="mt-4 pl-7">
+                <label
+                  htmlFor="autosave-interval"
+                  className="block text-sm font-medium text-[var(--app-text)] mb-1"
+                >
+                  {t('settings.editor.intervalLabel')}
+                </label>
+                <select
+                  id="autosave-interval"
+                  value={settings.autosaveIntervalMs}
+                  disabled={settingsLoading}
+                  onChange={(e) =>
+                    saveEditorPreference({ autosaveIntervalMs: Number(e.target.value) })
+                  }
+                  className="w-full px-3 py-2 border border-[var(--app-border)] rounded-lg bg-[var(--app-panel)] text-[var(--app-text)] disabled:opacity-50"
+                >
+                  {AUTOSAVE_INTERVALS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {t(option.labelKey)}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-1 text-sm text-[var(--app-muted)]">
+                  {t('settings.editor.intervalHint')}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Change Password Section */}
