@@ -1,0 +1,76 @@
+{
+  "id": "catalogue",
+  "title": "Catalogue",
+  "description": "Hotels, activities and evening options proposed for this event. Pre-filled from the CRM quote — adjust as needed.",
+  "fields": [
+    {
+      "key": "catalogue-hotels",
+      "label": "Hotels",
+      "type": "record-list",
+      "required": false,
+      "itemLabel": "Hotel",
+      "itemFields": [
+        { "key": "hotel-name", "label": "Hotel name", "type": "text", "required": true },
+        { "key": "city", "label": "City", "type": "text", "required": false },
+        { "key": "category", "label": "Category (stars)", "type": "number", "required": false },
+        { "key": "hotel-url", "label": "Website", "type": "url", "required": false },
+        { "key": "description", "label": "Description", "type": "textarea", "required": false },
+        { "key": "images", "label": "Images", "type": "image-list", "required": false }
+      ]
+    },
+    {
+      "key": "catalogue-activities",
+      "label": "Activities",
+      "type": "record-list",
+      "required": false,
+      "itemLabel": "Activity",
+      "itemFields": [
+        { "key": "activity-name", "label": "Activity name", "type": "text", "required": true },
+        { "key": "type", "label": "Type", "type": "text", "required": false, "placeholder": "indoor / outdoor" },
+        { "key": "difficulty", "label": "Difficulty", "type": "text", "required": false },
+        { "key": "description", "label": "Description", "type": "textarea", "required": false },
+        { "key": "video", "label": "Video link", "type": "url", "required": false },
+        { "key": "space", "label": "Space", "type": "text", "required": false },
+        { "key": "timeframe", "label": "Duration", "type": "text", "required": false },
+        { "key": "number-of-participants", "label": "Number of participants", "type": "text", "required": false },
+        { "key": "images", "label": "Images", "type": "image-list", "required": false }
+      ]
+    },
+    {
+      "key": "catalogue-soirees",
+      "label": "Evening events",
+      "type": "record-list",
+      "required": false,
+      "itemLabel": "Evening event",
+      "itemFields": [
+        { "key": "soiree-name", "label": "Evening event name", "type": "text", "required": true },
+        { "key": "subtitle", "label": "Subtitle", "type": "text", "required": false },
+        { "key": "keywords", "label": "Keywords", "type": "text", "required": false },
+        { "key": "description", "label": "Description", "type": "textarea", "required": false },
+        { "key": "images", "label": "Images", "type": "image-list", "required": false }
+      ]
+    },
+    {
+      "key": "divers",
+      "label": "Miscellaneous",
+      "type": "record-list",
+      "required": false,
+      "itemLabel": "Miscellaneous package",
+      "itemFields": [
+        { "key": "diver-title", "label": "Package title", "type": "text", "required": true },
+        {
+          "key": "items",
+          "label": "Items (3 or 4)",
+          "type": "record-list",
+          "required": false,
+          "itemLabel": "Item",
+          "itemFields": [
+            { "key": "diver-item-title", "label": "Title", "type": "text", "required": false },
+            { "key": "image", "label": "Image", "type": "url", "required": false },
+            { "key": "paragraphes", "label": "Paragraph", "type": "textarea", "required": false }
+          ]
+        }
+      ]
+    }
+  ]
+}

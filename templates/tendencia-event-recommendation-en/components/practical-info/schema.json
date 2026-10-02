@@ -1,0 +1,13 @@
+{
+  "id": "practical-info",
+  "name": "Practical Information Slide",
+  "description": "Slide displaying practical information about the event",
+  "requiredProps": {
+    "destination": { "type": "string" },
+    "langue": { "type": "string" },
+    "travel-duration": { "type": "string" },
+    "stay-duration": { "type": "string" },
+    "formalities": { "type": "string" },
+    "climate": { "type": "string" }
+  }
+}

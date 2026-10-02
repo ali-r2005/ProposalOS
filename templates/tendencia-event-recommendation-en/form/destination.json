@@ -1,0 +1,112 @@
+{
+  "id": "destination",
+  "title": "Destination Information",
+  "description": "Details about the event destination and logistics",
+  "fields": [
+    {
+      "key": "event-name",
+      "label": "Event name",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g. 2025 Annual Leadership Summit"
+    },
+    {
+      "key": "event-type",
+      "label": "Event type",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g. Corporate retreat, incentive trip, conference"
+    },
+    {
+      "key": "event-year",
+      "label": "Event year",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g. 2025"
+    },
+    {
+      "key": "event-start-dates",
+      "label": "Event dates",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g. 15-18 June 2025"
+    },
+    {
+      "key": "event-end-dates",
+      "label": "Event end date",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g. 15-18 June 2025"
+    },
+    {
+      "key": "destination",
+      "label": "Destination",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g. Marrakech, Morocco"
+    },
+    {
+      "key": "destination-image",
+      "label": "Destination image URL",
+      "type": "url",
+      "required": false,
+      "placeholder": "https://example.com/destination.jpg"
+    },
+    {
+      "key": "client-logo",
+      "label": "Client logo URL",
+      "type": "url",
+      "required": false,
+      "placeholder": "https://example.com/logo.svg"
+    },
+    {
+      "key": "participant-count",
+      "label": "Number of participants",
+      "type": "number",
+      "required": true,
+      "placeholder": "e.g. 50"
+    },
+    {
+      "key": "langue",
+      "label": "Language",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g. English, Arabic, French"
+    },
+    {
+      "key": "travel-duration",
+      "label": "Travel duration",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g. 3h 30m from Paris"
+    },
+    {
+      "key": "stay-duration",
+      "label": "Stay duration",
+      "type": "text",
+      "required": false,
+      "placeholder": "e.g. 4 days / 3 nights"
+    },
+    {
+      "key": "formalities",
+      "label": "Formalities",
+      "type": "textarea",
+      "required": false,
+      "placeholder": "e.g. Visa requirements, passport validity, vaccination information"
+    },
+    {
+      "key": "climate",
+      "label": "Climate",
+      "type": "text",
+      "required": false,
+      "placeholder": "e.g. Sunny, 25-30 °C in June"
+    },
+    {
+      "key": "programme",
+      "label": "Programme",
+      "type": "textarea",
+      "required": true,
+      "placeholder": "it json object"
+    }
+  ]
+}

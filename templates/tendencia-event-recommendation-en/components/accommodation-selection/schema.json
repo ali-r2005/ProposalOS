@@ -1,0 +1,27 @@
+{
+  "id": "accommodation-selection",
+  "name": "Accommodation Selection Table",
+  "description": "Slide with one table row per selected hotel (from the `accommodation` provider).",
+  "requiredProps": {
+    "hotels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "city": { "type": "string" },
+          "location": { "type": "string" },
+          "category": { "type": "number" },
+          "hotel": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "stars": { "type": "array" }
+            },
+            "required": ["name", "stars"]
+          }
+        },
+        "required": ["hotel", "city"]
+      }
+    }
+  }
+}

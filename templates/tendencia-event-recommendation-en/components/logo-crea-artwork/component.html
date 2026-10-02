@@ -1,0 +1,62 @@
+<!-- Slide component: Logo Créa Artwork (Static slide using 1-column 3-row layout without card subtitles) -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <!-- Decorative line above title -->
+  <div class="absolute left-[78px] top-[50px] w-[580px] h-[3px] bg-[var(--color-text-primary)] z-10"></div>
+
+  <!-- Slide Header -->
+  <h1 class="absolute left-[78px] top-[68px] z-10 text-5xl font-bold leading-[1.05]" style="font-family: var(--font-heading);">
+    <span class="text-[var(--color-text-primary)]" data-field="title">LOGO CREATIVE ARTWORK</span>
+  </h1>
+  <svg width="300" height="24" viewBox="0 0 300 24" xmlns="http://www.w3.org/2000/svg" class="absolute left-[78px] top-[125px] z-10">
+    <path d="M0,18 C75,7 225,7 300,18"
+          fill="none"
+          stroke="var(--color-text-primary)"
+          stroke-width="13"
+          stroke-linecap="butt"/>
+  </svg>
+
+  <!-- Clean 2-Row Layout Container -->
+  <div class="absolute left-[78px] top-[210px] w-[1764px] h-[780px] grid grid-cols-2 grid-rows-2 gap-6 z-10">
+
+    <!-- Row 1: 1 Full-width card with 1 image -->
+    <div class="col-span-2 relative w-full h-full border overflow-hidden border-[var(--color-border)] bg-white group" style="border-radius: var(--border-radius);">
+      <img src="assets/Foliatech.png" alt="Logo Creative Artwork" class="w-full h-full object-contain p-2">
+    </div>
+
+    <!-- Row 2 Container: Title first, then 2 cards -->
+    <div class="col-span-2 flex flex-col gap-3 relative w-full h-full">
+      <!-- One shared title for the second row (placed above the 2 images) -->
+      <div class="w-full bg-white border border-[var(--color-border)] p-3 text-center text-[var(--color-text-primary)] text-lg font-bold font-['Poppins']" style="border-radius: var(--border-radius);">
+        EXEMPLE LOGO REVISITED
+      </div>
+      <div class="grid grid-cols-2 gap-6 flex-1 min-h-0">
+        <!-- Card 1 in Row 2 -->
+        <div class="relative w-full h-full border overflow-hidden border-[var(--color-border)] bg-white group" style="border-radius: var(--border-radius);">
+          <img src="assets/fo.png" alt="Artwork Variation 1" class="w-full h-full object-contain p-2">
+        </div>
+        <!-- Card 2 in Row 2 -->
+        <div class="relative w-full h-full border overflow-hidden border-[var(--color-border)] bg-white group" style="border-radius: var(--border-radius);">
+          <img src="assets/fo2.png" alt="Artwork Variation 2" class="w-full h-full object-contain p-2">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tendencia logo bottom-left -->
+  <div class="absolute bottom-10 left-10 z-20">
+    <img src="assets/logo-black.svg" alt="Tendencia Events & Travel" class="h-24">
+  </div>
+
+  <!-- Decorative arrow markers bottom-right -->
+  <div class="absolute bottom-8 right-16 z-10 flex items-center gap-5">
+    <div class="flex">
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--color-text-primary)]"></div>
+      <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-accent)] -ml-2"></div>
+    </div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-secondary)]"></div>
+    <div class="w-0 h-0 border-y-[20px] border-y-transparent border-l-[30px] border-l-[color:var(--brand-primary)]"></div>
+  </div>
+
+</div>

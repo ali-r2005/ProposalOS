@@ -1,0 +1,9 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="tokens.css">
+<style>body{margin:0}</style></head><body>
+<div id="m"></div>
+<script>
+fetch('components/closing-thanks.html?v='+Date.now(),{cache:'no-store'})
+ .then(r=>r.text()).then(t=>{document.getElementById('m').innerHTML=t;});
+</script></body></html>

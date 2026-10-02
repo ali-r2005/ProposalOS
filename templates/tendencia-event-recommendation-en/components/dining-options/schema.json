@@ -1,0 +1,18 @@
+{
+  "id": "dining-options",
+  "name": "Dining Options Slide",
+  "description": "Summary slide listing the selected soirées as a numbered list (each over `soirees`).",
+  "requiredProps": {
+    "soirees": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "option": { "type": "number" },
+          "name": { "type": "string" }
+        },
+        "required": ["option", "name"]
+      }
+    }
+  }
+}
