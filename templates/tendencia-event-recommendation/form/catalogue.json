@@ -28,6 +28,7 @@
         { "key": "activity-name", "label": "Nom de l'activité", "type": "text", "required": true },
         { "key": "type", "label": "Type", "type": "text", "required": false, "placeholder": "indoor / outdoor" },
         { "key": "difficulty", "label": "Difficulté", "type": "text", "required": false },
+        { "key": "activity_logo", "label": "Logo de l'activité", "type": "url", "required": false },
         { "key": "description", "label": "Description", "type": "textarea", "required": false },
         { "key": "video", "label": "Lien vidéo", "type": "url", "required": false },
         { "key": "space", "label": "Espace", "type": "text", "required": false },

@@ -17,6 +17,7 @@ interface CatalogueActivity {
   timeframe?: string;
   "number-of-participants"?: string;
   images?: string[];
+  "activity_logo"?: string;
 }
 
 // `category` has no CRM equivalent field, so it's filled from `difficulty` —
@@ -33,6 +34,7 @@ function shape(activity: CatalogueActivity, index: number) {
     timeframe: activity.timeframe ?? "",
     "number-of-participants": activity["number-of-participants"] ?? "",
     images: Array.isArray(activity.images) ? activity.images : [],
+    "activity_logo": activity["activity_logo"] ?? "",
   };
 }
 
