@@ -207,10 +207,22 @@ export const plugin = {
     const soirees: ReturnType<typeof shapeSoiree>[] = [];
     const divers: ReturnType<typeof shapeDivers>[] = [];
 
+    // Several products on one Deal can resolve to the same
+    // custom_catalogue_type + reference, which would fetch and push the same
+    // Hotel/Activity/Soiree record once per product — the user would see the
+    // same card two or three times. Claim each (type, reference) pair once,
+    // synchronously before any await, so concurrent branches of this
+    // Promise.all can't both pass the check for the same pair.
+    const claimed = new Set<string>();
+
     await Promise.all(
       items.map(async (item) => {
         if (!item?.custom_catalogue_reference) return;
         const reference = item.custom_catalogue_reference;
+
+        const claimKey = `${item.custom_catalogue_type ?? ""}:${reference}`;
+        if (claimed.has(claimKey)) return;
+        claimed.add(claimKey);
 
         if (item.custom_catalogue_type === "Hotel") {
           const doc = await fetchCatalogueDoc<HotelDoc>("Hotel", reference, apiKey, apiSecret);

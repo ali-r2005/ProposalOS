@@ -227,22 +227,45 @@ export const plugin = {
       .filter((code): code is string => typeof code === "string" && code.length > 0);
 
     const items = await Promise.all(productCodes.map((code) => fetchItem(code, apiKey, apiSecret)));
+
+    // Several products on one Deal routinely share an item_group (e.g. three
+    // "Team Building" line items), and several Item Groups can point at the
+    // same custom_catalogue_reference. Both are fan-in points: without
+    // collapsing them the same Hotel/Activity/Soiree would be fetched once per
+    // product and pushed into the form list once per fetch, so the user would
+    // see the same card two or three times. Dedupe the group names first —
+    // that also saves the redundant HTTP round-trips.
+    const groupNames = [
+      ...new Set(
+        items
+          .filter((item): item is ItemDoc => item !== null && typeof item.item_group === "string" && item.item_group.length > 0)
+          .map((item) => item.item_group!)
+      ),
+    ];
+
     const groupedItems = await Promise.all(
-      items
-        .filter((item): item is ItemDoc => item !== null && typeof item.item_group === "string" && item.item_group !== undefined)
-        .map((item) => fetchGroupedItems(item.item_group!, apiKey, apiSecret))
+      groupNames.map((name) => fetchGroupedItems(name, apiKey, apiSecret))
     );
-    console.log("groupe items hello", groupedItems);
 
     const hotels: ReturnType<typeof shapeHotel>[] = [];
     const activities: ReturnType<typeof shapeActivity>[] = [];
     const soirees: ReturnType<typeof shapeSoiree>[] = [];
     const divers: ReturnType<typeof shapeDivers>[] = [];
 
+    // Second fan-in: two different Item Groups can carry the same
+    // custom_catalogue_type + reference. Claim each (type, reference) pair
+    // once — synchronously, before any await, so concurrent branches of the
+    // Promise.all below can't both pass the check for the same pair.
+    const claimed = new Set<string>();
+
     await Promise.all(
       groupedItems.map(async (item) => {
         if (!item?.custom_catalogue_reference) return;
         const reference = item.custom_catalogue_reference;
+
+        const claimKey = `${item.custom_catalogue_type ?? ""}:${reference}`;
+        if (claimed.has(claimKey)) return;
+        claimed.add(claimKey);
 
         if (item.custom_catalogue_type === "Hotel") {
           const doc = await fetchCatalogueDoc<HotelDoc>("Hotel", reference, apiKey, apiSecret);
