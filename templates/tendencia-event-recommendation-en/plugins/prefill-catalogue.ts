@@ -38,6 +38,7 @@ interface ActivityDoc {
   type?: string;
   description?: string;
   difficulty?: string;
+  activity_logo?: string;
   number_of_participants?: string;
   video?: string;
   space?: string;
@@ -137,6 +138,7 @@ function shapeActivity(id: string, doc: ActivityDoc) {
     type: doc.type ?? "",
     description: toHtmlParagraphs(doc.description),
     difficulty: doc.difficulty ?? "",
+    "activity_logo": doc.activity_logo ?? "",
     video: doc.video ?? "",
     space: doc.space ?? "",
     timeframe: doc.timeframe ?? "",
