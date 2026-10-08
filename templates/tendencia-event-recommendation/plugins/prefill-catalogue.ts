@@ -20,10 +20,13 @@ interface CatalogueImage {
 }
 
 interface ItemDoc {
+  item_group?: string;
+}
+
+interface GroupedItems {
   custom_catalogue_type?: "Hotel" | "Activity" | "Soiree" | "Divers";
   custom_catalogue_reference?: string;
 }
-
 interface HotelDoc {
   hotel_name?: string;
   city?: string;
@@ -96,10 +99,29 @@ async function fetchItem(
       `${FRAPPE_BASE_URL}/api/resource/Item/${encodeURIComponent(productCode)}`,
       { headers: authHeaders(apiKey, apiSecret), timeoutMs: 15_000 }
     );
+    console.log(`prefill-catalogue: fetched Item ${productCode} with ${JSON.stringify(data)}`);
     return data.data;
   } catch {
     return null;
   }
+}
+
+async function fetchGroupedItems(
+  reference: string,
+  apiKey: string,
+  apiSecret: string
+): Promise< GroupedItems | null> {
+  try {
+    const data = await getWithRetry<{ data: GroupedItems }>(
+      `${FRAPPE_BASE_URL}/api/resource/Item%20Group/${encodeURIComponent(reference)}`,
+      { headers: authHeaders(apiKey, apiSecret), timeoutMs: 15_000 }
+    );
+    console.log(`prefill-catalogue: fetched Item Group ${reference} with ${JSON.stringify(data)}`);
+    return data.data;
+  } catch {
+    return null;
+  }
+
 }
 
 async function fetchCatalogueDoc<T>(
@@ -113,6 +135,7 @@ async function fetchCatalogueDoc<T>(
       `${FRAPPE_BASE_URL}/api/resource/${encodeURIComponent(doctype)}/${encodeURIComponent(reference)}`,
       { headers: authHeaders(apiKey, apiSecret), timeoutMs: 15_000 }
     );
+    console.log(`prefill-catalogue: fetched ${doctype} ${reference} with ${JSON.stringify(data)}`);
     return data.data;
   } catch {
     return null;
@@ -198,11 +221,18 @@ export const plugin = {
       `${FRAPPE_BASE_URL}/api/resource/CRM%20Deal/${encodeURIComponent(dealId)}`,
       { headers: authHeaders(apiKey, apiSecret), timeoutMs: 15_000 }
     );
+    console.log(`prefill-catalogue: fetched CRM Deal ${dealId} with ${JSON.stringify(deal)}`);
     const productCodes = (deal.data.products ?? [])
       .map((p) => p.product_code)
       .filter((code): code is string => typeof code === "string" && code.length > 0);
 
     const items = await Promise.all(productCodes.map((code) => fetchItem(code, apiKey, apiSecret)));
+    const groupedItems = await Promise.all(
+      items
+        .filter((item): item is ItemDoc => item !== null && typeof item.item_group === "string" && item.item_group !== undefined)
+        .map((item) => fetchGroupedItems(item.item_group!, apiKey, apiSecret))
+    );
+    console.log("groupe items hello", groupedItems);
 
     const hotels: ReturnType<typeof shapeHotel>[] = [];
     const activities: ReturnType<typeof shapeActivity>[] = [];
@@ -210,7 +240,7 @@ export const plugin = {
     const divers: ReturnType<typeof shapeDivers>[] = [];
 
     await Promise.all(
-      items.map(async (item) => {
+      groupedItems.map(async (item) => {
         if (!item?.custom_catalogue_reference) return;
         const reference = item.custom_catalogue_reference;
 
