@@ -10,6 +10,8 @@
     "timeframe": { "type": "string" },
     "number-of-participants": { "type": "string" },
     "difficulty": { "type": "string" },
+    "activity_logo": { "type": "string", "format": "url" },
+    "activity_keywords": { "type": "string" },
     "images": {
       "type": "array",
       "items": { "type": "string", "format": "url" }

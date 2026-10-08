@@ -42,6 +42,7 @@ interface ActivityDoc {
   description?: string;
   difficulty?: string;
   activity_logo?: string;
+  activity_keywords?: string;
   number_of_participants?: string;
   video?: string;
   space?: string;
@@ -165,6 +166,7 @@ function shapeActivity(id: string, doc: ActivityDoc) {
     space: doc.space ?? "",
     timeframe: doc.timeframe ?? "",
     "activity_logo": doc.activity_logo ?? "",
+    "activity_keywords": doc.activity_keywords ?? "",
     "number-of-participants": doc.number_of_participants ?? "",
     images: resolveImageUrls(doc.images),
   };

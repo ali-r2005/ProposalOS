@@ -38,6 +38,11 @@
       <span class="underline">Difficulté</span> : <span data-field="activity-difficulty">{{[difficulty]}}</span>
     </p>
     {{/if}}
+    {{#if [activity_keywords]}}
+    <p class="text-[22px] font-bold text-[var(--color-text-primary)] mt-4 italic">
+      <span class="underline">Mots-clés</span> : <span data-field="activity-keywords">{{[activity_keywords]}}</span>
+    </p>
+    {{/if}}
   </div>
 
   <!-- Right: photo collage (conditional 4 vs 3 images layout) -->

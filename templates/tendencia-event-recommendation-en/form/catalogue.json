@@ -29,6 +29,7 @@
         { "key": "type", "label": "Type", "type": "text", "required": false, "placeholder": "indoor / outdoor" },
         { "key": "difficulty", "label": "Difficulty", "type": "text", "required": false },
         { "key": "activity_logo", "label": "Activity logo", "type": "url", "required": false },
+        { "key": "activity_keywords", "label": "Keywords", "type": "text", "required": false },
         { "key": "description", "label": "Description", "type": "textarea", "required": false },
         { "key": "video", "label": "Video link", "type": "url", "required": false },
         { "key": "space", "label": "Space", "type": "text", "required": false },

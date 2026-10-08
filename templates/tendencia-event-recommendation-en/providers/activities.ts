@@ -18,6 +18,7 @@ interface CatalogueActivity {
   "number-of-participants"?: string;
   images?: string[];
   "activity_logo"?: string;
+  activity_keywords?: string;
 }
 
 // `category` has no CRM equivalent field, so it's filled from `difficulty` —
@@ -35,6 +36,7 @@ function shape(activity: CatalogueActivity, index: number) {
     "number-of-participants": activity["number-of-participants"] ?? "",
     images: Array.isArray(activity.images) ? activity.images : [],
     "activity_logo": activity["activity_logo"] ?? "",
+    activity_keywords: activity.activity_keywords ?? "",
   };
 }
 
