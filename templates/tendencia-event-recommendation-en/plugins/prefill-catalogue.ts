@@ -31,6 +31,15 @@ interface HotelDoc {
   hotel_url?: string;
   description?: string;
   images?: CatalogueImage[];
+  translations: Array<Translation>
+}
+
+interface Translation  {
+  language: string;
+  activity_name?: string;
+  description?: string;
+  keywords?: string;
+  subtitle?: string;
 }
 
 interface ActivityDoc {
@@ -45,6 +54,7 @@ interface ActivityDoc {
   space?: string;
   timeframe?: string;
   images?: CatalogueImage[];
+  translations: Array<Translation>
 }
 
 interface SoireeDoc {
@@ -53,6 +63,7 @@ interface SoireeDoc {
   description?: string;
   keywords?: string;
   images?: CatalogueImage[];
+  translations: Array<Translation>
 }
 
 interface DiversItemDoc {
@@ -87,6 +98,24 @@ function toHtmlParagraphs(text: string | undefined): string {
   return text.replace(/\r\n|\r|\n/g, "<br>");
 }
 
+function getPreferredTranslation(translations: Translation[], preferredLanguage: string): Translation | null {
+  if (!Array.isArray(translations) || translations.length === 0) {
+    return null;
+  }
+
+  // Try to find the translation that matches the preferred language
+  const preferredTranslation = translations.find(
+    (translation) => translation.language === preferredLanguage
+  );
+
+  if (!preferredTranslation) {
+    return null;
+  }
+
+  // If a preferred translation is found, return it; otherwise, return the first available translation
+  return preferredTranslation;
+}
+
 async function fetchItem(
   productCode: string,
   apiKey: string,
@@ -114,6 +143,7 @@ async function fetchCatalogueDoc<T>(
       `${FRAPPE_BASE_URL}/api/resource/${encodeURIComponent(doctype)}/${encodeURIComponent(reference)}`,
       { headers: authHeaders(apiKey, apiSecret), timeoutMs: 15_000 }
     );
+    console.log(`Fetched ${doctype} ${reference}:`, JSON.stringify(data.data));
     return data.data;
   } catch {
     return null;
@@ -121,26 +151,28 @@ async function fetchCatalogueDoc<T>(
 }
 
 function shapeHotel(id: string, doc: HotelDoc) {
+  const translation = getPreferredTranslation(doc.translations, "en");
   return {
     id,
     "hotel-name": doc.hotel_name ?? "",
     city: doc.city ?? "",
     category: doc.category ?? 0,
     "hotel-url": doc.hotel_url ?? "",
-    description: toHtmlParagraphs(doc.description),
+    description: toHtmlParagraphs(translation?.description ?? doc.description),
     images: resolveImageUrls(doc.images),
   };
 }
 
 function shapeActivity(id: string, doc: ActivityDoc) {
+  const translation = getPreferredTranslation(doc.translations, "en");
   return {
     id,
-    "activity-name": doc.activity_name ?? "",
+    "activity-name": translation?.activity_name ?? doc.activity_name ?? "",
     type: doc.type ?? "",
-    description: toHtmlParagraphs(doc.description),
+    description: toHtmlParagraphs(translation?.description ?? doc.description),
     difficulty: doc.difficulty ?? "",
     "activity_logo": doc.activity_logo ?? "",
-    "activity_keywords": doc.activity_keywords ?? "",
+    "activity_keywords": translation?.keywords ?? doc.activity_keywords ?? "",
     video: doc.video ?? "",
     space: doc.space ?? "",
     timeframe: doc.timeframe ?? "",
@@ -150,12 +182,13 @@ function shapeActivity(id: string, doc: ActivityDoc) {
 }
 
 function shapeSoiree(id: string, doc: SoireeDoc) {
+  const translation = getPreferredTranslation(doc.translations, "en");
   return {
     id,
     "soiree-name": doc.soiree_name ?? "",
-    subtitle: doc.subtitle ?? "",
-    description: toHtmlParagraphs(doc.description),
-    keywords: doc.keywords ?? "",
+    subtitle:  translation?.subtitle ?? doc.subtitle ?? "",
+    description: toHtmlParagraphs(translation?.description ?? doc.description),
+    keywords: translation?.keywords ?? doc.keywords ?? "",
     images: resolveImageUrls(doc.images),
   };
 }
