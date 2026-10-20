@@ -1,0 +1,15 @@
+{
+  "id": "highlights",
+  "name": "Highlights Slide",
+  "description": "Up to 3 highlight cards from the `highlights` form list.",
+  "requiredProps": {
+    "highlights": {
+      "type": "array",
+      "items": {
+        "title": { "type": "string" },
+        "text": { "type": "string" },
+        "image": { "type": "string", "format": "url" }
+      }
+    }
+  }
+}

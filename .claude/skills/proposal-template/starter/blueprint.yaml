@@ -1,0 +1,19 @@
+# Slide order of the proposal. One entry per section; a section renders one
+# component, once (single) or once per item of a list (repeat / chunk).
+sections:
+  - id: cover
+    component: cover
+    source: manual        # values come straight from the form
+    expansion: single
+
+  - id: highlights
+    component: highlights
+    source: manual
+    expansion:
+      strategy: single
+      collection: highlights   # slide is skipped when the list is empty
+
+  - id: closing
+    component: closing
+    source: static        # same content every time
+    expansion: single

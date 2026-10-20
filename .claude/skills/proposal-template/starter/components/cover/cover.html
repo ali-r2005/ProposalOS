@@ -1,0 +1,15 @@
+<!-- Slide component: cover — full-bleed photo left, client + event right -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <img src="{{[cover-image]}}" alt="" data-field="cover-image" class="absolute left-0 top-0 w-[1100px] h-[1080px] object-cover">
+
+  <div class="absolute left-[1180px] top-[300px] w-[660px]">
+    <p data-field="client-name" class="text-[28px] font-semibold uppercase tracking-[0.2em] text-[var(--brand-primary)]">{{[client-name]}}</p>
+    <h1 data-field="event-name" class="mt-6 text-[88px] leading-[1.05] font-bold text-[var(--color-text-primary)]" style="font-family: var(--font-heading);">{{[event-name]}}</h1>
+    {{#if [event-dates]}}
+    <p data-field="event-dates" class="mt-10 text-[30px] text-[var(--color-text-secondary)]">{{[event-dates]}}</p>
+    {{/if}}
+    <div class="mt-12 h-[8px] w-[180px] bg-[var(--brand-accent)]"></div>
+  </div>
+
+</div>

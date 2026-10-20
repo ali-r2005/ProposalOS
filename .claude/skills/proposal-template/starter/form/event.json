@@ -1,0 +1,23 @@
+{
+  "id": "event",
+  "title": "Event",
+  "description": "The basics shown on the cover slide.",
+  "fields": [
+    { "key": "client-name", "label": "Client name", "type": "text", "required": true, "placeholder": "e.g. Acme Corp" },
+    { "key": "event-name", "label": "Event name", "type": "text", "required": true },
+    { "key": "event-dates", "label": "Event dates", "type": "text", "required": false, "placeholder": "e.g. 15–18 June 2026" },
+    { "key": "cover-image", "label": "Cover image", "type": "url", "required": false },
+    {
+      "key": "highlights",
+      "label": "Highlights",
+      "type": "record-list",
+      "required": false,
+      "itemLabel": "Highlight",
+      "itemFields": [
+        { "key": "title", "label": "Title", "type": "text", "required": true },
+        { "key": "text", "label": "Text", "type": "textarea", "required": false },
+        { "key": "image", "label": "Image", "type": "url", "required": false }
+      ]
+    }
+  ]
+}

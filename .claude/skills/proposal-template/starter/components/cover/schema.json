@@ -1,0 +1,11 @@
+{
+  "id": "cover",
+  "name": "Cover Slide",
+  "description": "Opening slide: cover photo, client name, event name and dates.",
+  "requiredProps": {
+    "client-name": { "type": "string" },
+    "event-name": { "type": "string" },
+    "event-dates": { "type": "string" },
+    "cover-image": { "type": "string", "format": "url" }
+  }
+}

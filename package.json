@@ -9,6 +9,9 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "preview": "node scripts/preview-template.mjs",
+    "preview:check": "node scripts/preview-template.mjs --check",
+    "skills:export": "node scripts/export-skills.mjs",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
   },
