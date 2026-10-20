@@ -62,15 +62,33 @@ Every slide is one root element with a fixed 1920×1080 canvas, positioned absol
 
 - **Styling:** use Tailwind utility classes. Colours always come from `var(--token)` (`text-[var(--brand-primary)]`, `bg-[var(--color-surface)]`, `border-[color:var(--brand-accent)]`). Never write a hex/rgb colour in a component; add a token to `tokens.css` instead.
 - **Never** put `<style>`, `<link>` or `<script>` in a component. The page shell already loads Tailwind, the Tabler icon font (`<i class="ti ti-calendar">`) and `tokens.css`.
-- **`style=""` is allowed only for:**
-  - `font-family: var(--font-…)`;
-  - sizes the user must be able to drag or resize in the visual editor (GrapesJS can edit inline `width`/`height` but **not** Tailwind classes like `w-[420px]`). For resizable columns, use `flex` with `style="width: 420px;"` and `shrink-0` on each column, not a CSS grid;
-  - positioned/rotated photo frames.
+- **`style=""` is allowed only for** `font-family: var(--font-…)` and the geometry listed under "Visual editor conventions" below. Never for colours.
 - **Handlebars:** only `{{x}}`, `{{a.b}}`, `{{#each}}`, `{{#if}}`/`{{else}}`, `{{{html}}}` (triple braces only for fields a provider has already turned into safe HTML, e.g. `\n`→`<br>`). No custom helpers. Keys with dashes need brackets: `{{[event-name]}}`, `{{#if [number-of-participants]}}`.
 - **Optional data:** wrap optional lines in `{{#if field}}`. Give images a fallback: `{{#if images.[0]}}{{images.[0]}}{{else}}assets/placeholder-image.svg{{/if}}`.
 - **Assets:** put files in the template's root `assets/` folder (never inside a component folder) and reference them as `assets/<file>`. Decorative SVGs (underlines, shapes) go there as files and are used with `<img src="assets/x.svg" alt="">`.
 - **`data-field="…"`** on every element showing a data value, so editors can see which field it is. Name it after the field.
 - **Text fits:** size text boxes for realistic lengths. Check the preview: placeholders are short, so mentally test a 3× longer value too.
+
+## Visual editor conventions (GrapesJS)
+
+Users fine-tune generated proposals in the visual editor (GrapesJS Studio). These rules come from testing it against `templates/grapesjs-lab`, and they keep slides easy to move, resize and recolour there.
+
+How the editor treats a slide (set up by `lib/editor/slide-editability.ts`):
+- **Elements positioned with `absolute`** can be moved anywhere: with the move icon, or by dragging the element itself.
+- **Elements in normal flow** (children of a `flex` row) can only be reordered among their siblings.
+- **Every element** can be resized from its right, bottom and bottom-right handles.
+- **Style edits** apply to the selected element only, and they override its Tailwind classes.
+
+So:
+
+1. **Put the geometry people will adjust in `style`, not Tailwind classes.** For the main blocks of a slide (titles, photos, text boxes, cards), write `class="absolute …" style="left: 90px; top: 58px; width: 820px;"`. The editor's side panel shows and edits inline values. For Tailwind values (`left-[90px]`, `w-[420px]`) the panel stays empty, even though dragging still works. Small fixed details (icons, badges, decorative lines) can keep Tailwind sizes.
+2. **Rows of columns or cards: use `flex` with a per-item `style="width: …px"` and `shrink-0`, not `grid`.** Grid tracks belong to the parent, so one column can't be resized on its own. Without `shrink-0`, flexbox squeezes a widened column back. Use `grid` only where columns never need individual sizes.
+3. **One positioned element per independent block.** A photo, a logo and a text block are separate `absolute` children of the slide root. Stacked text (label, title, date) is **one** `absolute` wrapper with its lines in normal flow, so a longer title pushes the lines below it down instead of overlapping them. Don't give stacked lines their own fixed `top`.
+4. **Don't centre movable elements with transforms** (`-translate-x-1/2`, `left-1/2`). A drag writes `left`/`top`, but the transform stays, so the panel shows numbers that don't match what the user sees. Position with plain `left`/`top` instead.
+5. **Text boxes: set a width, never a fixed height** (use `min-height` if needed). Then edited or longer text wraps instead of overflowing.
+6. **Colours stay as token classes** (`text-[var(--brand-primary)]`). The editor overrides them per element, and the rest of the deck keeps the theme.
+7. **`data-field` is the element's name in the editor's Layers panel**, so put it on every element that shows data. Don't use `data-gjs-*` attributes: GrapesJS drops them on the first save.
+8. **Decorative backgrounds (bands, shapes) come first in the markup.** That keeps them behind the content, so clicking the slide selects the content, not the background.
 
 ## Finish
 
