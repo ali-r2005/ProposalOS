@@ -1,13 +1,13 @@
-<!-- Slide component: highlights — title band + up to 3 cards (image, title, text) -->
+<!-- Slide component: highlights — title + a flex row of up to 3 cards (image, title, text) -->
 <div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-surface)]" style="font-family: var(--font-body);">
 
-  <h2 class="absolute left-[100px] top-[90px] text-[72px] font-bold text-[var(--color-text-primary)]" style="font-family: var(--font-heading);">Highlights</h2>
-  <div class="absolute left-[100px] top-[200px] h-[6px] w-[140px] bg-[var(--brand-accent)]"></div>
+  <div class="absolute h-[6px] w-[140px] bg-[var(--brand-accent)]" style="left: 100px; top: 200px;"></div>
+  <h2 class="absolute text-[72px] font-bold text-[var(--color-text-primary)]" style="left: 100px; top: 90px; font-family: var(--font-heading);">Highlights</h2>
 
-  <div class="absolute left-[100px] top-[290px] flex gap-[40px]">
+  <div class="absolute flex items-start gap-[40px]" style="left: 100px; top: 290px;">
     {{#each highlights}}
-    <div class="shrink-0 bg-[var(--color-background)] border border-[var(--color-border)] rounded-[var(--border-radius)] overflow-hidden" style="width: 546px;">
-      <img src="{{image}}" alt="" data-field="highlight-image" class="block w-full h-[320px] object-cover">
+    <div data-field="highlight" class="shrink-0 bg-[var(--color-background)] border border-[var(--color-border)] rounded-[var(--border-radius)] overflow-hidden" style="width: 546px;">
+      <img src="{{image}}" alt="" data-field="highlight-image" class="block w-full object-cover" style="height: 320px;">
       <div class="p-[36px]">
         <h3 data-field="highlight-title" class="text-[34px] font-bold text-[var(--brand-primary)]">{{title}}</h3>
         <p data-field="highlight-text" class="mt-4 text-[22px] leading-[1.6] text-[var(--color-text-secondary)]">{{text}}</p>

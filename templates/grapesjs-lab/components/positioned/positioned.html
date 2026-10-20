@@ -1,0 +1,17 @@
+<!-- Slide component: positioned — absolute layout (title, photo, logo) + two badges sharing one class list -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <div class="absolute left-0 top-0 w-full h-[200px] bg-[var(--brand-primary)]"></div>
+  <h1 data-gjs-name="Title" data-field="title" class="absolute text-[72px] font-bold text-[var(--color-text-inverse)]" style="left: 90px; top: 58px; font-family: var(--font-heading);">{{title}}</h1>
+
+  <img data-gjs-name="Photo" data-field="photo" src="{{photo}}" alt="" class="absolute object-cover rounded-[var(--border-radius)]" style="left: 1000px; top: 260px; width: 820px; height: 560px;">
+
+  <!-- Tailwind-only positioning, kept as the "before" case for comparison -->
+  <p data-gjs-name="Caption (Tailwind position)" class="absolute left-[90px] top-[900px] text-[28px] text-[var(--color-text-secondary)]">Caption positioned with Tailwind classes</p>
+
+  <div class="absolute flex gap-6" style="left: 90px; top: 300px;">
+    <span data-gjs-name="Badge A" class="px-6 py-3 rounded-full bg-[var(--brand-accent)] text-[28px] font-semibold text-[var(--color-text-primary)]">Badge A</span>
+    <span data-gjs-name="Badge B" class="px-6 py-3 rounded-full bg-[var(--brand-accent)] text-[28px] font-semibold text-[var(--color-text-primary)]">Badge B</span>
+  </div>
+
+</div>

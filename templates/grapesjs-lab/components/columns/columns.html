@@ -1,0 +1,23 @@
+<!-- Slide component: columns — flex row of resizable columns + a badge with the same classes as slide 1's badges -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-surface)]" style="font-family: var(--font-body);">
+
+  <h2 class="absolute text-[64px] font-bold text-[var(--color-text-primary)]" style="left: 90px; top: 70px; font-family: var(--font-heading);">Columns</h2>
+
+  <span data-gjs-name="Badge C" class="absolute right-[90px] top-[90px] px-6 py-3 rounded-full bg-[var(--brand-accent)] text-[28px] font-semibold text-[var(--color-text-primary)]">Badge C</span>
+
+  <div class="absolute flex items-start gap-[30px]" style="left: 90px; top: 240px;">
+    <div data-gjs-name="Column 1" class="shrink-0 p-[30px] bg-[var(--color-background)] border-t-[6px] border-[color:var(--brand-primary)]" style="width: 420px; min-height: 600px;">
+      <h3 class="text-[30px] font-bold text-[var(--brand-primary)]">Column 1</h3>
+      <p class="mt-4 text-[22px] text-[var(--color-text-secondary)]">Width set inline — resizable.</p>
+    </div>
+    <div data-gjs-name="Column 2" class="shrink-0 p-[30px] bg-[var(--color-background)] border-t-[6px] border-[color:var(--brand-secondary)]" style="width: 420px; min-height: 600px;">
+      <h3 class="text-[30px] font-bold text-[var(--brand-secondary)]">Column 2</h3>
+      <p class="mt-4 text-[22px] text-[var(--color-text-secondary)]">Width set inline — resizable.</p>
+    </div>
+    <div data-gjs-name="Column 3 (Tailwind width)" class="w-[420px] min-h-[600px] shrink-0 p-[30px] bg-[var(--color-background)] border-t-[6px] border-[color:var(--brand-accent)]">
+      <h3 class="text-[30px] font-bold text-[var(--color-text-primary)]">Column 3</h3>
+      <p class="mt-4 text-[22px] text-[var(--color-text-secondary)]">Width set with a Tailwind class — the "before" case.</p>
+    </div>
+  </div>
+
+</div>

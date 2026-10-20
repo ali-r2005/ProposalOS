@@ -1,0 +1,10 @@
+sections:
+  - id: positioned
+    component: positioned
+    source: manual
+    expansion: single
+
+  - id: columns
+    component: columns
+    source: manual
+    expansion: single

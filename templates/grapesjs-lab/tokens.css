@@ -1,0 +1,22 @@
+/* Design tokens — the ONLY place colours and fonts are written as raw values.
+   Components reference them as var(--token-name). */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+
+:root {
+  --brand-primary: #255AA8;
+  --brand-secondary: #137E4D;
+  --brand-accent: #FFC000;
+
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #666666;
+  --color-text-inverse: #ffffff;
+  --color-background: #ffffff;
+  --color-surface: #f0f0f0;
+  --color-border: #e0e0e0;
+
+  --font-heading: 'Poppins', 'Arial', sans-serif;
+  --font-body: 'Poppins', 'Segoe UI', sans-serif;
+
+  --border-radius: 6px;
+}

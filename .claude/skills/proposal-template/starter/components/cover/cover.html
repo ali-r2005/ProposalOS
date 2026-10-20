@@ -1,9 +1,10 @@
 <!-- Slide component: cover — full-bleed photo left, client + event right -->
 <div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
 
-  <img src="{{[cover-image]}}" alt="" data-field="cover-image" class="absolute left-0 top-0 w-[1100px] h-[1080px] object-cover">
+  <img src="{{[cover-image]}}" alt="" data-field="cover-image" class="absolute object-cover" style="left: 0; top: 0; width: 1100px; height: 1080px;">
 
-  <div class="absolute left-[1180px] top-[300px] w-[660px]">
+  <!-- Text stack: one positioned block, lines in normal flow so a long title pushes the rest down -->
+  <div data-field="cover-text" class="absolute" style="left: 1180px; top: 300px; width: 660px;">
     <p data-field="client-name" class="text-[28px] font-semibold uppercase tracking-[0.2em] text-[var(--brand-primary)]">{{[client-name]}}</p>
     <h1 data-field="event-name" class="mt-6 text-[88px] leading-[1.05] font-bold text-[var(--color-text-primary)]" style="font-family: var(--font-heading);">{{[event-name]}}</h1>
     {{#if [event-dates]}}

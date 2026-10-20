@@ -1,0 +1,9 @@
+{
+  "id": "lab",
+  "title": "Lab",
+  "description": "Any values — this template only exists to test the visual editor.",
+  "fields": [
+    { "key": "title", "label": "Title", "type": "text", "required": true },
+    { "key": "photo", "label": "Photo", "type": "url", "required": false }
+  ]
+}

@@ -10,6 +10,7 @@ import type { RenderedSlide } from "@/lib/engine/types";
 import { useUserSettings } from "@/components/useUserSettings";
 import { useProposalName } from "@/components/useProposalName";
 import { useLocale } from "@/components/LocaleProvider";
+import { enableSlideEditing } from "@/lib/editor/slide-editability";
 
 interface ParsedDocument {
   slides: RenderedSlide[];
@@ -181,6 +182,10 @@ export default function ProposalDesignEditor({ proposalId }: { proposalId: strin
     }
   }, [editor, parsed, proposalId]);
 
+  // Resize handles on every element, free movement for positioned elements,
+  // in-row reordering for flex children — see lib/editor/slide-editability.ts.
+  useEffect(() => (editor ? enableSlideEditing(editor) : undefined), [editor]);
+
   // Mark the document dirty on any canvas mutation. GrapesJS fires `update`
   // for component, style and attribute changes alike, which is exactly the
   // set of edits that belong in a save.
@@ -318,6 +323,11 @@ export default function ProposalDesignEditor({ proposalId }: { proposalId: strin
                 // entirely. Disable it outright; we persist explicitly via
                 // the Save button (PUT /api/proposals/[id]/html).
                 storageManager: false,
+                // Style edits target the selected element (an #id rule), never its
+                // class list — with Tailwind every class is shared, so editing the
+                // class rule would restyle every element using the same classes.
+                // Studio SDK already defaults to this; pinned so it can't regress.
+                selectorManager: { componentFirst: true },
               },
             }}
           />

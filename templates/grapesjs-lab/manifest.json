@@ -1,0 +1,10 @@
+{
+  "id": "grapesjs-lab",
+  "name": "GrapesJS Lab (test)",
+  "version": "0.1.0",
+  "author": "Tendencia Events",
+  "lang": "en",
+  "description": "Test bench for visual-editor editability (drag, resize, colours). Not for clients.",
+  "plugins": [],
+  "canvas": { "width": 1920, "height": 1080, "aspectRatio": "16:9" }
+}
