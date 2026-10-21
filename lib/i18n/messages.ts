@@ -53,6 +53,9 @@ const en = {
   "history.deleteConfirm": "Delete this proposal? This cannot be undone.",
   "history.deleteFailed": "Delete failed",
   "history.loadFailed": "Failed to load history",
+  "history.page": "Page {page} of {pages}",
+  "history.prev": "← Previous",
+  "history.next": "Next →",
 
   "settings.loading": "Loading...",
   "settings.title": "Admin Settings",
@@ -134,6 +137,9 @@ export const messages: Record<Locale, Record<MessageKey, string>> = {
     "history.deleteConfirm": "Supprimer cette proposition ? Cette action est irréversible.",
     "history.deleteFailed": "Échec de la suppression",
     "history.loadFailed": "Échec du chargement de l'historique",
+    "history.page": "Page {page} sur {pages}",
+    "history.prev": "← Précédent",
+    "history.next": "Suivant →",
 
     "settings.loading": "Chargement...",
     "settings.title": "Paramètres du compte",

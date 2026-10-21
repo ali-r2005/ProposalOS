@@ -14,6 +14,8 @@ interface ProposalRow {
   updatedAt: string;
 }
 
+const PAGE_SIZE = 20;
+
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
 }
@@ -31,24 +33,34 @@ export default function ProposalHistory({ templateId }: { templateId?: string })
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [page, setPage] = useState(0);
+
+  useEffect(() => setPage(0), [templateId]);
 
   const load = useCallback(() => {
     setLoading(true);
     http
       .get<{ rows?: ProposalRow[]; total?: number; error?: string }>("/api/proposals", {
-        params: templateId ? { templateId } : {},
+        params: { ...(templateId ? { templateId } : {}), limit: PAGE_SIZE, offset: page * PAGE_SIZE },
       })
       .then(({ data }) => {
         if (data.rows) {
+          const count = data.total ?? data.rows.length;
+          // Deleting the last row of the last page leaves it empty — step back to the new last page.
+          if (data.rows.length === 0 && page > 0) {
+            setPage(Math.max(Math.ceil(count / PAGE_SIZE) - 1, 0));
+            return;
+          }
           setRows(data.rows);
-          setTotal(data.total ?? data.rows.length);
+          setTotal(count);
+          setError(null);
         } else {
           setError(data.error ?? "Failed to load history");
         }
       })
       .catch((err) => setError(toErrorMessage(err, t("history.loadFailed"))))
       .finally(() => setLoading(false));
-  }, [templateId, t]);
+  }, [templateId, page, t]);
 
   useEffect(() => {
     load();
@@ -82,6 +94,8 @@ export default function ProposalHistory({ templateId }: { templateId?: string })
 
   if (loading && rows.length === 0) return <p className="text-[var(--app-muted)]">{t("history.loading")}</p>;
   if (error && rows.length === 0) return <p className="text-red-400">{t("history.error", { message: error })}</p>;
+  const pages = Math.max(Math.ceil(total / PAGE_SIZE), 1);
+
   if (rows.length === 0) return <p className="text-[var(--app-muted)]">{t("history.empty")}</p>;
 
   return (
@@ -132,6 +146,27 @@ export default function ProposalHistory({ templateId }: { templateId?: string })
           </tbody>
         </table>
       </div>
+      {pages > 1 && (
+        <div className="mt-4 flex items-center justify-between text-sm">
+          <button
+            type="button"
+            disabled={page === 0 || loading}
+            onClick={() => setPage((p) => p - 1)}
+            className="rounded-lg border border-[var(--app-border)] px-3 py-1.5 disabled:opacity-40"
+          >
+            {t("history.prev")}
+          </button>
+          <span className="text-[var(--app-muted)]">{t("history.page", { page: page + 1, pages })}</span>
+          <button
+            type="button"
+            disabled={page >= pages - 1 || loading}
+            onClick={() => setPage((p) => p + 1)}
+            className="rounded-lg border border-[var(--app-border)] px-3 py-1.5 disabled:opacity-40"
+          >
+            {t("history.next")}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
