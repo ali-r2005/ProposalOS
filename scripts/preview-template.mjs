@@ -38,8 +38,16 @@ function placeholderImage(label) {
 const isImage = (v) => typeof v === "string" && v.startsWith("data:image/");
 const isIndex = (k) => /^\d+$/.test(k);
 
+// Layouts that depend on a list's size use provider flags named `count-N`
+// (exactly one is true in real data). Showing them all would stack every layout,
+// so the preview turns on just one, chosen with ?count=.
+let previewCount = 4;
+let sawCountFlags = false;
+const COUNT_FLAG = /^count-(\d+)$/;
+
 function buildPlaceholderContext(source) {
   const root = {};
+  const countFlags = new Set();
   let tail = "";
 
   const frameFor = (stack, p) => stack[Math.max(0, stack.length - 1 - (p.depth ?? 0))];
@@ -98,7 +106,11 @@ function buildPlaceholderContext(source) {
       put(owner, target.parts, () => Array.from({ length: EACH_COUNT }, (_, i) => make(i)), (v) => !Array.isArray(v) || v.length < EACH_COUNT);
       return;
     }
-    if ((helper === "if" || helper === "unless") && target) leaf(target, stack);
+    const flag = target?.type === "PathExpression" ? COUNT_FLAG.exec(target.original) : null;
+    if (flag && (helper === "if" || helper === "unless")) {
+      countFlags.add(target.original);
+      sawCountFlags = true;
+    } else if ((helper === "if" || helper === "unless") && target) leaf(target, stack);
     if (node.program) walk(node.program, stack);
     if (node.inverse) walk(node.inverse, stack);
   }
@@ -112,6 +124,7 @@ function buildPlaceholderContext(source) {
   }
 
   walk(Handlebars.parse(source), [{ obj: root, self: null }]);
+  for (const name of countFlags) root[name] = Number(COUNT_FLAG.exec(name)[1]) === previewCount;
   return root;
 }
 
@@ -293,7 +306,7 @@ const CHROME_CSS = `<style>
 @media print{.pv-bar,.pv-label{display:none}}
 </style>`;
 
-function toolbar(templateId, components, focus, errors, warnings) {
+function toolbar(templateId, components, focus, errors, warnings, count) {
   const options = [`<option value="">all components</option>`]
     .concat(components.map((c) => `<option${c.id === focus ? " selected" : ""}>${escapeXml(c.id)}</option>`))
     .join("");
@@ -302,7 +315,9 @@ function toolbar(templateId, components, focus, errors, warnings) {
       ? `<details style="color:${colour}"${title === "error" ? " open" : ""}><summary>${items.length} ${title}(s)</summary><ul>${items.map((i) => `<li>${escapeXml(i)}</li>`).join("")}</ul></details>`
       : "";
   return `<div class="pv-bar"><a href="/">← templates</a> · <b>${escapeXml(templateId)}</b> ·
-<select onchange="location.search=this.value?'?c='+this.value:''">${options}</select>
+<select id="pv-c" onchange="pvGo()">${options}</select>
+${sawCountFlags ? `<select id="pv-n" onchange="pvGo()">${[1, 2, 3, 4, 5].map((n) => `<option value="${n}"${n === count ? " selected" : ""}>${n} image${n > 1 ? "s" : ""}</option>`).join("")}</select>` : ""}
+<script>function pvGo(){var p=new URLSearchParams(),c=document.getElementById('pv-c').value,n=document.getElementById('pv-n');if(c)p.set('c',c);if(n)p.set('count',n.value);location.search=p.toString()}</script>
 <span style="opacity:.6"> · placeholders shown as {{field}} · live reload on</span>
 ${list("error", errors, "#fca5a5")}${list("warning", warnings, "#fbbf24")}</div>`;
 }
@@ -355,6 +370,8 @@ const server = http.createServer(async (req, res) => {
     if (page && SAFE_NAME.test(page[1])) {
       const templateId = page[1];
       const focus = url.searchParams.get("c") ?? "";
+      previewCount = Number(url.searchParams.get("count")) || 4;
+      sawCountFlags = false;
       try {
         const preview = await buildPreview(templateId);
         let html = preview.html;
@@ -369,7 +386,7 @@ const server = http.createServer(async (req, res) => {
         const unused = new Set(preview.components.filter((c) => !c.inBlueprint).map((c) => c.id));
         html = html
           .replace("</head>", `${CHROME_CSS}</head>`)
-          .replace("<body>", `<body>\n${toolbar(templateId, preview.components, focus, preview.errors, preview.warnings)}`)
+          .replace("<body>", `<body>\n${toolbar(templateId, preview.components, focus, preview.errors, preview.warnings, previewCount)}`)
           .replace(/<section class="slide-wrapper" data-section="([^"]+)"/g, (m, id) =>
             `<div class="pv-label">${escapeXml(id)}${unused.has(id) ? " <span>(not in blueprint)</span>" : ""}</div>${m}`
           )

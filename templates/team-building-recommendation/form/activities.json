@@ -1,0 +1,25 @@
+{
+  "id": "activities",
+  "title": "Activities",
+  "description": "One slide is generated per activity.",
+  "fields": [
+    {
+      "key": "catalogue-activities",
+      "label": "Activities",
+      "type": "record-list",
+      "required": false,
+      "itemLabel": "Activity",
+      "itemFields": [
+        { "key": "activity-name", "label": "Title", "type": "text", "required": true },
+        { "key": "description", "label": "Description (separate paragraphs with a blank line)", "type": "textarea", "required": false },
+        { "key": "space", "label": "Space", "type": "text", "required": false, "placeholder": "e.g. Indoor" },
+        { "key": "number-of-participants", "label": "Number of participants", "type": "text", "required": false, "placeholder": "e.g. Illimité" },
+        { "key": "type", "label": "Activity type", "type": "text", "required": false, "placeholder": "e.g. Compétitif" },
+        { "key": "timeframe", "label": "Duration", "type": "text", "required": false, "placeholder": "e.g. Durée entre 1h et 2h" },
+        { "key": "keywords", "label": "Keywords (comma separated)", "type": "text", "required": false },
+        { "key": "activity-logo", "label": "Activity logo", "type": "url", "required": false },
+        { "key": "images", "label": "Images (1 to 5)", "type": "image-list", "required": false, "max": 5 }
+      ]
+    }
+  ]
+}

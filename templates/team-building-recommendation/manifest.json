@@ -1,0 +1,14 @@
+{
+  "id": "team-building-recommendation",
+  "name": "Team Building Recommendation",
+  "version": "0.1.0",
+  "author": "Tendencia Events",
+  "lang": "en",
+  "description": "Team building recommendation deck for Team Building New Generation.",
+  "plugins": [],
+  "canvas": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "16:9"
+  }
+}

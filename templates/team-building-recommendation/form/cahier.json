@@ -1,0 +1,12 @@
+{
+  "id": "cahier",
+  "title": "Cahier de charge",
+  "description": "Brief details shown on the Cahier de charge slide (the participant count comes from the Event step).",
+  "fields": [
+    { "key": "venue", "label": "Lieu", "type": "text", "required": true, "placeholder": "e.g. The View Bouznika" },
+    { "key": "event-date", "label": "Date", "type": "text", "required": false, "placeholder": "e.g. N/A" },
+    { "key": "handled-by", "label": "Traité par", "type": "text", "required": false },
+    { "key": "option-date", "label": "Option pour", "type": "text", "required": false, "placeholder": "e.g. 23 OCTOBRE 2026" },
+    { "key": "side-photo", "label": "Photo (right)", "type": "url", "required": false }
+  ]
+}

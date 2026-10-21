@@ -67,6 +67,7 @@ Every slide is one root element with a fixed 1920×1080 canvas, positioned absol
 - **Optional data:** wrap optional lines in `{{#if field}}`. Give images a fallback: `{{#if images.[0]}}{{images.[0]}}{{else}}assets/placeholder-image.svg{{/if}}`.
 - **Assets:** put files in the template's root `assets/` folder (never inside a component folder) and reference them as `assets/<file>`. Decorative SVGs (underlines, shapes) go there as files and are used with `<img src="assets/x.svg" alt="">`.
 - **`data-field="…"`** on every element showing a data value, so editors can see which field it is. Name it after the field.
+- **Layouts that depend on a list size** (e.g. a photo collage for 1–5 images): Handlebars can't compare numbers, so the provider adds one boolean per size (`count-1` … `count-5`, exactly one true) plus the items spread into slots (`image-1` …). The component has one `{{#if [count-N]}}` block per layout. The preview shows one of them, chosen with the "N images" toolbar menu (`?count=N`). See `templates/team-building-recommendation/providers/activities.ts`.
 - **Text fits:** size text boxes for realistic lengths. Check the preview: placeholders are short, so mentally test a 3× longer value too.
 
 ## Visual editor conventions (GrapesJS)

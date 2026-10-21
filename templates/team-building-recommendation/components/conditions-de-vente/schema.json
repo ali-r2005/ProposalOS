@@ -1,0 +1,6 @@
+{
+  "id": "conditions-de-vente",
+  "name": "Conditions de Vente Slide",
+  "description": "Static slide: sales conditions (booking, modification, cancellation, weather). No data fields.",
+  "requiredProps": {}
+}

@@ -1,0 +1,12 @@
+{
+  "id": "cover",
+  "name": "Cover Slide",
+  "description": "Opening slide: brand logo, client logo (or name), participant count and two framed photos.",
+  "requiredProps": {
+    "client-name": { "type": "string" },
+    "client-logo": { "type": "string", "format": "url" },
+    "number-of-participants": { "type": "number" },
+    "photo-1": { "type": "string", "format": "url" },
+    "photo-2": { "type": "string", "format": "url" }
+  }
+}

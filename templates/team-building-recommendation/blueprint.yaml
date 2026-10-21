@@ -1,0 +1,36 @@
+# Slide order of the proposal.
+sections:
+  - id: cover
+    component: cover
+    source: manual        # values come straight from the form
+    expansion: single
+
+  - id: catalyst-network
+    component: catalyst-network
+    source: static        # same content every time
+    expansion: single
+
+  - id: cahier-de-charge
+    component: cahier-de-charge
+    source: manual        # values come straight from the form
+    expansion: single
+
+  - id: activity-detail
+    component: activity-detail
+    source: database
+    provider: activities
+    expansion:
+      strategy: repeat
+      collection: activities
+    dependsOn:
+      - activities
+
+  - id: conditions-de-vente
+    component: conditions-de-vente
+    source: static        # same content every time
+    expansion: single
+
+  - id: contact-details
+    component: contact-details
+    source: static        # same content every time
+    expansion: single
