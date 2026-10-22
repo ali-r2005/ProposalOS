@@ -1,0 +1,38 @@
+{
+  "id": "event",
+  "title": "Event",
+  "description": "The basics shown on the cover slide.",
+  "fields": [
+    {
+      "key": "client-name",
+      "label": "Client name",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g. EXIA Cx."
+    },
+    {
+      "key": "client-logo",
+      "label": "Client logo",
+      "type": "url",
+      "required": false
+    },
+    {
+      "key": "number-of-participants",
+      "label": "Number of participants",
+      "type": "number",
+      "required": true
+    },
+    {
+      "key": "photo-1",
+      "label": "Photo 1 (top)",
+      "type": "url",
+      "required": false
+    },
+    {
+      "key": "photo-2",
+      "label": "Photo 2 (bottom)",
+      "type": "url",
+      "required": false
+    }
+  ]
+}

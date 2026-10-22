@@ -1,0 +1,68 @@
+<!-- Slide component: activity-detail — title + paragraphs left, grey info band, floating keywords, photo collage (1–5 images) and activity logo right -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <div class="absolute bg-[var(--color-band)]" style="left: 0; top: 729px; width: 1920px; height: 90px;"></div>
+  <div class="absolute h-px bg-[var(--color-text-secondary)] opacity-60" style="left: 112px; top: 1049px; width: 1352px;"></div>
+
+  <!-- Photo collage: one layout per image count, picked by the provider's count-N flags -->
+  <div data-field="images">
+    {{#if [count-1]}}
+      <img src="{{[image-1]}}" alt="" data-field="image-1" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1215px; top: 215px; width: 660px; height: 690px;">
+    {{/if}}
+    {{#if [count-2]}}
+      <img src="{{[image-2]}}" alt="" data-field="image-2" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1330px; top: 560px; width: 560px; height: 360px;">
+      <img src="{{[image-1]}}" alt="" data-field="image-1" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1180px; top: 215px; width: 560px; height: 380px;">
+    {{/if}}
+    {{#if [count-3]}}
+      <img src="{{[image-3]}}" alt="" data-field="image-3" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1320px; top: 590px; width: 560px; height: 337px;">
+      <img src="{{[image-2]}}" alt="" data-field="image-2" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1219px; top: 500px; width: 326px; height: 299px;">
+      <img src="{{[image-1]}}" alt="" data-field="image-1" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1165px; top: 200px; width: 560px; height: 300px;">
+    {{/if}}
+    {{#if [count-4]}}
+      <img src="{{[image-2]}}" alt="" data-field="image-2" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1616px; top: 287px; width: 289px; height: 260px;">
+      <img src="{{[image-4]}}" alt="" data-field="image-4" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1320px; top: 570px; width: 560px; height: 357px;">
+      <img src="{{[image-3]}}" alt="" data-field="image-3" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1219px; top: 476px; width: 326px; height: 299px;">
+      <img src="{{[image-1]}}" alt="" data-field="image-1" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1165px; top: 200px; width: 450px; height: 276px;">
+    {{/if}}
+    {{#if [count-5]}}
+      <img src="{{[image-5]}}" alt="" data-field="image-5" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1300px; top: 745px; width: 600px; height: 182px;">
+      <img src="{{[image-2]}}" alt="" data-field="image-2" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1620px; top: 215px; width: 285px; height: 255px;">
+      <img src="{{[image-4]}}" alt="" data-field="image-4" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1535px; top: 520px; width: 365px; height: 215px;">
+      <img src="{{[image-3]}}" alt="" data-field="image-3" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1190px; top: 490px; width: 330px; height: 255px;">
+      <img src="{{[image-1]}}" alt="" data-field="image-1" class="absolute border-[5px] border-[color:var(--color-frame)] object-cover shadow-md" style="left: 1165px; top: 200px; width: 440px; height: 262px;">
+    {{/if}}
+  </div>
+
+  <h1 data-field="name" class="absolute text-[58px] font-bold uppercase leading-[1.1] text-[var(--brand-lavender)]" style="left: 71px; top: 82px; width: 1090px; font-family: var(--font-heading);">{{name}}</h1>
+
+  <img src="assets/badge-catalyst.png" alt="Catalyst Global exclusive licensed partner" class="absolute" style="left: 1196px; top: 45px; width: 142px;">
+  {{#if [activity-logo]}}
+  <img src="{{[activity-logo]}}" alt="" data-field="activity-logo" class="absolute object-contain" style="left: 1682px; top: 46px; width: 190px; height: 150px;">
+  {{/if}}
+
+  <div data-field="description" class="absolute text-[24px] leading-[40px] text-justify text-[var(--color-text-primary)]" style="left: 71px; top: 203px; width: 1064px;">
+    {{#each description}}
+    <p class="mt-[40px] first:mt-0">{{this}}</p>
+    {{/each}}
+  </div>
+
+  <div class="absolute text-[23px] leading-[35px] italic underline text-[var(--color-text-inverse)]" style="left: 70px; top: 731px; width: 1100px;">
+    <p data-field="info-line" class="flex flex-wrap gap-x-[10px] font-bold uppercase [&>span:not(:first-child)]:before:mr-[10px] [&>span:not(:first-child)]:before:content-['-']">
+      {{#if space}}<span data-field="space">{{space}}</span>{{/if}}
+      {{#if [number-of-participants]}}<span data-field="number-of-participants">{{[number-of-participants]}}</span>{{/if}}
+      {{#if type}}<span data-field="type">{{type}}</span>{{/if}}
+      {{#if timeframe}}<span data-field="timeframe">{{timeframe}}</span>{{/if}}
+    </p>
+    <p class="uppercase">Link: <span data-field="link-label">{{name}}</span></p>
+  </div>
+
+  <!-- Keywords: loose words in mixed sizes and colours; the sizes/colours cycle with the position -->
+  <div data-field="keywords" class="absolute flex flex-wrap content-start text-[30px] leading-[1.2] items-baseline gap-x-[44px] gap-y-[20px] font-bold uppercase tracking-[0.02em] [&>span:nth-child(3n+2)]:text-[40px] [&>span:nth-child(4n+1)]:text-[var(--brand-red)] [&>span:nth-child(4n+2)]:text-[var(--dot-blue)] [&>span:nth-child(4n+3)]:text-[var(--color-text-primary)] [&>span:nth-child(4n)]:text-[var(--brand-accent)]" style="left: 100px; top: 852px; width: 1130px;">
+    {{#each keywords}}
+    <span>{{this}}</span>
+    {{/each}}
+  </div>
+
+  <img src="assets/logo-team-building.png" alt="Team Building New Generation" class="absolute" style="left: 1540px; top: 945px; width: 360px;">
+
+</div>

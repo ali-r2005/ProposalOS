@@ -1,0 +1,52 @@
+<!-- Slide component: cahier-de-charge — title, brief box (pax, venue, date, handler, option), two static text columns, round photo bottom right -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <div class="absolute overflow-hidden rounded-full" style="left: 1368px; top: 193px; width: 1236px; height: 1236px;">
+    <img src="{{#if [side-photo]}}{{[side-photo]}}{{else}}assets/placeholder-image.svg{{/if}}" alt="" data-field="side-photo" class="block h-full w-full object-cover">
+  </div>
+
+  <h1 class="absolute whitespace-nowrap text-[60px] font-extrabold leading-none text-[var(--brand-navy)]" style="left: 86px; top: 78px; font-family: var(--font-heading);">TERMS OF REFERENCE</h1>
+
+  <img src="assets/logo-team-building.png" alt="Team Building New Generation" class="absolute" style="left: 1373px; top: 52px; width: 360px;">
+  <img src="assets/badge-catalyst.png" alt="Catalyst Global exclusive licensed partner" class="absolute" style="left: 1758px; top: 44px; width: 118px;">
+
+  <div class="absolute border border-[var(--color-text-secondary)] px-[15px] py-[6px] text-[34px] font-semibold leading-[43.5px] text-[var(--color-ink)]" style="left: 70px; top: 198px; width: 1245px;">
+    <p>Number of pax: <span data-field="number-of-participants">{{[number-of-participants]}}</span></p>
+    <p>Venue: <span data-field="venue">{{venue}}</span></p>
+    <p>Date: <span data-field="event-date">{{[event-date]}}</span></p>
+    <p>Handled by: <span data-field="handled-by">{{[handled-by]}}</span></p>
+    <p>Option until: <span data-field="option-date">{{[option-date]}}</span></p>
+  </div>
+
+  <p class="absolute flex items-center justify-end gap-[12px] text-[30px] font-bold uppercase text-[var(--brand-navy)]" style="left: 760px; top: 458px; width: 555px;">
+    The adventure starts here! <i class="ti ti-arrow-narrow-right text-[38px]"></i>
+  </p>
+
+  <div class="absolute flex gap-[9px]" style="left: 1163px; top: 509px;">
+    <span class="h-[30px] w-[30px] rounded-full bg-[var(--dot-blue)]"></span>
+    <span class="h-[30px] w-[30px] rounded-full bg-[var(--dot-yellow)]"></span>
+    <span class="h-[30px] w-[30px] rounded-full bg-[var(--dot-green)]"></span>
+    <span class="h-[30px] w-[30px] rounded-full bg-[var(--dot-indigo)]"></span>
+  </div>
+
+  <div class="absolute text-[23px] leading-[32px] tracking-[0.03em] text-justify text-[var(--color-ink)]" style="left: 70px; top: 474px; width: 585px;">
+    <p>We have tailored this proposal to your request. All options are flexible according to your preferences and budget. Feel free to ask for a new offer or a call for more information.</p>
+    <ul class="list-disc pl-[39px]">
+      <li>Non-exhaustive offer: please consult us for any project, which will receive a tailor-made study. Some team building activities can be replicated in all cities and regions.</li>
+      <li>If needed, we also operate white-label on behalf of resellers: hotels, communication or travel agencies, and others.</li>
+      <li>The activity name can be adapted, and a company/project logo can be created free of charge!</li>
+    </ul>
+  </div>
+
+  <div class="absolute text-[23px] leading-[30px] tracking-[0.03em] text-justify text-[var(--color-ink)]" style="left: 769px; top: 638px; width: 546px;">
+    <p class="font-bold">Extras, please consult us:</p>
+    <ul class="list-disc pl-[39px]">
+      <li>Travel costs outside the cities of Tangier &amp; Marrakech.</li>
+      <li>Participant transport costs for outdoor activities</li>
+      <li>Conference room and A/V equipment for indoor activities</li>
+      <li>E-meeting tools app to run briefings or coaching on participants' phones</li>
+      <li>Custom trophy with logo, medals, caps, scarves, etc.</li>
+    </ul>
+  </div>
+
+</div>

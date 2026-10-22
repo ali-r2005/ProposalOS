@@ -1,0 +1,13 @@
+{
+  "id": "cahier-de-charge",
+  "name": "Cahier de Charge Slide",
+  "description": "Brief summary (pax, venue, date, handler, option date) with static terms text and a round side photo.",
+  "requiredProps": {
+    "number-of-participants": { "type": "number" },
+    "venue": { "type": "string" },
+    "event-date": { "type": "string" },
+    "handled-by": { "type": "string" },
+    "option-date": { "type": "string" },
+    "side-photo": { "type": "string", "format": "url" }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "id": "contact-details",
+  "name": "Contact Details Slide",
+  "description": "Static closing slide: photo banner and the company's contact details. No data fields.",
+  "requiredProps": {}
+}

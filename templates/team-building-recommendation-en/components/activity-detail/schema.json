@@ -1,0 +1,18 @@
+{
+  "id": "activity-detail",
+  "name": "Activity Detail Slide",
+  "description": "Repeated once per activity (repeat over `activities`). The photo collage has one layout per image count (1–5), chosen by the provider's `count-N` flags.",
+  "requiredProps": {
+    "name": { "type": "string" },
+    "description": { "type": "array", "items": { "type": "string" }, "description": "One entry per paragraph" },
+    "space": { "type": "string" },
+    "number-of-participants": { "type": "string" },
+    "type": { "type": "string" },
+    "timeframe": { "type": "string" },
+    "keywords": { "type": "array", "items": { "type": "string" } },
+    "activity-logo": { "type": "string", "format": "url" },
+    "images": { "type": "array", "items": { "type": "string", "format": "url" } },
+    "image-1 … image-5": { "type": "string", "format": "url", "description": "Provider: the images array spread into slots" },
+    "count-1 … count-5": { "type": "boolean", "description": "Provider: true for the one matching images.length" }
+  }
+}

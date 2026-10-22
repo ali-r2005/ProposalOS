@@ -1,0 +1,40 @@
+<!-- Slide component: cover — brand logo, client logo + PAX left; two taped photo frames over a pattern strip right -->
+<div class="slide relative w-[1920px] h-[1080px] overflow-hidden bg-[var(--color-background)]" style="font-family: var(--font-body);">
+
+  <img src="assets/pattern-right.jpg" alt="" class="absolute object-cover" style="left: 1500px; top: 0; width: 420px; height: 1080px;">
+
+  <img src="assets/logo-team-building.png" alt="" class="absolute" style="left: 203px; top: 106px; width: 507px;">
+
+  <div data-field="client" class="absolute" style="left: 132px; top: 380px; width: 720px;">
+    {{#if [client-logo]}}
+    <img src="{{[client-logo]}}" alt="" data-field="client-logo" class="block w-full object-contain object-left" style="height: 160px;">
+    {{else}}
+    <p data-field="client-name" class="text-[110px] font-extrabold leading-[1.1] text-[var(--brand-primary)]" style="font-family: var(--font-heading);">{{[client-name]}}</p>
+    {{/if}}
+  </div>
+
+  <p data-field="number-of-participants" class="absolute whitespace-nowrap text-[64px] font-bold uppercase tracking-[0.12em] text-[var(--color-text-primary)]" style="left: 304px; top: 630px; width: 520px; font-family: var(--font-heading);">{{[number-of-participants]}}PAX</p>
+
+  <img src="assets/underline.svg" alt="" class="absolute" style="left: 167px; top: 770px; width: 570px;">
+
+  <img src="assets/badge-catalyst.png" alt="" class="absolute" style="left: 349px; top: 830px; width: 188px;">
+
+  <div class="absolute flex gap-[10px]" style="left: 111px; top: 987px;">
+    <span class="h-[30px] w-[30px] rounded-full bg-[var(--dot-blue)]"></span>
+    <span class="h-[30px] w-[30px] rounded-full bg-[var(--dot-yellow)]"></span>
+    <span class="h-[30px] w-[30px] rounded-full bg-[var(--dot-green)]"></span>
+    <span class="h-[30px] w-[30px] rounded-full bg-[var(--dot-indigo)]"></span>
+  </div>
+
+  <!-- Bottom frame first so the top frame overlaps it -->
+  <div class="absolute bg-[var(--color-frame)] shadow-lg" style="left: 963px; top: 380px; width: 818px; height: 577px;">
+    <img src="{{#if [photo-2]}}{{[photo-2]}}{{else}}assets/placeholder-image.svg{{/if}}" alt="" data-field="photo-2" class="absolute object-cover" style="left: 51px; top: 44px; width: 716px; height: 491px;">
+  </div>
+
+  <div class="absolute bg-[var(--color-frame)] shadow-lg" style="left: 900px; top: 135px; width: 595px; height: 428px;">
+    <img src="{{#if [photo-1]}}{{[photo-1]}}{{else}}assets/placeholder-image.svg{{/if}}" alt="" data-field="photo-1" class="absolute object-cover" style="left: 34px; top: 32px; width: 523px; height: 359px;">
+  </div>
+
+  <div class="absolute rotate-[-2deg] bg-[var(--color-tape)] opacity-80" style="left: 1052px; top: 79px; width: 291px; height: 80px;"></div>
+
+</div>

@@ -1,0 +1,12 @@
+{
+  "id": "cahier",
+  "title": "Terms of reference",
+  "description": "Brief details shown on the Terms of reference slide (the participant count comes from the Event step).",
+  "fields": [
+    { "key": "venue", "label": "Venue", "type": "text", "required": true, "placeholder": "e.g. The View Bouznika" },
+    { "key": "event-date", "label": "Date", "type": "text", "required": false, "placeholder": "e.g. N/A" },
+    { "key": "handled-by", "label": "Handled by", "type": "text", "required": false },
+    { "key": "option-date", "label": "Option until", "type": "text", "required": false, "placeholder": "e.g. 23 OCTOBER 2026" },
+    { "key": "side-photo", "label": "Photo (right)", "type": "url", "required": false }
+  ]
+}

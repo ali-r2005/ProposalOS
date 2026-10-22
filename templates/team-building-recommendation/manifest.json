@@ -3,7 +3,7 @@
   "name": "Team Building Recommendation",
   "version": "0.1.0",
   "author": "Tendencia Events",
-  "lang": "en",
+  "lang": "fr",
   "description": "Team building recommendation deck for Team Building New Generation.",
   "plugins": [
     "prefill-destination",
