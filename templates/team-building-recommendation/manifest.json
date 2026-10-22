@@ -5,7 +5,10 @@
   "author": "Tendencia Events",
   "lang": "en",
   "description": "Team building recommendation deck for Team Building New Generation.",
-  "plugins": [],
+  "plugins": [
+    "prefill-destination",
+    "prefill-catalogue"
+  ],
   "canvas": {
     "width": 1920,
     "height": 1080,

@@ -20,8 +20,7 @@
       "key": "number-of-participants",
       "label": "Number of participants",
       "type": "number",
-      "required": true,
-      "min": 1
+      "required": true
     },
     {
       "key": "photo-1",

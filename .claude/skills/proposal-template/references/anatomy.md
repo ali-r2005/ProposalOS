@@ -89,7 +89,7 @@ One flat object, built in this order: form values → static blocks → provider
   ]
 }
 ```
-Field types: `text`, `textarea`, `number`, `email`, `url`, `select` (with `options` or `optionsFrom`), `image-list` (array of URLs), `record-list` (array of objects; needs `itemLabel` + `itemFields`). Optional: `min`, `max` (list sizes), `placeholder`, `accept`.
+Field types: `text`, `textarea`, `number`, `email`, `url`, `select` (with `options` or `optionsFrom`), `image-list` (array of URLs), `record-list` (array of objects; needs `itemLabel` + `itemFields`). Optional: `min`, `max` (list sizes), `placeholder`, `accept`. **`min`/`max` count list items only** — never put them on `text`/`number` fields: the wizard counts a non-list value as 0 items, so `"min": 1` on a number field blocks the Next button forever.
 
 `select` from a provider: `"optionsFrom": { "provider": "hotels", "collection": "hotels", "valueKey": "id", "labelKey": "name" }`.
 
