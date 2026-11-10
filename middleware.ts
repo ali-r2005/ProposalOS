@@ -13,6 +13,7 @@ const PUBLIC_ROUTES = [
   '/api/auth',
   '/p',
   '/api/proposals',
+  '/docs',
 ];
 
 export function middleware(request: NextRequest) {

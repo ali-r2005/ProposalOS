@@ -39,7 +39,7 @@
   This exception does not apply to a provider/plugin calling this app's own `/api/*` routes — that's engine-internal traffic and should still go through `lib/utils/http.ts`.
 
 ## Dependencies (Locked)
-✅ next, react, typescript, handlebars, @anthropic-ai/sdk, yaml, zod, axios, tailwindcss, autoprefixer, puppeteer, drizzle-orm, drizzle-kit, postgres, dotenv, @grapesjs/studio-sdk (visual proposal editor — free plan: default `web` project type + custom `devices` sized to the slide artboard; no `studio-sdk-plugins` — those (`presetPrintable`, `canvasAbsoluteMode`, `canvasFullSize`, etc.) are paid Startup-plan or print/pagination-oriented and crop+corrupt fixed-size absolute-positioned slides)
+✅ next, react, typescript, handlebars, @anthropic-ai/sdk, yaml, zod, axios, tailwindcss, autoprefixer, puppeteer, drizzle-orm, drizzle-kit, postgres, dotenv, @grapesjs/studio-sdk (visual proposal editor — free plan: default `web` project type + custom `devices` sized to the slide artboard; no `studio-sdk-plugins` — those (`presetPrintable`, `canvasAbsoluteMode`, `canvasFullSize`, etc.) are paid Startup-plan or print/pagination-oriented and crop+corrupt fixed-size absolute-positioned slides), marked (Markdown → HTML for the public `/docs` pages, `lib/docs/markdown.ts`)
 
 ## Server External Packages Rule
 Template files loaded via native `import()` (not webpack), straight from their `.ts` source —
@@ -155,6 +155,14 @@ templates/[id]/
   prompts/
     *.md              (request JSON output)
 ```
+
+## Templates Repo (Git Submodule)
+`templates/` is a git submodule pointing at the private repo `ali-r2005/proposalos-templates`. It is **not** tracked by this repo, which only stores a pointer to one templates commit.
+- Template changes are committed **inside** `templates/` (its own repo) and pushed there.
+- Then commit the updated pointer here (`git add templates`), or the deployed app keeps the old templates.
+- Fresh clones need `git clone --recurse-submodules` (or `git submodule update --init`).
+- Vercel fetches the submodule in its Install Command with a `GITHUB_TOKEN` env var.
+- How to build a template: `docs/creating-a-template.md` (for people) and `.claude/skills/proposal-template/` (for Claude). Both stay in this repo because they describe the engine's contract: update them in the same commit when that contract changes.
 
 ## Agnostic Test
 **If swapping template IDs breaks engine code → violation.**
