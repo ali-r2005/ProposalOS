@@ -19,8 +19,9 @@ const PUBLIC_ROUTES = [
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Allow public auth routes without checking
-  if (PUBLIC_ROUTES.some(route => pathname.startsWith(route))) {
+  // Allow public routes without checking. A route matches itself and its
+  // sub-paths only: '/p' covers '/p/<id>' but not '/proposal/...'.
+  if (PUBLIC_ROUTES.some(route => pathname === route || pathname.startsWith(`${route}/`))) {
     return NextResponse.next();
   }
 
