@@ -15,6 +15,9 @@ export const proposals = pgTable("proposals", {
   lang: text("lang"),
   html: text("html").notNull(),
   context: jsonb("context").$type<Record<string, unknown>>().notNull(),
+  /** Private presenter notes, keyed by slide (`<sectionId>#<occurrence>`, see
+   *  lib/present/slides.ts). Never served with the proposal's HTML. */
+  speakerNotes: jsonb("speaker_notes").$type<Record<string, string>>(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });

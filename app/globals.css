@@ -12,6 +12,8 @@
   --app-text: #0f172a;
   --app-muted: #64748b;
   --app-accent: #0099cc;
+  /* Behind slides in the presenter/audience views (letterboxing). */
+  --present-stage: #000000;
   --font-body: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "Poppins", ui-sans-serif, system-ui, sans-serif;
 }

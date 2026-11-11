@@ -124,3 +124,36 @@ export async function updateProposal(
   if (!row) return undefined;
   return { templateId: row.templateId, lang: row.lang, html: row.html, context: row.context as BusinessContext };
 }
+
+/**
+ * Private presenter notes for a proposal, keyed by slide. Kept out of
+ * StoredProposal so the HTML/share routes never load them.
+ * Returns undefined when the proposal doesn't exist.
+ */
+export async function getSpeakerNotes(proposalId: string): Promise<Record<string, string> | undefined> {
+  const [row] = await getDb()
+    .select({ notes: proposals.speakerNotes })
+    .from(proposals)
+    .where(eq(proposals.id, proposalId))
+    .limit(1);
+  if (!row) return undefined;
+  return row.notes ?? {};
+}
+
+/**
+ * Set (or, with empty text, remove) one slide's note. Updates only that key,
+ * so two windows editing different slides can't overwrite each other.
+ * Returns false when the proposal doesn't exist.
+ */
+export async function setSpeakerNote(proposalId: string, slideKey: string, text: string): Promise<boolean> {
+  const notes = sql`coalesce(${proposals.speakerNotes}, '{}'::jsonb)`;
+  const next = text
+    ? sql`${notes} || jsonb_build_object(${slideKey}::text, ${text}::text)`
+    : sql`${notes} - ${slideKey}::text`;
+  const [row] = await getDb()
+    .update(proposals)
+    .set({ speakerNotes: next })
+    .where(eq(proposals.id, proposalId))
+    .returning({ id: proposals.id });
+  return Boolean(row);
+}

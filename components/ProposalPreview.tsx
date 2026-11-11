@@ -5,8 +5,10 @@ import { useRef, useState } from "react";
 import { http, toErrorMessage } from "@/lib/utils/http";
 import { useProposalName } from "@/components/useProposalName";
 import ShareProposalModal from "./ShareProposalModal";
+import { useLocale } from "@/components/LocaleProvider";
 
 export default function ProposalPreview({ proposalId }: { proposalId: string }) {
+  const { t } = useLocale();
   const proposalName = useProposalName(proposalId);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [exporting, setExporting] = useState(false);
@@ -45,6 +47,12 @@ export default function ProposalPreview({ proposalId }: { proposalId: string }) 
           <p className="text-xs text-[var(--app-muted)]">{proposalName}</p>
         </div>
         <div className="flex items-center gap-3">
+          <Link
+            href={`/proposal/${proposalId}/present`}
+            className="rounded-lg border border-[var(--app-accent)] px-3 py-1.5 text-xs font-semibold text-[var(--app-accent)]"
+          >
+            {t("present.cta")}
+          </Link>
           <Link
             href={`/proposal/${proposalId}/edit`}
             className="rounded-lg border border-[var(--app-border)] px-3 py-1.5 text-xs"
