@@ -8,12 +8,12 @@ import type { BusinessContext, I18nDictionary, TemplateManifest } from "@/lib/en
  * static slide text lives in `i18n/<lang>.json`, and the engine hands the
  * chosen language's dictionary to components as `t` (`{{t.welcome.title}}`).
  *
- * Two context keys are reserved by the engine:
- * - `lang`: the proposal's language code. Saved with the context, so a re-render
- *   keeps the language, and passed to providers, plugins and prompts so they
- *   can pick translated data.
- * - `t`: the dictionary. Added at build/render time only, never saved — so an
- *   edit to `i18n/*.json` shows up on the next re-render.
+ * Two context keys are reserved by the engine. Both are added while a proposal
+ * is built and rendered, and neither is saved in the context:
+ * - `lang`: the proposal's language code, so providers, plugins and prompts can
+ *   pick translated data. It is stored in the proposals table's `lang` column.
+ * - `t`: the dictionary — so an edit to `i18n/*.json` shows up on the next
+ *   re-render.
  *
  * The engine never reads a dictionary's keys; it only merges and forwards them.
  * Only type imports from `@/` here: scripts/preview-template.mjs imports this
@@ -101,20 +101,19 @@ export async function loadDictionaries(
   return dictionaries;
 }
 
-/** The context's language, falling back to the template default. */
-export function contextLanguage(source: LanguageSource, context: BusinessContext): string {
-  return resolveLanguage(source.manifest, context[LANG_KEY]);
-}
-
-/** A copy of `context` with the resolved `lang` and its dictionary `t`. */
-export function withLanguage(source: LanguageSource, context: BusinessContext, requested?: unknown): BusinessContext {
-  const lang = resolveLanguage(source.manifest, requested ?? context[LANG_KEY]);
+/**
+ * A copy of `context` with the resolved `lang` and its dictionary `t`. Only
+ * `requested` decides the language: a `lang` value inside the context itself
+ * (e.g. typed in the context editor) is ignored.
+ */
+export function withLanguage(source: LanguageSource, context: BusinessContext, requested: unknown): BusinessContext {
+  const lang = resolveLanguage(source.manifest, requested);
   return { ...context, [LANG_KEY]: lang, [I18N_KEY]: dictionaryFor(source, lang) };
 }
 
-/** A copy of `context` without the dictionary, for saving. */
-export function withoutDictionary(context: BusinessContext): BusinessContext {
-  const { [I18N_KEY]: _dictionary, ...rest } = context;
+/** A copy of `context` without the engine's reserved keys, for saving. */
+export function withoutLanguage(context: BusinessContext): BusinessContext {
+  const { [LANG_KEY]: _lang, [I18N_KEY]: _dictionary, ...rest } = context;
   return rest;
 }
 

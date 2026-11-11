@@ -13,6 +13,8 @@ import type { BusinessContext } from "@/lib/engine/types";
  */
 export interface StoredProposal {
   templateId: string;
+  /** Content language; null = the template's default. */
+  lang: string | null;
   html: string;
   context: BusinessContext;
 }
@@ -22,11 +24,12 @@ export async function saveProposal(
   templateId: string,
   html: string,
   context: BusinessContext,
-  title?: string
+  title?: string,
+  lang?: string
 ): Promise<void> {
   await getDb()
     .insert(proposals)
-    .values({ id: proposalId, templateId, html, context, title: title ?? null });
+    .values({ id: proposalId, templateId, html, context, title: title ?? null, lang: lang ?? null });
 }
 
 /** Lightweight row for history views — no html/context, so listing stays cheap. */
@@ -34,6 +37,7 @@ export interface ProposalListItem {
   id: string;
   templateId: string;
   title: string | null;
+  lang: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -51,6 +55,7 @@ export async function listProposals(
       id: proposals.id,
       templateId: proposals.templateId,
       title: proposals.title,
+      lang: proposals.lang,
       createdAt: proposals.createdAt,
       updatedAt: proposals.updatedAt,
     })
@@ -80,7 +85,7 @@ export async function deleteProposal(proposalId: string): Promise<boolean> {
 export async function getProposal(proposalId: string): Promise<StoredProposal | undefined> {
   const [row] = await getDb().select().from(proposals).where(eq(proposals.id, proposalId)).limit(1);
   if (!row) return undefined;
-  return { templateId: row.templateId, html: row.html, context: row.context as BusinessContext };
+  return { templateId: row.templateId, lang: row.lang, html: row.html, context: row.context as BusinessContext };
 }
 
 /**
@@ -95,6 +100,7 @@ export async function getProposalMeta(
       id: proposals.id,
       templateId: proposals.templateId,
       title: proposals.title,
+      lang: proposals.lang,
       createdAt: proposals.createdAt,
       updatedAt: proposals.updatedAt,
     })
@@ -116,5 +122,5 @@ export async function updateProposal(
     .where(eq(proposals.id, proposalId))
     .returning();
   if (!row) return undefined;
-  return { templateId: row.templateId, html: row.html, context: row.context as BusinessContext };
+  return { templateId: row.templateId, lang: row.lang, html: row.html, context: row.context as BusinessContext };
 }

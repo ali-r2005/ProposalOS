@@ -10,6 +10,9 @@ export const proposals = pgTable("proposals", {
   id: text("id").primaryKey(),
   templateId: text("template_id").notNull(),
   title: text("title"),
+  /** Content language the proposal was generated in (one of the template's
+   *  `languages`). Null = the template's default language. */
+  lang: text("lang"),
   html: text("html").notNull(),
   context: jsonb("context").$type<Record<string, unknown>>().notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

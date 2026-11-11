@@ -3,6 +3,7 @@ import { getProposal, updateProposal } from "@/lib/proposal-store";
 import { requireAuth } from "@/lib/auth/context";
 import { loadTemplate } from "@/lib/engine/core/template-loader";
 import { renderFromContext } from "@/lib/engine/core/pipeline";
+import { withoutLanguage } from "@/lib/engine/i18n/language";
 import { toErrorResponse } from "@/lib/utils/error-handler";
 
 /**
@@ -45,8 +46,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     }
 
     const template = await loadTemplate(proposal.templateId);
-    const { html, slides } = await renderFromContext(template, body.context);
-    await updateProposal(id, html, body.context);
+    // `lang`/`t` are engine-owned; never let an edited context smuggle them in.
+    const context = withoutLanguage(body.context);
+    const { html, slides } = await renderFromContext(template, context, proposal.lang);
+    await updateProposal(id, html, context);
 
     return NextResponse.json({ success: true, slides });
   } catch (error) {

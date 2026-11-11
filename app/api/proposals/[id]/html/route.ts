@@ -3,7 +3,7 @@ import { getProposal, updateProposal } from "@/lib/proposal-store";
 import { requireAuth } from "@/lib/auth/context";
 import { loadTemplate } from "@/lib/engine/core/template-loader";
 import { wrapPresentation } from "@/lib/engine/renderer/theme-loader";
-import { contextLanguage } from "@/lib/engine/i18n/language";
+import { resolveLanguage } from "@/lib/engine/i18n/language";
 import type { RenderedSlide } from "@/lib/engine/types";
 import { toErrorResponse } from "@/lib/utils/error-handler";
 
@@ -30,7 +30,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     }
 
     const template = await loadTemplate(proposal.templateId);
-    const html = wrapPresentation(template, body.slides, contextLanguage(template, proposal.context));
+    const html = wrapPresentation(template, body.slides, resolveLanguage(template.manifest, proposal.lang));
     await updateProposal(id, html, proposal.context);
 
     return NextResponse.json({ success: true });

@@ -3,7 +3,7 @@
 // "tendencia-event-recommendation-en") to the multi-language template that
 // replaced it, so they keep rendering after the copy's folder is deleted:
 //   - template_id      → the base template id
-//   - context.lang     → the copy's language (so re-renders stay in it)
+//   - lang column      → the copy's language (so re-renders stay in it)
 //   - html <base href> → the base template's asset URL (assets are shared)
 //
 //   node scripts/merge-language-variant.mjs <old-id> <new-id> <lang>          → dry run
@@ -43,7 +43,7 @@ try {
     const updated = await sql`
       update proposals
       set template_id = ${newId},
-          context = context || ${sql.json({ lang })},
+          lang = ${lang},
           html = replace(html, ${oldBase}, ${newBase})
       where template_id = ${oldId}
       returning id`;

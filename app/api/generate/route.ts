@@ -46,11 +46,11 @@ export async function POST(request: Request) {
 
     const lang = typeof body.lang === "string" ? body.lang : undefined;
     const result = await generatePresentation(body.templateId, formInput, lang);
-    await saveProposal(result.proposalId, body.templateId, result.html, result.context, title);
+    await saveProposal(result.proposalId, body.templateId, result.html, result.context, title, result.lang);
 
     // The merged context can be large and is only needed server-side by the
     // editor (fetched separately) — don't ship it back in the generate response.
-    const { context: _context, ...publicResult } = result;
+    const { context: _context, lang: _lang, ...publicResult } = result;
     return NextResponse.json(publicResult);
   } catch (error) {
     const { message, status } = toErrorResponse(error);

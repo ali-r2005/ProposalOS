@@ -161,7 +161,7 @@ templates/[id]/
 
 ## Languages (One Template, Many Languages)
 - Never copy a template to make a language version. List languages in the manifest (`lang` = default, `languages` = all) and put static slide text in `i18n/<lang>.json`.
-- Reserved context keys: `lang` (proposal language code — saved, passed to plugins/providers/prompts) and `t` (dictionary — injected at build/render, never saved). Engine code in `lib/engine/i18n/language.ts`; it never reads dictionary keys.
+- The proposal's language is the `proposals.lang` column (null = template default). Reserved context keys, injected at build/render and never saved in `context`: `lang` (language code, for plugins/providers/prompts) and `t` (dictionary). Engine code in `lib/engine/i18n/language.ts`; it never reads dictionary keys.
 - Templates translate upstream data themselves via `context.lang`.
 
 ## Templates Repo (Git Submodule)

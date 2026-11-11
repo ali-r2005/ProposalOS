@@ -163,6 +163,6 @@ One template folder renders every language; there are no `-en` copies.
 - `manifest.json`: `lang` = default language, `languages` = all of them (`["fr", "en"]`).
 - `i18n/<lang>.json`: nested `{ "<componentCamelCase>": { "<key>": "text" } }`, same keys in every file. A key missing in one language falls back to the default language.
 - Components read it as `t`: `{{t.closingThanks.signoff}}`, also inside attributes (`alt="{{t.ideaBox.imageAlt}}"`). Handlebars escapes the value, so write plain text (`&`, not `&amp;`).
-- The engine reserves two context keys: `lang` (the proposal's language code — saved with the context, passed to plugins via the query string and to providers/prompts in the context) and `t` (the dictionary — added while building and rendering, never saved). Never use either as a field or provider key.
+- The engine reserves two context keys, added while building and rendering and never saved in the context: `lang` (the proposal's language code — stored in the `proposals.lang` column, passed to plugins via the query string and to providers/prompts in the context) and `t` (the dictionary). Never use either as a field or provider key.
 - Plugins/providers pick translated upstream data with `context.lang`; e.g. the catalogue plugins match the CRM record's `translations[].language` and fall back to the base field. Prompts set the output language with `{{t.meta.languageName}}`.
 - Form labels stay in the default language (they're for staff).

@@ -5,7 +5,7 @@ import { buildContext } from "./context-builder";
 import { expand } from "@/lib/engine/expansion";
 import { renderComponent } from "@/lib/engine/renderer/component-renderer";
 import { wrapPresentation } from "@/lib/engine/renderer/theme-loader";
-import { withLanguage } from "@/lib/engine/i18n/language";
+import { resolveLanguage, withLanguage } from "@/lib/engine/i18n/language";
 import { devLog, devWarn } from "@/lib/utils/error-handler";
 
 export interface GenerateResult {
@@ -14,6 +14,8 @@ export interface GenerateResult {
   proposalId: string;
   slides: number;
   context: BusinessContext;
+  /** The language actually used (the requested one, or the template default). */
+  lang: string;
 }
 
 /**
@@ -22,14 +24,15 @@ export interface GenerateResult {
  * generation and by the editor's re-render-from-edited-context path — neither
  * one re-runs providers/AI, so hand-edited or previously-fetched data survives.
  *
- * Components render in `context.lang` (template default when absent or not
- * supported) and read that language's static text as `t`.
+ * Components render in `lang` (template default when absent or not supported)
+ * and read that language's static text as `t`.
  */
 export async function renderFromContext(
   template: LoadedTemplate,
-  context: BusinessContext
+  context: BusinessContext,
+  lang: string | null | undefined
 ): Promise<{ html: string; slides: number }> {
-  const localized = withLanguage(template, context);
+  const localized = withLanguage(template, context, lang);
   const slides: RenderedSlide[] = [];
   for (const section of template.blueprint.sections) {
     const instances = expand(section, localized);
@@ -62,7 +65,8 @@ export async function generatePresentation(
   const context = await buildContext(template, formInput, lang);
   console.log("Context built:", context);
 
-  const { html, slides } = await renderFromContext(template, context);
+  const resolvedLang = resolveLanguage(template.manifest, lang);
+  const { html, slides } = await renderFromContext(template, context, resolvedLang);
   devLog(`Generated presentation for "${templateId}": ${slides} slides.`);
 
   return {
@@ -71,5 +75,6 @@ export async function generatePresentation(
     proposalId: randomUUID(),
     slides,
     context,
+    lang: resolvedLang,
   };
 }
