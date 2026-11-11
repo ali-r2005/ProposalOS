@@ -4,6 +4,8 @@
 // text fields show as "{{field}}", image fields as labelled grey boxes, each
 // `{{#each}}` repeats 3 times and every `{{#if}}` is shown. The page shell
 // (tokens.css, Tailwind, slide scaling) is the engine's own wrapPresentation().
+// Static text from i18n/<lang>.json (`{{t.…}}`) is shown for real, in the
+// default language or the one picked with ?lang= (or the toolbar).
 //
 //   npm run preview                         → list templates
 //   npm run preview -- <template-id>        → preview one, live reload on save
@@ -16,6 +18,7 @@ import Handlebars from "handlebars";
 import { parse as parseYaml } from "yaml";
 import { wrapPresentation } from "../lib/engine/renderer/theme-loader.ts";
 import { render } from "../lib/engine/renderer/handlebars-engine.ts";
+import { dictionaryFor, dictionaryKeys, loadDictionaries, templateLanguages } from "../lib/engine/i18n/language.ts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const TEMPLATES = path.join(ROOT, "templates");
@@ -42,6 +45,8 @@ const isIndex = (k) => /^\d+$/.test(k);
 // (exactly one is true in real data). Showing them all would stack every layout,
 // so the preview turns on just one, chosen with ?count=.
 let previewCount = 4;
+// Content language to preview; null = the template's default.
+let previewLang = null;
 let sawCountFlags = false;
 const COUNT_FLAG = /^count-(\d+)$/;
 
@@ -213,7 +218,52 @@ async function loadForPreview(templateId) {
     }
   }
 
-  return { manifest, tokensCss, components, errors, warnings };
+  const languages = templateLanguages(manifest);
+  let i18n = {};
+  try {
+    i18n = await loadDictionaries(existsSync(path.join(root, "i18n")) ? path.join(root, "i18n") : null, languages);
+  } catch (e) {
+    errors.push(e.message);
+  }
+  errors.push(...lintTranslations(manifest, languages, i18n, components));
+
+  return { manifest, tokensCss, components, errors, warnings, languages, i18n };
+}
+
+/** Every `t.a.b` path a component uses, e.g. `{{t.welcome.title}}`. */
+function translationRefs(html) {
+  return [...html.matchAll(/\{\{\{?[~\s]*t\.([A-Za-z0-9_.-]+)/g)].map((m) => m[1]);
+}
+
+/** Missing dictionaries and keys: a key used by a component must exist in the
+ *  default language, and every other language should define the same keys. */
+function lintTranslations(manifest, languages, i18n, components) {
+  const issues = [];
+  const used = components.some((c) => translationRefs(c.html).length);
+  if (!used && languages.length < 2) return issues;
+  const base = manifest.lang;
+  if (!i18n[base]) {
+    issues.push(`i18n/${base}.json (the default language) is missing.`);
+    return issues;
+  }
+  const baseKeys = new Set(dictionaryKeys(i18n[base]));
+  for (const c of components) {
+    for (const ref of new Set(translationRefs(c.html))) {
+      if (!baseKeys.has(ref)) issues.push(`${c.id}: uses t.${ref}, which is not in i18n/${base}.json`);
+    }
+  }
+  for (const lang of languages.slice(1)) {
+    if (!i18n[lang]) {
+      issues.push(`manifest lists "${lang}" but i18n/${lang}.json is missing.`);
+      continue;
+    }
+    const keys = new Set(dictionaryKeys(i18n[lang]));
+    const missing = [...baseKeys].filter((k) => !keys.has(k));
+    if (missing.length) {
+      issues.push(`i18n/${lang}.json is missing ${missing.length} key(s) (they fall back to ${base}): ${missing.slice(0, 8).join(", ")}${missing.length > 8 ? ", …" : ""}`);
+    }
+  }
+  return issues;
 }
 
 /** Project rules (CLAUDE.md) that a component's markup can break. */
@@ -227,9 +277,15 @@ function lintComponent(c) {
   return issues.map((i) => `${c.id}: ${i}`);
 }
 
-function renderSlide(c) {
+/** The static text for the language being previewed. */
+function translationsFor(t) {
+  const lang = previewLang && t.languages.includes(previewLang) ? previewLang : t.languages[0] ?? t.manifest.lang;
+  return { lang, t: dictionaryFor({ manifest: t.manifest, i18n: t.i18n }, lang) };
+}
+
+function renderSlide(c, i18n) {
   try {
-    return { html: render(c.html, buildPlaceholderContext(c.html)), error: null };
+    return { html: render(c.html, { ...buildPlaceholderContext(c.html), ...i18n }), error: null };
   } catch (e) {
     return {
       html: `<div class="slide" style="width:1920px;height:1080px;background:#2a1215;color:#fca5a5;font:28px monospace;padding:80px;box-sizing:border-box;white-space:pre-wrap">Component "${escapeXml(c.id)}" failed to render:\n\n${escapeXml(e.message)}</div>`,
@@ -240,18 +296,19 @@ function renderSlide(c) {
 
 async function buildPreview(templateId) {
   const t = await loadForPreview(templateId);
+  const i18n = translationsFor(t);
   const slides = [];
   const errors = [...t.errors];
   const warnings = [...t.warnings];
   for (const c of t.components) {
-    const { html, error } = renderSlide(c);
+    const { html, error } = renderSlide(c, i18n);
     if (error) errors.push(error);
     warnings.push(...lintComponent(c));
     if (!c.inBlueprint) warnings.push(`${c.id}: not used in blueprint.yaml (it will never appear in a proposal)`);
     slides.push({ sectionId: c.id, component: c.id, html });
   }
-  const html = wrapPresentation({ id: templateId, manifest: t.manifest, tokensCss: t.tokensCss }, slides);
-  return { ...t, html, errors, warnings };
+  const html = wrapPresentation({ id: templateId, manifest: t.manifest, tokensCss: t.tokensCss }, slides, i18n.lang);
+  return { ...t, html, errors, warnings, i18n };
 }
 
 // ---------- --check mode ----------
@@ -272,8 +329,14 @@ if (checkMode) {
     process.exit(2);
   }
   try {
-    const { components, errors, warnings } = await buildPreview(onlyTemplate);
-    console.log(`\n${onlyTemplate}: ${components.length} component(s)`);
+    const { components, errors, warnings, languages } = await buildPreview(onlyTemplate);
+    // Render every other language too: a translation can break a component.
+    for (const lang of languages.slice(1)) {
+      previewLang = lang;
+      const other = await buildPreview(onlyTemplate);
+      errors.push(...other.errors.filter((e) => !errors.includes(e)).map((e) => `[${lang}] ${e}`));
+    }
+    console.log(`\n${onlyTemplate}: ${components.length} component(s), language(s): ${languages.join(", ")}`);
     for (const c of components) console.log(`  ${c.inBlueprint ? "✓" : "·"} ${c.id}`);
     if (warnings.length) console.log(`\nWarnings (${warnings.length}):\n${warnings.map((w) => `  - ${w}`).join("\n")}`);
     if (errors.length) console.log(`\nErrors (${errors.length}):\n${errors.map((e) => `  ✗ ${e}`).join("\n")}`);
@@ -306,7 +369,7 @@ const CHROME_CSS = `<style>
 @media print{.pv-bar,.pv-label{display:none}}
 </style>`;
 
-function toolbar(templateId, components, focus, errors, warnings, count) {
+function toolbar(templateId, components, focus, errors, warnings, count, languages, lang) {
   const options = [`<option value="">all components</option>`]
     .concat(components.map((c) => `<option${c.id === focus ? " selected" : ""}>${escapeXml(c.id)}</option>`))
     .join("");
@@ -316,8 +379,9 @@ function toolbar(templateId, components, focus, errors, warnings, count) {
       : "";
   return `<div class="pv-bar"><a href="/">← templates</a> · <b>${escapeXml(templateId)}</b> ·
 <select id="pv-c" onchange="pvGo()">${options}</select>
+${languages.length > 1 ? `<select id="pv-l" onchange="pvGo()">${languages.map((l) => `<option${l === lang ? " selected" : ""}>${escapeXml(l)}</option>`).join("")}</select>` : ""}
 ${sawCountFlags ? `<select id="pv-n" onchange="pvGo()">${[1, 2, 3, 4, 5].map((n) => `<option value="${n}"${n === count ? " selected" : ""}>${n} image${n > 1 ? "s" : ""}</option>`).join("")}</select>` : ""}
-<script>function pvGo(){var p=new URLSearchParams(),c=document.getElementById('pv-c').value,n=document.getElementById('pv-n');if(c)p.set('c',c);if(n)p.set('count',n.value);location.search=p.toString()}</script>
+<script>function pvGo(){var p=new URLSearchParams(),c=document.getElementById('pv-c').value,n=document.getElementById('pv-n'),l=document.getElementById('pv-l');if(c)p.set('c',c);if(n)p.set('count',n.value);if(l)p.set('lang',l.value);location.search=p.toString()}</script>
 <span style="opacity:.6"> · placeholders shown as {{field}} · live reload on</span>
 ${list("error", errors, "#fca5a5")}${list("warning", warnings, "#fbbf24")}</div>`;
 }
@@ -371,6 +435,7 @@ const server = http.createServer(async (req, res) => {
       const templateId = page[1];
       const focus = url.searchParams.get("c") ?? "";
       previewCount = Number(url.searchParams.get("count")) || 4;
+      previewLang = url.searchParams.get("lang");
       sawCountFlags = false;
       try {
         const preview = await buildPreview(templateId);
@@ -379,14 +444,14 @@ const server = http.createServer(async (req, res) => {
           const only = preview.components.find((c) => c.id === focus);
           if (only) {
             html = wrapPresentation({ id: templateId, manifest: preview.manifest, tokensCss: preview.tokensCss }, [
-              { sectionId: only.id, component: only.id, html: renderSlide(only).html },
-            ]);
+              { sectionId: only.id, component: only.id, html: renderSlide(only, preview.i18n).html },
+            ], preview.i18n.lang);
           }
         }
         const unused = new Set(preview.components.filter((c) => !c.inBlueprint).map((c) => c.id));
         html = html
           .replace("</head>", `${CHROME_CSS}</head>`)
-          .replace("<body>", `<body>\n${toolbar(templateId, preview.components, focus, preview.errors, preview.warnings, previewCount)}`)
+          .replace("<body>", `<body>\n${toolbar(templateId, preview.components, focus, preview.errors, preview.warnings, previewCount, preview.languages, preview.i18n.lang)}`)
           .replace(/<section class="slide-wrapper" data-section="([^"]+)"/g, (m, id) =>
             `<div class="pv-label">${escapeXml(id)}${unused.has(id) ? " <span>(not in blueprint)</span>" : ""}</div>${m}`
           )

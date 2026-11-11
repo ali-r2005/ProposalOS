@@ -32,7 +32,7 @@ Copy the starter template and rename it:
 cp -r .claude/skills/proposal-template/starter templates/my-template
 ```
 
-The folder name is the **template id**. Use lowercase letters, digits and dashes (`wedding-proposal`, `team-building-recommendation-en`). It must be identical to `id` in `manifest.json`.
+The folder name is the **template id**. Use lowercase letters, digits and dashes (`wedding-proposal`, `team-building-recommendation`). It must be identical to `id` in `manifest.json`.
 
 Then open `templates/my-template/manifest.json` and replace every `__PLACEHOLDER__`.
 
@@ -42,7 +42,8 @@ Then open `templates/my-template/manifest.json` and replace every `__PLACEHOLDER
 
 ```
 templates/<template-id>/
-  manifest.json      required: id, name, language, plugins
+  manifest.json      required: id, name, language(s), plugins
+  i18n/<lang>.json   the slides' static text, one file per language (optional)
   blueprint.yaml     required: slide order, and where each slide's data comes from
   tokens.css         colours and fonts as CSS variables
   form/*.json        the form steps; one file = one step, ordered by file name
@@ -72,12 +73,14 @@ So a form field with `"key": "event-name"` appears on a slide as `{{[event-name]
   "version": "0.1.0",
   "author": "Tendencia Events",
   "lang": "en",
+  "languages": ["en", "fr"],
   "description": "One line shown in the template picker",
   "plugins": [],
   "canvas": { "width": 1920, "height": 1080, "aspectRatio": "16:9" }
 }
 ```
-- `lang` is the language of the template's content (slide text, labels, prompts), not of the app.
+- `lang` is the template's default content language (slide text, labels, prompts), not the app's.
+- `languages` lists every language a proposal can be generated in. Leave it out for a single-language template. See [Languages](#languages).
 - `plugins` lists the files in `plugins/` to run, without the extension. Leave it `[]` if you have none.
 
 ### blueprint.yaml
@@ -331,16 +334,50 @@ Step 3 is what makes the deployed app pick up the template.
 
 ---
 
-## Language variants
+## Languages
 
-To offer a template in another language, copy the whole folder with a language suffix (`my-template` → `my-template-en`). In the copy:
-- set a new `id`, add "(EN)" to the `name`, and set `lang`;
-- translate the human-readable text: form labels and placeholders, slide text, prompts;
-- keep data keys, field keys, class names and logic identical.
+One template can produce proposals in several languages. Don't copy the folder per language: the copies drift apart, and every fix has to be made twice.
 
-If data comes from a CRM with translations, the plugin picks the translation. For example, `team-building-recommendation-en/plugins/prefill-catalogue.ts` reads the Activity's `translations` row where `language` is `en` and falls back to the base value.
+**1. List the languages in the manifest.** `lang` is the default, `languages` lists them all:
 
-When you later change one variant, apply the same change to the other.
+```json
+"lang": "fr",
+"languages": ["fr", "en"]
+```
+
+The template picker then shows one button per language, and the form gets a "Proposal language" choice. The language is chosen once, before generating.
+
+**2. Put the slides' fixed text in `i18n/<lang>.json`.** One file per language, with the same keys in each. Group the keys by component:
+
+```jsonc
+// i18n/fr.json
+{ "meta": { "languageName": "French" }, "closingThanks": { "signoff": "À VOTRE SERVICE" } }
+
+// i18n/en.json
+{ "meta": { "languageName": "English" }, "closingThanks": { "signoff": "AT YOUR SERVICE" } }
+```
+
+**3. Use the keys in components with `t`:**
+
+```html
+<p data-field="signoff">{{t.closingThanks.signoff}}</p>
+<img src="assets/box.png" alt="{{t.ideaBox.imageAlt}}">
+```
+
+If a key is missing in a language, the default language's text is shown. `npm run preview:check` lists missing keys and keys a component uses that don't exist.
+
+**4. Let the data follow the language.** The proposal's language code is in the context as `lang` (`"fr"`, `"en"`):
+- **Plugins and providers** read `context.lang`. For example, the catalogue plugins pick the CRM record's `translations` row whose `language` matches, and fall back to the base text when there is none.
+- **Prompts** can use the dictionary too, e.g. `Write both paragraphs in {{t.meta.languageName}}.`
+- **Text the user types** (form values) is used as typed.
+
+**What stays in one language:** form labels (they're for your team, not the client) and the manifest's name and description.
+
+**Images with text in them** need one file per language. Put the path in the dictionary, e.g. `"invitationImage": "assets/en/invitation.png"`, and use `src="{{t.welcome.invitationImage}}"`.
+
+`lang` and `t` are reserved: don't use them as form field keys or provider output keys.
+
+To preview a language, use the language menu in the preview toolbar, or add `?lang=en` to the preview URL.
 
 ---
 
@@ -363,5 +400,6 @@ Claude asks a few questions, proposes the slide list, builds the template and ru
 - [ ] Every field shown on a slide comes from the form, a provider or a prompt.
 - [ ] No `min`/`max` on non-list fields.
 - [ ] Providers and plugins use `export const provider` / `export const plugin`, and `fetch` for external APIs.
+- [ ] Multi-language: every fixed slide text is a `{{t.…}}` key, and every language in `languages` has its `i18n/<lang>.json`.
 - [ ] No secrets in files.
 - [ ] Images are in `assets/`; the template contains only images you're allowed to use.

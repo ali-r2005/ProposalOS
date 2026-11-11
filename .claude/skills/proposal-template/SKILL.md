@@ -1,6 +1,6 @@
 ---
 name: proposal-template
-description: Create, extend and preview ProposalOS presentation templates (the folders under templates/ — manifest, blueprint, form JSON, Handlebars + Tailwind slide components, tokens, providers, plugins, AI prompts). Use this skill whenever the user wants a new proposal template, a new or changed slide/component, new form fields wired to a slide, a design preview of a template, or to sync changes between language variants (e.g. a French template and its "-en" copy) — even if they just say "add a slide for X", "make a template for weddings", "sync this to the English version" or "preview my template". Not for Canva social templates and not for engine code (app/, components/, lib/).
+description: Create, extend and preview ProposalOS presentation templates (the folders under templates/ — manifest, blueprint, form JSON, Handlebars + Tailwind slide components, tokens, providers, plugins, AI prompts). Use this skill whenever the user wants a new proposal template, a new or changed slide/component, new form fields wired to a slide, a design preview of a template, or to add a language / update translations (one template renders several languages via i18n/<lang>.json) — even if they just say "add a slide for X", "make a template for weddings", "make this available in English", "fix the English text" or "preview my template". Not for Canva social templates and not for engine code (app/, components/, lib/).
 ---
 
 # ProposalOS template builder
@@ -23,7 +23,7 @@ Always run `preview:check` after editing. Fix every **error** before finishing. 
 
 1. **Brief (one short round of questions, skip what the user already said):**
    - name, and the template id (kebab-case);
-   - content language;
+   - content language(s) — the default first;
    - the slides in order, with a phrase each;
    - brand colours and fonts, or "reuse <existing template>'s look";
    - where each slide's data comes from: fixed content (static), typed into the form (manual), computed or fetched (provider), or written by AI.
@@ -41,13 +41,13 @@ Always run `preview:check` after editing. Fix every **error** before finishing. 
 3. If the slide's data comes through a provider or plugin, update the TypeScript interface **and** the shaping function, so the new key actually flows through.
 4. Run `preview:check` and point the user to `/t/<template-id>?c=<component>`.
 
-## Workflow C — sync a change to a language variant
+## Workflow C — add a language, or keep translations in sync
 
-Used when the user changed one template (e.g. `tendencia-event-recommendation`) and wants it mirrored in its sibling (`…-en`).
-1. Find what changed: `git diff -- templates/<source-id>/`. If the working tree is clean, use `git diff HEAD~1 -- templates/<source-id>/`. Ask if it's unclear which commits count.
-2. Port each hunk to the same file in the target. **Translate** human-readable text (labels, headings, placeholders, prompt language). **Keep** data keys, field keys, class names and logic identical.
-3. Don't blindly copy structural differences that exist on purpose (see "Language variants" in `references/anatomy.md`). If a hunk depends on code that only exists in the source, explain this to the user and adapt or skip that hunk.
-4. Run `preview:check` on the target. Then summarise each file you ported and anything you skipped, with the reason.
+A template renders several languages from one folder (manifest `languages`, `i18n/<lang>.json`, `{{t.…}}` in components — see "Languages" in `references/anatomy.md`). Never copy a template folder to make a language version.
+1. **New language:** add the code to `languages` in `manifest.json`, then create `i18n/<lang>.json` with every key of the default language's file, translated. Keep keys identical.
+2. **Changed slide text:** never hardcode text in a component. Add or change the key in **every** `i18n/*.json` file, translating each value.
+3. **Translated data:** plugins/providers read `context.lang` (e.g. pick the CRM `translations` row for that language, falling back to the base value). Prompts use `{{t.meta.languageName}}` or other dictionary keys.
+4. Run `preview:check`: it reports keys missing from a language and keys used by a component that don't exist. Preview each language with `?lang=<code>`.
 
 ## Component rules
 

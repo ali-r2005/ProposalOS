@@ -2,6 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import type { LoadedTemplate, TemplateManifest, TemplatePaths } from "@/lib/engine/types";
 import { parseBlueprint } from "./blueprint-parser";
+import { loadDictionaries, templateLanguages } from "@/lib/engine/i18n/language";
 import { EngineError, devLog } from "@/lib/utils/error-handler";
 
 /** Root directory that holds all templates. Never hardcode a template id. */
@@ -50,6 +51,7 @@ async function discoverPaths(root: string): Promise<TemplatePaths> {
     assetsDir: await firstDir(root, ["assets"]),
     tokensCss: await firstFile(root, ["tokens.css"]),
     dbDir: await firstDir(root, ["db"]),
+    i18nDir: await firstDir(root, ["i18n"]),
   };
 }
 
@@ -84,12 +86,20 @@ export async function loadTemplate(templateId: string): Promise<LoadedTemplate> 
   const paths = await discoverPaths(root);
   const tokensCss = paths.tokensCss ? await fs.readFile(paths.tokensCss, "utf-8") : "";
 
+  let i18n: LoadedTemplate["i18n"];
+  try {
+    i18n = await loadDictionaries(paths.i18nDir, templateLanguages(manifest));
+  } catch (error) {
+    throw new EngineError(`Template "${templateId}": ${(error as Error).message}`, 500);
+  }
+
   const template: LoadedTemplate = {
     id: templateId,
     manifest,
     blueprint,
     paths,
     tokensCss,
+    i18n,
   };
 
   cache.set(templateId, template);

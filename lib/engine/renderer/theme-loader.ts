@@ -20,7 +20,11 @@ const SLIDE_HEIGHT = 1080;
  * The runtime links live in this engine-owned document shell — never in the
  * components themselves, which stay pure Tailwind + CSS-variable markup.
  */
-export function wrapPresentation(template: LoadedTemplate, slides: RenderedSlide[]): string {
+export function wrapPresentation(
+  template: Pick<LoadedTemplate, "id" | "manifest" | "tokensCss">,
+  slides: RenderedSlide[],
+  lang: string = template.manifest.lang
+): string {
   const body = slides
     .map(
       (slide) =>
@@ -29,7 +33,7 @@ export function wrapPresentation(template: LoadedTemplate, slides: RenderedSlide
     .join("\n");
 
   return `<!doctype html>
-<html lang="en">
+<html lang="${escapeHtml(lang || "en")}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">

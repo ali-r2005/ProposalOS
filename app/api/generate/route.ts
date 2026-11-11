@@ -9,7 +9,8 @@ import { EngineError, toErrorResponse } from "@/lib/utils/error-handler";
 
 /**
  * POST /api/generate
- * Body: { templateId, formInput }
+ * Body: { templateId, formInput, title?, lang? }
+ * `lang` picks one of the template's content languages (default when omitted).
  * Runs the engine and returns { success, html, proposalId, slides }.
  */
 export async function POST(request: Request) {
@@ -19,6 +20,7 @@ export async function POST(request: Request) {
       templateId?: string;
       formInput?: Record<string, unknown>;
       title?: string;
+      lang?: string;
     };
 
     if (!body.templateId) {
@@ -42,7 +44,8 @@ export async function POST(request: Request) {
 
     const title = typeof body.title === "string" && body.title.trim() ? body.title.trim() : undefined;
 
-    const result = await generatePresentation(body.templateId, formInput);
+    const lang = typeof body.lang === "string" ? body.lang : undefined;
+    const result = await generatePresentation(body.templateId, formInput, lang);
     await saveProposal(result.proposalId, body.templateId, result.html, result.context, title);
 
     // The merged context can be large and is only needed server-side by the

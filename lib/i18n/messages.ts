@@ -30,6 +30,7 @@ const en = {
   "templates.empty": "No templates found.",
   "templates.cta": "Create proposal →",
   "templates.filter.all": "All",
+  "templates.createIn": "Create in {lang}",
 
   "sidebar.back": "← Templates",
   "sidebar.new": "New proposal",
@@ -114,6 +115,7 @@ export const messages: Record<Locale, Record<MessageKey, string>> = {
     "templates.empty": "Aucun modèle trouvé.",
     "templates.cta": "Créer une proposition →",
     "templates.filter.all": "Tous",
+    "templates.createIn": "Créer en {lang}",
 
     "sidebar.back": "← Modèles",
     "sidebar.new": "Nouvelle proposition",

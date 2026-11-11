@@ -4,7 +4,8 @@ A template is one folder: `templates/<template-id>/`. The app finds it automatic
 
 ```
 templates/<template-id>/
-  manifest.json      required — name, language, plugins
+  manifest.json      required — name, language(s), plugins
+  i18n/<lang>.json   static slide text per language (multi-language templates)
   blueprint.yaml     required — slide order and where each slide's data comes from
   tokens.css         colours, fonts, radii as CSS variables (the only place raw colour values live)
   form/*.json        wizard steps; every JSON file = one step, ordered by file name
@@ -156,6 +157,12 @@ Output format: Valid JSON only.
 ```
 The returned keys are merged into the context, so components read them like any other field.
 
-## Language variants (e.g. FR ↔ EN)
+## Languages (e.g. FR + EN in one template)
 
-Sibling templates such as `tendencia-event-recommendation` (fr) and `tendencia-event-recommendation-en` share structure; only human-readable text differs (form labels, slide titles, prompt language). Data keys, providers, plugins and component markup stay identical. Structural differences between variants are intentional when the upstream data differs (e.g. the FR plugin resolves Item → Item Group → reference, EN resolves Item → reference) — check before "fixing" them.
+One template folder renders every language; there are no `-en` copies.
+- `manifest.json`: `lang` = default language, `languages` = all of them (`["fr", "en"]`).
+- `i18n/<lang>.json`: nested `{ "<componentCamelCase>": { "<key>": "text" } }`, same keys in every file. A key missing in one language falls back to the default language.
+- Components read it as `t`: `{{t.closingThanks.signoff}}`, also inside attributes (`alt="{{t.ideaBox.imageAlt}}"`). Handlebars escapes the value, so write plain text (`&`, not `&amp;`).
+- The engine reserves two context keys: `lang` (the proposal's language code — saved with the context, passed to plugins via the query string and to providers/prompts in the context) and `t` (the dictionary — added while building and rendering, never saved). Never use either as a field or provider key.
+- Plugins/providers pick translated upstream data with `context.lang`; e.g. the catalogue plugins match the CRM record's `translations[].language` and fall back to the base field. Prompts set the output language with `{{t.meta.languageName}}`.
+- Form labels stay in the default language (they're for staff).

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { http, toErrorMessage } from "@/lib/utils/http";
 import type { FormField, FormGroup } from "@/lib/engine/types";
@@ -320,6 +320,17 @@ export default function ProposalForm({ templateId }: { templateId: string }) {
   const [fileData, setFileData] = useState<Record<string, Record<string, unknown>>>({});
   const [fileErrors, setFileErrors] = useState<Record<string, string>>({});
 
+  // Content languages the template renders (default first) and the chosen one.
+  // `?lang=` in the URL is the source of truth so the choice survives a reload
+  // and reaches the prefill plugins with the rest of the query string.
+  const [languages, setLanguages] = useState<string[]>([]);
+  const requestedLang = searchParams.get("lang");
+  const lang = requestedLang && languages.includes(requestedLang) ? requestedLang : languages[0];
+
+  // Values the last prefill produced, so a language switch can replace them
+  // with the re-fetched (translated) ones without touching what the user typed.
+  const prefilled = useRef<Record<string, FormValue>>({});
+
   const destination = String(values["destination"] ?? "");
 
   useEffect(() => {
@@ -329,10 +340,11 @@ export default function ProposalForm({ templateId }: { templateId: string }) {
       return;
     }
     http
-      .get<{ forms?: FormGroup[]; error?: string }>(
+      .get<{ forms?: FormGroup[]; languages?: string[]; error?: string }>(
         `/api/templates/${encodeURIComponent(templateId)}/forms`
       )
       .then(({ data }) => {
+        if (Array.isArray(data.languages)) setLanguages(data.languages);
         if (Array.isArray(data.forms)) setGroups(data.forms);
         else setError(data.error ?? "Failed to load forms");
       })
@@ -344,21 +356,38 @@ export default function ProposalForm({ templateId }: { templateId: string }) {
   // from a CRM lookup. The page's own query string (e.g. ?deal=...) is
   // forwarded verbatim so a plugin can key its lookup off it. Silent on
   // failure — prefill is a convenience, never a blocker — and never
-  // overwrites a value the user already typed.
+  // overwrites a value the user already typed. The chosen `lang` is always
+  // sent so plugins can return translated data; switching language re-runs
+  // the prefill and swaps in its values wherever the user hasn't edited them.
   useEffect(() => {
-    if (!templateId) return;
-    const qs = searchParams.toString();
+    if (!templateId || !lang) return;
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("lang", lang);
     http
       .get<Record<string, FormValue>>(
-        `/api/templates/${encodeURIComponent(templateId)}/plugins/prefill${qs ? `?${qs}` : ""}`
+        `/api/templates/${encodeURIComponent(templateId)}/plugins/prefill?${params.toString()}`
       )
       .then(({ data }) => {
-        if (data && typeof data === "object") {
-          setValues((prev) => ({ ...data, ...prev }));
-        }
+        if (!data || typeof data !== "object") return;
+        const previous = prefilled.current;
+        prefilled.current = data;
+        setValues((prev) => {
+          const next = { ...data, ...prev };
+          for (const [key, value] of Object.entries(data)) {
+            const untouched = key in previous && JSON.stringify(prev[key]) === JSON.stringify(previous[key]);
+            if (untouched) next[key] = value;
+          }
+          return next;
+        });
       })
       .catch(() => {});
-  }, [templateId, searchParams]);
+  }, [templateId, searchParams, lang]);
+
+  const changeLanguage = (next: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("lang", next);
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
 
   const current = groups[step];
   const isLast = step === groups.length - 1;
@@ -375,7 +404,7 @@ export default function ProposalForm({ templateId }: { templateId: string }) {
       try {
         const { data } = await http.get<Record<string, unknown>>(
           `/api/templates/${encodeURIComponent(templateId)}/options`,
-          { params: { provider: src.provider, destination, limit: PAGE_SIZE, offset } }
+          { params: { provider: src.provider, destination, lang, limit: PAGE_SIZE, offset } }
         );
         const rows = Array.isArray(data[src.collection]) ? (data[src.collection] as Record<string, unknown>[]) : [];
         const valueKey = src.valueKey ?? "id";
@@ -399,7 +428,7 @@ export default function ProposalForm({ templateId }: { templateId: string }) {
         }));
       }
     },
-    [templateId, destination]
+    [templateId, destination, lang]
   );
 
   // When the active step (or the destination) changes, (re)load options for any
@@ -483,7 +512,7 @@ export default function ProposalForm({ templateId }: { templateId: string }) {
         invalid?: string[];
       }>(
         "/api/generate",
-        { templateId, formInput, title },
+        { templateId, formInput, title, lang },
         { validateStatus: () => true }
       );
       if (!data.success) {
@@ -518,6 +547,33 @@ export default function ProposalForm({ templateId }: { templateId: string }) {
           Helps you tell this proposal apart later in the history list. Leave blank to auto-name it.
         </p>
       </div>
+
+      {languages.length > 1 && lang && (
+        <div className="mb-6">
+          <label className="mb-1 block text-sm font-medium">Proposal language</label>
+          <div className="flex flex-wrap gap-2">
+            {languages.map((code) => (
+              <button
+                key={code}
+                type="button"
+                onClick={() => changeLanguage(code)}
+                aria-pressed={code === lang}
+                className={`rounded-lg px-3 py-1.5 text-sm font-medium uppercase transition ${
+                  code === lang
+                    ? "bg-[var(--app-accent)] text-white"
+                    : "border border-[var(--app-border)] text-[var(--app-muted)] hover:text-[var(--app-text)]"
+                }`}
+              >
+                {code}
+              </button>
+            ))}
+          </div>
+          <p className="mt-1 text-xs text-[var(--app-muted)]">
+            The slides, the CRM data and the AI-written text use this language. It can&apos;t be changed after
+            the proposal is generated.
+          </p>
+        </div>
+      )}
 
       {/* Step indicator */}
       <div className="mb-6 flex items-center gap-2">

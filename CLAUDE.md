@@ -154,7 +154,15 @@ templates/[id]/
     */component.html  (Tailwind + CSS vars)
   prompts/
     *.md              (request JSON output)
+  i18n/               (multi-language templates: manifest `languages`)
+    fr.json           (static slide text → `{{t.component.key}}`)
+    en.json
 ```
+
+## Languages (One Template, Many Languages)
+- Never copy a template to make a language version. List languages in the manifest (`lang` = default, `languages` = all) and put static slide text in `i18n/<lang>.json`.
+- Reserved context keys: `lang` (proposal language code — saved, passed to plugins/providers/prompts) and `t` (dictionary — injected at build/render, never saved). Engine code in `lib/engine/i18n/language.ts`; it never reads dictionary keys.
+- Templates translate upstream data themselves via `context.lang`.
 
 ## Templates Repo (Git Submodule)
 `templates/` is a git submodule pointing at the private repo `ali-r2005/proposalos-templates`. It is **not** tracked by this repo, which only stores a pointer to one templates commit.
