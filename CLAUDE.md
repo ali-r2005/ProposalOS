@@ -39,7 +39,7 @@
   This exception does not apply to a provider/plugin calling this app's own `/api/*` routes — that's engine-internal traffic and should still go through `lib/utils/http.ts`.
 
 ## Dependencies (Locked)
-✅ next, react, typescript, handlebars, @anthropic-ai/sdk, yaml, zod, axios, tailwindcss, autoprefixer, puppeteer, drizzle-orm, drizzle-kit, postgres, dotenv, @grapesjs/studio-sdk (visual proposal editor — free plan: default `web` project type + custom `devices` sized to the slide artboard; no `studio-sdk-plugins` — those (`presetPrintable`, `canvasAbsoluteMode`, `canvasFullSize`, etc.) are paid Startup-plan or print/pagination-oriented and crop+corrupt fixed-size absolute-positioned slides), marked (Markdown → HTML for the public `/docs` pages, `lib/docs/markdown.ts`)
+✅ next, react, typescript, handlebars, @anthropic-ai/sdk, yaml, zod, axios, tailwindcss, autoprefixer, puppeteer, drizzle-orm, drizzle-kit, postgres, dotenv, @grapesjs/studio-sdk (visual proposal editor — free plan: default `web` project type + custom `devices` sized to the slide artboard; no `studio-sdk-plugins` — those (`presetPrintable`, `canvasAbsoluteMode`, `canvasFullSize`, etc.) are paid Startup-plan or print/pagination-oriented and crop+corrupt fixed-size absolute-positioned slides), marked (Markdown → HTML for the public `/docs` pages, `lib/docs/markdown.ts`), @modelcontextprotocol/sdk (the MCP server at `/api/mcp`, `lib/mcp/`)
 
 ## Server External Packages Rule
 Template files loaded via native `import()` (not webpack), straight from their `.ts` source —
@@ -163,6 +163,13 @@ templates/[id]/
 - Never copy a template to make a language version. List languages in the manifest (`lang` = default, `languages` = all) and put static slide text in `i18n/<lang>.json`.
 - The proposal's language is the `proposals.lang` column (null = template default). Reserved context keys, injected at build/render and never saved in `context`: `lang` (language code, for plugins/providers/prompts) and `t` (dictionary). Engine code in `lib/engine/i18n/language.ts`; it never reads dictionary keys.
 - Templates translate upstream data themselves via `context.lang`.
+
+## MCP Server (Claude connector)
+`/api/mcp` (`app/api/mcp/route.ts`) is a stateless Streamable HTTP MCP server; tools live in `lib/mcp/server.ts`.
+- Tools stay **agnostic**, like the rest of the engine: they take a `templateId` and values keyed by form field `key`, and Claude learns the keys from `get_template_form`. Never add a tool that knows about one template.
+- Tools call engine functions directly (`generatePresentation`, `renderFromContext`, `runPlugins`, the proposal store), not the app's own `/api/*` routes.
+- Auth (phase 1): personal bearer tokens from Settings → Connect Claude (`POST /api/admin/mcp-token`), signed with `MCP_TOKEN_SECRET` (no fallback: unset = endpoint off). Rotating the secret revokes every token. OAuth for claude.ai connectors is phase 2.
+- `update_proposal` re-renders from the template, which discards visual-editor edits, so it refuses value/language changes without `rebuild: true`.
 
 ## Templates Repo (Git Submodule)
 `templates/` is a git submodule pointing at the private repo `ali-r2005/proposalos-templates`. It is **not** tracked by this repo, which only stores a pointer to one templates commit.

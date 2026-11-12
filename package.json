@@ -20,6 +20,7 @@
     "@grapesjs/studio-sdk": "^1.1.1",
     "@langchain/core": "^1.2.1",
     "@langchain/google": "^0.2.1",
+    "@modelcontextprotocol/sdk": "^1.32.2",
     "@sparticuz/chromium": "^130.0.0",
     "axios": "^1.18.1",
     "drizzle-orm": "^0.45.2",

@@ -126,6 +126,26 @@ export async function updateProposal(
 }
 
 /**
+ * Change a proposal's title and/or language column. Only the keys present in
+ * `patch` are written. Changing `lang` does not re-render: callers re-render
+ * and save the html themselves. Returns false when the proposal doesn't exist.
+ */
+export async function updateProposalMeta(
+  proposalId: string,
+  patch: { title?: string | null; lang?: string | null }
+): Promise<boolean> {
+  const set: { title?: string | null; lang?: string | null; updatedAt: Date } = { updatedAt: new Date() };
+  if ("title" in patch) set.title = patch.title ?? null;
+  if ("lang" in patch) set.lang = patch.lang ?? null;
+  const [row] = await getDb()
+    .update(proposals)
+    .set(set)
+    .where(eq(proposals.id, proposalId))
+    .returning({ id: proposals.id });
+  return Boolean(row);
+}
+
+/**
  * Private presenter notes for a proposal, keyed by slide. Kept out of
  * StoredProposal so the HTML/share routes never load them.
  * Returns undefined when the proposal doesn't exist.

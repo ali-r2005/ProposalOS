@@ -91,6 +91,19 @@ const en = {
   "settings.editor.interval.30s": "30 seconds",
   "settings.editor.interval.60s": "1 minute",
 
+  "settings.mcp.title": "Connect Claude",
+  "settings.mcp.hint":
+    "Create a personal token so Claude can create and update proposals for you. It is shown only once and is valid for {days} days. Anyone with the token can act as you, so keep it private.",
+  "settings.mcp.generate": "Generate token",
+  "settings.mcp.generating": "Generating…",
+  "settings.mcp.failed": "Failed to generate the token",
+  "settings.mcp.url": "Server URL",
+  "settings.mcp.token": "Token",
+  "settings.mcp.command": "Claude Code command",
+  "settings.mcp.expires": "Expires on {date}",
+  "settings.mcp.copy": "Copy",
+  "settings.mcp.copied": "Copied",
+
   "editor.autosave.on": "Autosave on",
   "editor.autosave.saving": "Saving…",
   "editor.autosave.saved": "All changes saved",
@@ -251,6 +264,19 @@ export const messages: Record<Locale, Record<MessageKey, string>> = {
     "settings.editor.interval.10s": "10 secondes",
     "settings.editor.interval.30s": "30 secondes",
     "settings.editor.interval.60s": "1 minute",
+
+    "settings.mcp.title": "Connecter Claude",
+    "settings.mcp.hint":
+      "Créez un jeton personnel pour que Claude puisse créer et modifier des propositions pour vous. Il n'est affiché qu'une fois et reste valable {days} jours. Toute personne qui a le jeton peut agir en votre nom : gardez-le privé.",
+    "settings.mcp.generate": "Générer un jeton",
+    "settings.mcp.generating": "Génération…",
+    "settings.mcp.failed": "Échec de la génération du jeton",
+    "settings.mcp.url": "URL du serveur",
+    "settings.mcp.token": "Jeton",
+    "settings.mcp.command": "Commande Claude Code",
+    "settings.mcp.expires": "Expire le {date}",
+    "settings.mcp.copy": "Copier",
+    "settings.mcp.copied": "Copié",
 
     "editor.autosave.on": "Enregistrement auto activé",
     "editor.autosave.saving": "Enregistrement…",
