@@ -104,6 +104,15 @@ const en = {
   "settings.mcp.copy": "Copy",
   "settings.mcp.copied": "Copied",
 
+  "oauth.errorTitle": "This connection request can't be used",
+  "oauth.title": "Allow {client} to access ProposalOS?",
+  "oauth.loggedInAs": "You are logged in as {email}. It will act as you.",
+  "oauth.scopeRead": "See your templates and proposals",
+  "oauth.scopeWrite": "Create proposals, change them and make share links",
+  "oauth.redirect": "After your answer you will be sent back to {host}.",
+  "oauth.allow": "Allow",
+  "oauth.deny": "Deny",
+
   "editor.autosave.on": "Autosave on",
   "editor.autosave.saving": "Saving…",
   "editor.autosave.saved": "All changes saved",
@@ -277,6 +286,15 @@ export const messages: Record<Locale, Record<MessageKey, string>> = {
     "settings.mcp.expires": "Expire le {date}",
     "settings.mcp.copy": "Copier",
     "settings.mcp.copied": "Copié",
+
+    "oauth.errorTitle": "Cette demande de connexion ne peut pas être utilisée",
+    "oauth.title": "Autoriser {client} à accéder à ProposalOS ?",
+    "oauth.loggedInAs": "Vous êtes connecté en tant que {email}. Il agira en votre nom.",
+    "oauth.scopeRead": "Voir vos modèles et vos propositions",
+    "oauth.scopeWrite": "Créer des propositions, les modifier et créer des liens de partage",
+    "oauth.redirect": "Après votre réponse, vous serez renvoyé vers {host}.",
+    "oauth.allow": "Autoriser",
+    "oauth.deny": "Refuser",
 
     "editor.autosave.on": "Enregistrement auto activé",
     "editor.autosave.saving": "Enregistrement…",

@@ -1,9 +1,10 @@
 import { decodeToken, encodeToken } from "@/lib/auth/token";
-import { getUserById, type AuthUser } from "@/lib/auth/session";
+import { getUserById, refreshAccessToken, verifyAccessToken, type AuthUser } from "@/lib/auth/session";
 import { EngineError } from "@/lib/utils/error-handler";
 
 /**
- * Personal access tokens for the MCP endpoint (phase 1, before OAuth).
+ * Access tokens for the MCP endpoint: both the personal tokens from Settings
+ * (90 days) and the short ones issued by the OAuth flow (lib/mcp/oauth.ts).
  *
  * Same HMAC token format as the app's access tokens, but signed with a
  * separate secret and a long lifetime, so:
@@ -23,9 +24,26 @@ function secret(): string {
   return value;
 }
 
-export function issueMcpToken(userId: string, role: string): { token: string; expiresAt: number } {
-  const expiresAt = Math.floor(Date.now() / 1000) + MCP_TOKEN_TTL_DAYS * 24 * 60 * 60;
+/** Issue an MCP access token. Personal tokens last 90 days; OAuth passes a short `ttlSeconds`. */
+export function issueMcpToken(
+  userId: string,
+  role: string,
+  ttlSeconds = MCP_TOKEN_TTL_DAYS * 24 * 60 * 60
+): { token: string; expiresAt: number } {
+  const expiresAt = Math.floor(Date.now() / 1000) + ttlSeconds;
   return { token: encodeToken({ userId, role, expiresAt }, secret()), expiresAt };
+}
+
+/**
+ * The user logged in to the app in this browser, from the httpOnly refresh
+ * cookie (same check as /api/auth/refresh). Used by the OAuth consent page,
+ * which is opened in the browser, outside the app's axios client.
+ */
+export async function userFromRefreshCookie(refreshToken: string | undefined): Promise<AuthUser | null> {
+  if (!refreshToken) return null;
+  const access = await refreshAccessToken(refreshToken);
+  const payload = access ? verifyAccessToken(access) : null;
+  return payload ? getUserById(payload.userId) : null;
 }
 
 /**

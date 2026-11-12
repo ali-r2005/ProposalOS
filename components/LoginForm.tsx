@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from './AuthProvider';
+import { loginRedirectTarget } from './loginRedirect';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -19,7 +20,7 @@ export default function LoginForm() {
 
     try {
       await login(email, password);
-      router.push('/');
+      router.push(loginRedirectTarget());
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
     } finally {

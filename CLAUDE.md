@@ -168,7 +168,9 @@ templates/[id]/
 `/api/mcp` (`app/api/mcp/route.ts`) is a stateless Streamable HTTP MCP server; tools live in `lib/mcp/server.ts`.
 - Tools stay **agnostic**, like the rest of the engine: they take a `templateId` and values keyed by form field `key`, and Claude learns the keys from `get_template_form`. Never add a tool that knows about one template.
 - Tools call engine functions directly (`generatePresentation`, `renderFromContext`, `runPlugins`, the proposal store), not the app's own `/api/*` routes.
-- Auth (phase 1): personal bearer tokens from Settings → Connect Claude (`POST /api/admin/mcp-token`), signed with `MCP_TOKEN_SECRET` (no fallback: unset = endpoint off). Rotating the secret revokes every token. OAuth for claude.ai connectors is phase 2.
+- Auth, two ways, both signed with `MCP_TOKEN_SECRET` (no fallback: unset = endpoint off; rotating it revokes everything):
+  - **OAuth 2.1** for Claude custom connectors (`lib/mcp/oauth.ts`): discovery at `/.well-known/oauth-protected-resource[/api/mcp]` and `/.well-known/oauth-authorization-server` (rewrites in `next.config.js` → `app/api/oauth/metadata/*`), dynamic registration `POST /api/oauth/register`, approval page `/oauth/authorize` (login via `?next=`), `POST /api/oauth/token` (PKCE S256, rotating refresh tokens). **Stateless — no tables**: client ids, codes, refresh tokens and consent tickets are signed payloads, each kind with its own derived key.
+  - **Personal tokens** from Settings → Connect Claude (`POST /api/admin/mcp-token`), 90 days, for Claude Code.
 - `update_proposal` re-renders from the template, which discards visual-editor edits, so it refuses value/language changes without `rebuild: true`.
 
 ## Templates Repo (Git Submodule)

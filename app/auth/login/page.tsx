@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import LoginForm from '@/components/LoginForm';
+import { loginRedirectTarget } from '@/components/loginRedirect';
 import ThemeToggle from '@/components/ThemeToggle';
 
 export default function LoginPage() {
@@ -12,7 +13,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!loading && user) {
-      router.push('/');
+      router.push(loginRedirectTarget());
     }
   }, [user, loading, router]);
 

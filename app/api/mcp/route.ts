@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { createMcpServer } from "@/lib/mcp/server";
 import { authenticateMcpRequest } from "@/lib/mcp/token";
+import { resourceMetadataUrl } from "@/lib/mcp/oauth";
+import { CORS_HEADERS, corsPreflight } from "@/lib/mcp/http";
 import { toErrorResponse } from "@/lib/utils/error-handler";
 
 /**
@@ -23,9 +25,11 @@ async function handle(request: Request): Promise<Response> {
     auth = await authenticateMcpRequest(request);
   } catch (error) {
     const { message, status } = toErrorResponse(error);
+    // The 401 header is how Claude finds the OAuth login (RFC 9728 discovery).
+    const challenge = `Bearer realm="proposalos", resource_metadata="${resourceMetadataUrl(new URL(request.url).origin)}"`;
     return NextResponse.json(
       { jsonrpc: "2.0", error: { code: -32001, message }, id: null },
-      { status, headers: status === 401 ? { "WWW-Authenticate": 'Bearer realm="proposalos"' } : undefined }
+      { status, headers: { ...CORS_HEADERS, ...(status === 401 ? { "WWW-Authenticate": challenge } : {}) } }
     );
   }
 
@@ -38,12 +42,14 @@ async function handle(request: Request): Promise<Response> {
 
   try {
     await server.connect(transport);
-    return await transport.handleRequest(request, {
+    const response = await transport.handleRequest(request, {
       authInfo: { token: auth.token, clientId: auth.user.id, scopes: [], expiresAt: auth.expiresAt },
     });
+    for (const [k, v] of Object.entries(CORS_HEADERS)) response.headers.set(k, v);
+    return response;
   } catch (error) {
     const { message } = toErrorResponse(error);
-    return NextResponse.json({ jsonrpc: "2.0", error: { code: -32603, message }, id: null }, { status: 500 });
+    return NextResponse.json({ jsonrpc: "2.0", error: { code: -32603, message }, id: null }, { status: 500, headers: CORS_HEADERS });
   } finally {
     // With JSON responses the reply is complete once handleRequest returns.
     await transport.close().catch(() => undefined);
@@ -54,3 +60,4 @@ async function handle(request: Request): Promise<Response> {
 export const POST = handle;
 export const GET = handle;
 export const DELETE = handle;
+export const OPTIONS = corsPreflight;

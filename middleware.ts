@@ -14,6 +14,8 @@ const PUBLIC_ROUTES = [
   '/p',
   '/api/proposals',
   '/docs',
+  // OAuth discovery documents for the MCP server (rewritten to /api/oauth/*).
+  '/.well-known',
 ];
 
 export function middleware(request: NextRequest) {
@@ -31,7 +33,10 @@ export function middleware(request: NextRequest) {
   if (isProtected) {
     const refreshToken = request.cookies.get('refreshToken')?.value;
     if (!refreshToken) {
-      return NextResponse.redirect(new URL('/auth/login', request.url));
+      // Come back here after logging in (e.g. the OAuth approval page).
+      const login = new URL('/auth/login', request.url);
+      if (pathname !== '/') login.searchParams.set('next', `${pathname}${request.nextUrl.search}`);
+      return NextResponse.redirect(login);
     }
   }
 
