@@ -1,4 +1,4 @@
-import { desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql, type SQL } from "drizzle-orm";
 import { getDb } from "@/lib/db/client";
 import { proposals } from "@/lib/db/schema";
 import type { BusinessContext } from "@/lib/engine/types";
@@ -43,12 +43,24 @@ export interface ProposalListItem {
 }
 
 export async function listProposals(
-  opts: { templateId?: string; limit?: number; offset?: number } = {}
+  opts: {
+    templateId?: string;
+    /** Keep proposals whose context has these top-level values (`context->>key = value`).
+     *  The caller picks the keys; the store never knows what they mean. */
+    context?: Record<string, string>;
+    limit?: number;
+    offset?: number;
+  } = {}
 ): Promise<{ rows: ProposalListItem[]; total: number }> {
   const db = getDb();
   const limit = opts.limit ?? 50;
   const offset = opts.offset ?? 0;
-  const filter = opts.templateId ? eq(proposals.templateId, opts.templateId) : undefined;
+  const conditions: SQL[] = [];
+  if (opts.templateId) conditions.push(eq(proposals.templateId, opts.templateId));
+  for (const [key, value] of Object.entries(opts.context ?? {})) {
+    conditions.push(sql`${proposals.context} ->> ${key} = ${value}`);
+  }
+  const filter = conditions.length ? and(...conditions) : undefined;
 
   const rows = await db
     .select({
