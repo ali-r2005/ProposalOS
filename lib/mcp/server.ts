@@ -391,8 +391,8 @@ export function createMcpServer(origin: string, user: AuthUser): McpServer {
         "Change a proposal's title, language and/or values.",
         "A title-only change never touches the slides.",
         "Changing values or the language re-renders every slide from the template, which DISCARDS edits made by hand in the visual editor: tell the user and get their OK, then pass rebuild: true.",
-        "mode \"regenerate\" (default) re-runs the template's providers/AI so computed values (formatted dates, totals, fetched data) follow the new values; AI-written text may change.",
-        "mode \"rerender\" keeps every computed value as it is and only re-renders, so it is for direct text fixes, including computed keys from get_proposal with includeComputed.",
+        "mode \"rerender\" (default) applies the changes as they are and redraws the slides: AI-written text and other computed values are kept, including your own edits to them (computed keys from get_proposal with includeComputed). Use it for almost every change.",
+        "mode \"regenerate\" re-runs the template's providers and AI (slower, costs an AI call, replaces AI text and any hand edits to it). Use it only when the user wants AI text rewritten or computed/fetched values recalculated from changed inputs. It is the default when the language changes, so AI text follows the new language.",
       ].join(" "),
       inputSchema: {
         proposalId: z.string(),
@@ -424,9 +424,11 @@ export function createMcpServer(origin: string, user: AuthUser): McpServer {
         let slides: number | undefined;
         const nextLang = lang !== undefined ? resolveLanguage(template.manifest, lang) : proposal.lang;
 
+        // Redraw by default; a language change regenerates so AI text follows it.
+        const effectiveMode = mode ?? (lang !== undefined ? "regenerate" : "rerender");
         if (rerenders) {
           const merged = withoutLanguage({ ...proposal.context, ...(changes ?? {}) });
-          const context = (mode ?? "regenerate") === "regenerate" ? await buildContext(template, merged, nextLang ?? undefined) : merged;
+          const context = effectiveMode === "regenerate" ? await buildContext(template, merged, nextLang ?? undefined) : merged;
           const rendered = await renderFromContext(template, context, nextLang);
           await updateProposal(proposalId, rendered.html, context);
           slides = rendered.slides;
@@ -440,7 +442,7 @@ export function createMcpServer(origin: string, user: AuthUser): McpServer {
         return ok({
           proposalId,
           updated: { values: hasChanges ? Object.keys(changes ?? {}) : [], title: title !== undefined, lang: lang !== undefined },
-          ...(slides !== undefined ? { slides, mode: mode ?? "regenerate" } : {}),
+          ...(slides !== undefined ? { slides, mode: effectiveMode } : {}),
           links: links(origin, proposalId),
         });
       })

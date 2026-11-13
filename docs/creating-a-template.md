@@ -123,6 +123,8 @@ sections:
 | `repeat` + `collection` | One slide per item. The item's fields are readable directly (`{{name}}`), plus `{{index}}`. |
 | `chunk` + `collection` + `size` | One slide per group of `size` items, readable with `{{#each items}}`. |
 
+Add `parse: json` to any of them when the list is typed or pasted as JSON text (for example in a textarea). The engine parses it first: a plain list, or an object holding the list under the collection's name (`{"programme": [...]}`). If the JSON is invalid, saving shows the error instead of silently showing no slides.
+
 `dependsOn` lists sections or providers that must run first.
 
 ### form/*.json
@@ -196,7 +198,12 @@ Each slide is `components/<name>/<name>.html`: one root element with a fixed 192
 - `style=""` is only for `font-family: var(--font-…)` and for position and size (see the editor rules below).
 
 **Handlebars**
-- Allowed: `{{x}}`, `{{a.b}}`, `{{#each list}}…{{/each}}`, `{{#if x}}…{{else}}…{{/if}}`. There are no custom helpers.
+- Allowed: `{{x}}`, `{{a.b}}`, `{{#each list}}…{{/each}}`, `{{#if x}}…{{else}}…{{/if}}`.
+- Helpers for simple display logic, so you don't need a provider just to reshape form values:
+  - `{{add index 1}}`: adds two numbers, e.g. "Option 1, 2, 3" from the 0-based `index` (or `@index` inside `{{#each}}`).
+  - `{{#times category}}<i class="ti ti-star-filled"></i>{{/times}}`: repeats the block N times (up to 100), e.g. stars from a number. `{{else}}` shows when N is 0.
+  - `{{#each (limit items 4)}}…{{/each}}`: only the first N items of a list.
+- Line breaks typed in a textarea: add the class `whitespace-pre-line` to the element showing the text.
 - Keys with dashes need brackets: `{{[event-name]}}`, `{{#if [number-of-participants]}}`.
 - `{{{html}}}` (triple braces) outputs raw HTML. Use it only for values that a provider has already made safe, for example by turning line breaks into `<br>`.
 - Wrap optional lines in `{{#if}}`. Give images a fallback: `{{#if images.[0]}}{{images.[0]}}{{else}}assets/placeholder-image.svg{{/if}}`.

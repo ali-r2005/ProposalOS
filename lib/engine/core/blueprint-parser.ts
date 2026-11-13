@@ -53,6 +53,11 @@ export function parseBlueprint(source: string): Blueprint {
       );
     }
 
+    const expansion = s.expansion as BlueprintSection["expansion"];
+    if (expansion && typeof expansion === "object" && expansion.parse !== undefined && expansion.parse !== "json") {
+      throw new EngineError(`Section "${s.id}" has invalid expansion parse "${String(expansion.parse)}" (expected json)`, 500);
+    }
+
     return {
       id: s.id,
       component: s.component,

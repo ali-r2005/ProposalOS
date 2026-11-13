@@ -193,7 +193,7 @@ Add `-s user` to use it from any folder. A token lasts 90 days. Treat it like a 
 | `prefill_form` | Run the template's prefill plugins (e.g. from a CRM deal) |
 | `create_proposal` | Generate and save a proposal; returns its links |
 | `list_proposals` / `get_proposal` | Find a proposal and read its values |
-| `update_proposal` | Change the title, language or values (`regenerate` re-runs providers/AI; `rerender` only redraws) |
+| `update_proposal` | Change the title, language or values. By default it only redraws (`rerender`), keeping AI text; `regenerate` re-runs providers/AI (default for a language change) |
 | `get_share_link` | Public link that expires |
 
 Changing values rebuilds the slides from the template, which discards edits made by hand in the visual editor. Claude has to confirm that with you first.

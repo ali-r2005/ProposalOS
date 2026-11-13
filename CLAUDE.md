@@ -105,7 +105,8 @@ NOT: default/function/class exports. Opt-in via manifest `"plugins": ["name"]` â
 - `{{variable}}`, `{{object.property}}`
 - `{{#each array}}...{{/each}}`
 - `{{#if condition}}...{{/if}}`
-No custom helpers unless necessary.
+- Generic helpers (registered in `lib/engine/renderer/handlebars-engine.ts`): `{{add a b}}`, `{{#times n}}...{{/times}}`, `(limit list n)`.
+Helpers must stay generic (math, loops, lists), never about one template's data. Simple display logic belongs in the component with a helper, not in a provider.
 
 ## AI Integration
 - Prompts in `/templates/[id]/prompts/` as `.md`

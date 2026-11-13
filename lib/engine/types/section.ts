@@ -10,6 +10,9 @@ export interface ExpansionConfig {
   collection?: string;
   /** Items per slide (for chunk). */
   size?: number;
+  /** `"json"`: the collection may be JSON text (e.g. pasted in a textarea);
+   *  it is parsed into a list before expanding. */
+  parse?: "json";
 }
 
 /** A single section in the blueprint's execution plan. */

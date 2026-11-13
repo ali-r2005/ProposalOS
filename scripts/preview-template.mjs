@@ -92,7 +92,15 @@ function buildPlaceholderContext(source) {
 
   function block(node, stack) {
     const helper = node.path.original;
-    const target = node.params[0];
+    // `{{#each (limit list 4)}}`: the list is the sub-expression's first argument.
+    const first = node.params[0];
+    const target = first?.type === "SubExpression" && first.path.original === "limit" ? first.params[0] : first;
+    // `{{#times n}}`: give n a sample count so the block shows in the preview.
+    if (helper === "times" && target?.type === "PathExpression" && !target.data && target.parts.length) {
+      put(frameFor(stack, target).obj, target.parts, () => EACH_COUNT, (v) => typeof v !== "number");
+      if (node.program) walk(node.program, stack);
+      return;
+    }
     if ((helper === "each" || helper === "with") && target?.type === "PathExpression" && !target.data && target.parts.length) {
       const frame = { obj: {}, self: null };
       walk(node.program, [...stack, frame]);

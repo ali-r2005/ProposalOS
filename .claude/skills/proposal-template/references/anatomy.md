@@ -71,6 +71,7 @@ Expansion:
 - `single` — one slide. With `collection:` set, the slide is skipped when that value is missing or an empty list.
 - `repeat` + `collection` — one slide per list item. The item's fields are available directly (`{{name}}`), plus `{{index}}`.
 - `chunk` + `collection` + `size` — groups of `size` items per slide, available as `{{#each items}}`.
+- `parse: json` (with any strategy) — the collection may be JSON text, e.g. a textarea where people paste a list. It's parsed before expanding: a bare list, or `{"<collection>": [...]}`. Invalid JSON stops the build with a clear error. No provider needed.
 
 `dependsOn` lists section ids or provider names that must run first.
 
