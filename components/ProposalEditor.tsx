@@ -1,10 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { http, toErrorMessage } from "@/lib/utils/http";
 import { ContextEditor } from "@/components/ContextValueEditor";
 import { useProposalName } from "@/components/useProposalName";
+
+const PANEL_DEFAULT = 420;
+const PANEL_MIN = 280;
+/** Space always left for the preview. */
+const PREVIEW_MIN = 320;
+const PANEL_WIDTH_KEY = "proposalEditor.panelWidth";
+
+function clampPanel(width: number): number {
+  const max = Math.max(PANEL_MIN, window.innerWidth - PREVIEW_MIN);
+  return Math.min(max, Math.max(PANEL_MIN, Math.round(width)));
+}
 
 export default function ProposalEditor({ proposalId }: { proposalId: string }) {
   const proposalName = useProposalName(proposalId);
@@ -14,6 +25,51 @@ export default function ProposalEditor({ proposalId }: { proposalId: string }) {
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [previewKey, setPreviewKey] = useState(0);
+  const [panelWidth, setPanelWidth] = useState(PANEL_DEFAULT);
+  const [resizing, setResizing] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // Restore the width chosen last time (per browser).
+  useEffect(() => {
+    try {
+      const stored = Number(localStorage.getItem(PANEL_WIDTH_KEY));
+      if (stored) setPanelWidth(clampPanel(stored));
+    } catch {
+      // Storage unavailable: keep the default width.
+    }
+  }, []);
+
+  function savePanelWidth(width: number) {
+    setPanelWidth(width);
+    try {
+      localStorage.setItem(PANEL_WIDTH_KEY, String(width));
+    } catch {
+      // Storage unavailable: the width just isn't remembered.
+    }
+  }
+
+  function startResize(e: React.PointerEvent<HTMLDivElement>) {
+    e.preventDefault();
+    const left = panelRef.current?.getBoundingClientRect().left ?? 0;
+    setResizing(true);
+    const onMove = (ev: PointerEvent) => setPanelWidth(clampPanel(ev.clientX - left));
+    const onUp = (ev: PointerEvent) => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      setResizing(false);
+      savePanelWidth(clampPanel(ev.clientX - left));
+    };
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+  }
+
+  function resizeWithKeys(e: React.KeyboardEvent<HTMLDivElement>) {
+    const step = e.shiftKey ? 80 : 20;
+    if (e.key === "ArrowLeft") savePanelWidth(clampPanel(panelWidth - step));
+    else if (e.key === "ArrowRight") savePanelWidth(clampPanel(panelWidth + step));
+    else return;
+    e.preventDefault();
+  }
 
   useEffect(() => {
     http
@@ -95,16 +151,34 @@ export default function ProposalEditor({ proposalId }: { proposalId: string }) {
         </p>
       )}
 
-      <div className="flex flex-1 overflow-hidden">
-        <div className="w-[420px] shrink-0 overflow-y-auto border-r border-[var(--app-border)] p-4">
+      <div className={`flex flex-1 overflow-hidden ${resizing ? "cursor-col-resize select-none" : ""}`}>
+        <div
+          ref={panelRef}
+          className="shrink-0 overflow-y-auto p-4"
+          style={{ width: panelWidth }}
+        >
           {loading && <p className="text-sm text-[var(--app-muted)]">Loading context…</p>}
           {context && <ContextEditor context={context} onChange={updateKey} />}
         </div>
+        {/* Drag to resize the form; double-click resets; arrow keys when focused. */}
+        <div
+          role="separator"
+          aria-orientation="vertical"
+          aria-label="Resize the form panel"
+          aria-valuenow={panelWidth}
+          tabIndex={0}
+          title="Drag to resize · double-click to reset"
+          onPointerDown={startResize}
+          onDoubleClick={() => savePanelWidth(clampPanel(PANEL_DEFAULT))}
+          onKeyDown={resizeWithKeys}
+          className={`w-1.5 shrink-0 cursor-col-resize border-r border-[var(--app-border)] transition-colors hover:bg-[var(--app-accent)] focus-visible:bg-[var(--app-accent)] focus-visible:outline-none ${resizing ? "bg-[var(--app-accent)]" : "bg-[var(--app-panel)]"}`}
+        />
         <iframe
           key={previewKey}
           title="Proposal preview"
           src={`/api/proposals/${proposalId}`}
-          className="w-full flex-1 border-0 bg-[#333]"
+          // While dragging, the iframe would swallow the pointer events.
+          className={`w-full flex-1 border-0 bg-[#333] ${resizing ? "pointer-events-none" : ""}`}
         />
       </div>
     </div>
