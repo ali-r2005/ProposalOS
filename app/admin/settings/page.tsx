@@ -1,277 +1,92 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/components/AuthProvider';
-import { http } from '@/lib/utils/http';
 import { useLocale } from '@/components/LocaleProvider';
-import { useUserSettings } from '@/components/useUserSettings';
-import McpTokenPanel from '@/components/McpTokenPanel';
-import IntegrationsPanel from '@/components/IntegrationsPanel';
-import { AUTOSAVE_INTERVALS } from '@/lib/settings';
-import type { UserSettings } from '@/lib/settings';
+import AccountSettings from '@/components/settings/AccountSettings';
+import PreferencesSettings from '@/components/settings/PreferencesSettings';
+import McpTokenPanel from '@/components/settings/McpTokenPanel';
+import IntegrationsPanel from '@/components/settings/IntegrationsPanel';
 
+const SECTIONS = [
+  { id: 'account', label: 'settings.nav.account', hint: 'settings.nav.accountHint' },
+  { id: 'preferences', label: 'settings.nav.preferences', hint: 'settings.nav.preferencesHint' },
+  { id: 'claude', label: 'settings.nav.claude', hint: 'settings.nav.claudeHint' },
+  { id: 'integrations', label: 'settings.nav.integrations', hint: 'settings.nav.integrationsHint' },
+] as const;
+
+type SectionId = (typeof SECTIONS)[number]['id'];
+
+function sectionFromHash(): SectionId {
+  if (typeof window === 'undefined') return 'account';
+  const hash = window.location.hash.slice(1);
+  return SECTIONS.some((s) => s.id === hash) ? (hash as SectionId) : 'account';
+}
+
+/** Settings, split into sections. The open section is kept in the URL hash (#integrations). */
 export default function AdminSettingsPage() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { t } = useLocale();
-  // Called before the `!user` early return below — hooks must run on every
-  // render, in the same order.
-  const { settings, loading: settingsLoading, update: updateSettings } = useUserSettings();
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [active, setActive] = useState<SectionId>('account');
 
-  // Change password form
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  useEffect(() => {
+    setActive(sectionFromHash());
+    const onHash = () => setActive(sectionFromHash());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
 
-  // Change email form
-  const [newEmail, setNewEmail] = useState('');
-  const [emailPassword, setEmailPassword] = useState('');
+  function open(id: SectionId) {
+    setActive(id);
+    window.history.replaceState(null, '', `#${id}`);
+  }
 
   if (!user) {
     return <div className="p-8 text-[var(--app-text)]">{t('settings.loading')}</div>;
   }
 
-  async function handleChangePassword(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setMessage(null);
-
-    if (newPassword !== confirmPassword) {
-      setMessage({ type: 'error', text: t('settings.password.mismatch') });
-      setLoading(false);
-      return;
-    }
-
-    try {
-      await http.post('/api/admin/change-password', {
-        currentPassword,
-        newPassword,
-      });
-
-      setMessage({ type: 'success', text: t('settings.password.success') });
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
-    } catch (error) {
-      setMessage({
-        type: 'error',
-        text: error instanceof Error ? error.message : t('settings.password.failed'),
-      });
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function saveEditorPreference(patch: Partial<UserSettings>) {
-    setMessage(null);
-    try {
-      await updateSettings(patch);
-      setMessage({ type: 'success', text: t('settings.editor.saved') });
-    } catch (error) {
-      setMessage({
-        type: 'error',
-        text: error instanceof Error ? error.message : t('settings.editor.failed'),
-      });
-    }
-  }
-
-  async function handleChangeEmail(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setMessage(null);
-
-    try {
-      await http.post('/api/admin/change-email', {
-        newEmail,
-        password: emailPassword,
-      });
-
-      setMessage({ type: 'success', text: t('settings.email.success') });
-      setNewEmail('');
-      setEmailPassword('');
-      setTimeout(() => logout(), 2000);
-    } catch (error) {
-      setMessage({
-        type: 'error',
-        text: error instanceof Error ? error.message : t('settings.email.failed'),
-      });
-    } finally {
-      setLoading(false);
-    }
-  }
+  const current = SECTIONS.find((s) => s.id === active)!;
 
   return (
-    <div className="max-w-2xl">
+    <div className="mx-auto max-w-5xl">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-[var(--app-text)] mb-2">{t('settings.title')}</h1>
-        <p className="text-[var(--app-muted)]">{t('settings.loggedInAs', { email: user.email })}</p>
+        <h1 className="text-3xl font-bold text-[var(--app-text)]">{t('settings.title')}</h1>
+        <p className="mt-1 text-[var(--app-muted)]">{t('settings.loggedInAs', { email: user.email })}</p>
       </div>
 
-        {message && (
-          <div
-            className={`mb-6 p-4 rounded-lg ${
-              message.type === 'success'
-                ? 'bg-green-100 text-green-800'
-                : 'bg-red-100 text-red-800'
-            }`}
-          >
-            {message.text}
-          </div>
-        )}
-
-        <div className="space-y-8">
-          {/* Visual Editor Preferences */}
-          <div className="border border-[var(--app-border)] rounded-lg p-6">
-            <h2 className="text-2xl font-bold text-[var(--app-text)] mb-4">
-              {t('settings.editor.title')}
-            </h2>
-            <label className="flex items-start gap-3 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={settings.autosaveEnabled}
-                disabled={settingsLoading}
-                onChange={(e) => saveEditorPreference({ autosaveEnabled: e.target.checked })}
-                className="mt-1 h-4 w-4 accent-[var(--app-accent)] disabled:opacity-50"
-              />
-              <span>
-                <span className="block text-sm font-medium text-[var(--app-text)]">
-                  {t('settings.editor.autosave')}
-                </span>
-                <span className="block text-sm text-[var(--app-muted)]">
-                  {t('settings.editor.autosaveHint')}
-                </span>
-              </span>
-            </label>
-
-            {/* Only meaningful while autosave is on. */}
-            {settings.autosaveEnabled && (
-              <div className="mt-4 pl-7">
-                <label
-                  htmlFor="autosave-interval"
-                  className="block text-sm font-medium text-[var(--app-text)] mb-1"
+      <div className="flex flex-col gap-8 md:flex-row">
+        <nav aria-label={t('settings.title')} className="md:w-56 md:shrink-0">
+          <ul className="flex gap-1 overflow-x-auto md:sticky md:top-6 md:flex-col">
+            {SECTIONS.map((section) => (
+              <li key={section.id}>
+                <button
+                  type="button"
+                  onClick={() => open(section.id)}
+                  aria-current={active === section.id ? 'page' : undefined}
+                  className={`w-full whitespace-nowrap rounded-lg px-3 py-2 text-left text-sm font-medium transition ${
+                    active === section.id
+                      ? 'bg-[var(--app-panel)] text-[var(--app-accent)]'
+                      : 'text-[var(--app-muted)] hover:bg-[var(--app-panel)] hover:text-[var(--app-text)]'
+                  }`}
                 >
-                  {t('settings.editor.intervalLabel')}
-                </label>
-                <select
-                  id="autosave-interval"
-                  value={settings.autosaveIntervalMs}
-                  disabled={settingsLoading}
-                  onChange={(e) =>
-                    saveEditorPreference({ autosaveIntervalMs: Number(e.target.value) })
-                  }
-                  className="w-full px-3 py-2 border border-[var(--app-border)] rounded-lg bg-[var(--app-panel)] text-[var(--app-text)] disabled:opacity-50"
-                >
-                  {AUTOSAVE_INTERVALS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {t(option.labelKey)}
-                    </option>
-                  ))}
-                </select>
-                <p className="mt-1 text-sm text-[var(--app-muted)]">
-                  {t('settings.editor.intervalHint')}
-                </p>
-              </div>
-            )}
+                  {t(section.label)}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="min-w-0 flex-1">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-[var(--app-text)]">{t(current.label)}</h2>
+            <p className="mt-1 text-sm text-[var(--app-muted)]">{t(current.hint)}</p>
           </div>
-
-          <McpTokenPanel />
-
-          <IntegrationsPanel />
-
-          {/* Change Password Section */}
-          <div className="border border-[var(--app-border)] rounded-lg p-6">
-            <h2 className="text-2xl font-bold text-[var(--app-text)] mb-4">{t('settings.password.title')}</h2>
-            <form onSubmit={handleChangePassword} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-[var(--app-text)] mb-1">
-                  {t('settings.password.current')}
-                </label>
-                <input
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  required
-                  className="w-full px-3 py-2 border border-[var(--app-border)] rounded-lg bg-[var(--app-panel)] text-[var(--app-text)]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-[var(--app-text)] mb-1">
-                  {t('settings.password.new')}
-                </label>
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  required
-                  className="w-full px-3 py-2 border border-[var(--app-border)] rounded-lg bg-[var(--app-panel)] text-[var(--app-text)]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-[var(--app-text)] mb-1">
-                  {t('settings.password.confirm')}
-                </label>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  className="w-full px-3 py-2 border border-[var(--app-border)] rounded-lg bg-[var(--app-panel)] text-[var(--app-text)]"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full px-4 py-2 bg-[var(--app-accent)] text-white font-medium rounded-lg disabled:opacity-50"
-              >
-                {loading ? t('settings.password.submitting') : t('settings.password.submit')}
-              </button>
-            </form>
-          </div>
-
-          {/* Change Email Section */}
-          <div className="border border-[var(--app-border)] rounded-lg p-6">
-            <h2 className="text-2xl font-bold text-[var(--app-text)] mb-4">{t('settings.email.title')}</h2>
-            <form onSubmit={handleChangeEmail} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-[var(--app-text)] mb-1">
-                  {t('settings.email.new')}
-                </label>
-                <input
-                  type="email"
-                  value={newEmail}
-                  onChange={(e) => setNewEmail(e.target.value)}
-                  required
-                  className="w-full px-3 py-2 border border-[var(--app-border)] rounded-lg bg-[var(--app-panel)] text-[var(--app-text)]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-[var(--app-text)] mb-1">
-                  {t('settings.email.confirmPassword')}
-                </label>
-                <input
-                  type="password"
-                  value={emailPassword}
-                  onChange={(e) => setEmailPassword(e.target.value)}
-                  required
-                  className="w-full px-3 py-2 border border-[var(--app-border)] rounded-lg bg-[var(--app-panel)] text-[var(--app-text)]"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full px-4 py-2 bg-[var(--app-accent)] text-white font-medium rounded-lg disabled:opacity-50"
-              >
-                {loading ? t('settings.email.submitting') : t('settings.email.submit')}
-              </button>
-            </form>
-          </div>
+          {active === 'account' && <AccountSettings />}
+          {active === 'preferences' && <PreferencesSettings />}
+          {active === 'claude' && <McpTokenPanel />}
+          {active === 'integrations' && <IntegrationsPanel />}
         </div>
+      </div>
     </div>
   );
 }

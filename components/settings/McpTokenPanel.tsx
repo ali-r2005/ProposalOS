@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { http, toErrorMessage } from '@/lib/utils/http';
 import { useLocale } from '@/components/LocaleProvider';
+import { SettingsCard, primaryButtonClass } from './ui';
 
 interface McpTokenResponse {
   token: string;
@@ -61,9 +62,7 @@ export default function McpTokenPanel() {
     : [];
 
   return (
-    <div className="border border-[var(--app-border)] rounded-lg p-6">
-      <h2 className="text-2xl font-bold text-[var(--app-text)] mb-2">{t('settings.mcp.title')}</h2>
-      <p className="text-sm text-[var(--app-muted)] mb-4">{t('settings.mcp.hint', { days: String(TTL_DAYS) })}</p>
+    <SettingsCard title={t('settings.mcp.title')} description={t('settings.mcp.hint', { days: String(TTL_DAYS) })}>
 
       {error && <p className="mb-4 text-sm text-red-700">{error}</p>}
 
@@ -95,11 +94,11 @@ export default function McpTokenPanel() {
           type="button"
           onClick={generate}
           disabled={loading}
-          className="px-4 py-2 bg-[var(--app-accent)] text-white font-medium rounded-lg disabled:opacity-50"
+          className={primaryButtonClass}
         >
           {loading ? t('settings.mcp.generating') : t('settings.mcp.generate')}
         </button>
       )}
-    </div>
+    </SettingsCard>
   );
 }
