@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { trackProposalClick } from "@/lib/frappe/track-proposal";
+import { trackProposalClick } from "@/lib/integrations/frappe/track-proposal";
 
 export default function PublicProposalView({
   proposalId,

@@ -285,8 +285,9 @@ export const plugin = {
 
 ### Rules for providers and plugins
 - Export exactly `export const provider = {…}` or `export const plugin = {…}`. No default, function or class exports.
-- Import other template files with a relative path that ends in `.ts`: `import { getWithRetry } from "./frappe-http.ts"`.
-- To call an external API (Frappe, a hotel API…), use the built-in `fetch`, never `axios`. Copy the retry helper from `templates/tendencia-event-recommendation/plugins/frappe-http.ts`.
+- Import other template files with a relative path that ends in `.ts`: `import { shapeHotel } from "./shared.ts"`.
+- To read the Frappe CRM, import the shared client: `import { frappeGetDoc, isFrappeConfigured } from "../../../lib/integrations/frappe/client.ts"`. It handles the URL, the API key and retries.
+- To call another external API, use the built-in `fetch`, never `axios`.
 - Read secrets from environment variables (`process.env.X`). Never write them in the file.
 - Importing an npm package needs a change in the engine's `next.config.js`, so ask the engine maintainer first.
 

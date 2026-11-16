@@ -129,7 +129,8 @@ export const provider = {
 ```
 - Named export `provider` only — no default/function/class exports.
 - Plain `.ts`, run by Node directly (no build step). Imports between template files are relative **with `.ts`**: `import { x } from "./helpers.ts"`.
-- Calling an external API: use built-in `fetch` (never axios) — see `templates/tendencia-event-recommendation/plugins/frappe-http.ts`.
+- Calling the Frappe CRM: import the shared integration client, never copy it: `import { frappeGetDoc, frappeUrl, isFrappeConfigured } from "../../../lib/integrations/frappe/client.ts"`.
+- Calling another external API: use built-in `fetch` (never axios), following `lib/integrations/frappe/client.ts`. A new app gets its own `lib/integrations/<id>/` (client + `index.ts` registered in `lib/integrations/registry.ts`, which adds it to the settings connection check).
 - Database access: `import { getDb } from "../db/client.ts"` (one-line shim to the engine client).
 - Any npm package imported here must also be added to `serverExternalPackages` and `outputFileTracingIncludes` in `next.config.js`.
 

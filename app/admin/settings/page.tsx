@@ -6,6 +6,7 @@ import { http } from '@/lib/utils/http';
 import { useLocale } from '@/components/LocaleProvider';
 import { useUserSettings } from '@/components/useUserSettings';
 import McpTokenPanel from '@/components/McpTokenPanel';
+import IntegrationsPanel from '@/components/IntegrationsPanel';
 import { AUTOSAVE_INTERVALS } from '@/lib/settings';
 import type { UserSettings } from '@/lib/settings';
 
@@ -175,6 +176,8 @@ export default function AdminSettingsPage() {
           </div>
 
           <McpTokenPanel />
+
+          <IntegrationsPanel />
 
           {/* Change Password Section */}
           <div className="border border-[var(--app-border)] rounded-lg p-6">
